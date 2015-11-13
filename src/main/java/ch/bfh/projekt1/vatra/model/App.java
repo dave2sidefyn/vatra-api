@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import java.sql.Date;
+import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
@@ -31,8 +31,7 @@ public class App {
     public App() {
     }
 
-    public App(String id, String name, User user, Date validFrom, Date validTo, Set<AppAlgorithmResult> algorithmResults) {
-        this.id = id;
+    public App(String name, User user, Date validFrom, Date validTo, Set<AppAlgorithmResult> algorithmResults) {
         this.name = name;
         this.user = user;
         this.validFrom = validFrom;

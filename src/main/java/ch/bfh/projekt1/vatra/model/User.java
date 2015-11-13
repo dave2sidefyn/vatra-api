@@ -2,6 +2,8 @@ package ch.bfh.projekt1.vatra.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -18,7 +20,17 @@ public class User {
     private String email;
     private String passwort;
 
+    @OneToMany
+    private Set<App> apps;
+
     protected User() {
+    }
+
+    protected User(User user) {
+        this.id = user.id;
+        this.name = user.name;
+        this.email = user.email;
+        this.passwort = user.passwort;
     }
 
 
@@ -27,6 +39,7 @@ public class User {
         this.email = email;
         this.passwort = passwort;
     }
+
 
     public String getName() {
         return name;
@@ -52,6 +65,13 @@ public class User {
         this.passwort = passwort;
     }
 
+    public Set<App> getApps() {
+        return apps;
+    }
+
+    public void setApps(Set<App> apps) {
+        this.apps = apps;
+    }
 
     @Override
     public String toString() {
@@ -62,4 +82,6 @@ public class User {
                 ", passwort='" + passwort + '\'' +
                 '}';
     }
+
+
 }
