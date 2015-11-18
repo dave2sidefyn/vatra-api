@@ -68,7 +68,7 @@ public class AppAlgorithmResult {
     public String toString() {
         return "AppAlgorithmResult{" +
                 "id='" + id + '\'' +
-                ", app=" + app +
+                ", secure=" + app +
                 ", algorithm=" + algorithm +
                 ", enabled=" + enabled +
                 '}';

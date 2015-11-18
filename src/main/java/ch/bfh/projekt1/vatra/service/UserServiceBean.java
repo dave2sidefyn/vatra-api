@@ -1,7 +1,6 @@
-package ch.bfh.projekt1.vatra;
+package ch.bfh.projekt1.vatra.service;
 
 import ch.bfh.projekt1.vatra.model.User;
-import ch.bfh.projekt1.vatra.service.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

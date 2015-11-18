@@ -68,7 +68,7 @@ public class Request {
         return "Request{" +
                 "id='" + id + '\'' +
                 ", identify='" + identify + '\'' +
-                ", app=" + app +
+                ", secure=" + app +
                 ", clientInformation='" + clientInformation + '\'' +
                 '}';
     }

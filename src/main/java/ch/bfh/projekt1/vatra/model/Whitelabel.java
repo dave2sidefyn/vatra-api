@@ -57,7 +57,7 @@ public class Whitelabel {
         return "Whitelabel{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", app=" + app +
+                ", secure=" + app +
                 '}';
     }
 }

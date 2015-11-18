@@ -12,4 +12,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 public interface UserRepository extends CrudRepository<User, Long> {
 
     User findByEmail(@Param("email") String email);
+
+    User findByEmailAndPasswort(@Param("email") String email, @Param("passwort") String passwort);
 }
