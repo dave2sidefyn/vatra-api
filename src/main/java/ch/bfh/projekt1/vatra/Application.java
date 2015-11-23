@@ -47,12 +47,13 @@ public class Application {
     public CommandLineRunner demo() {
         return (args) -> {
 
-            User userDavidWiedmer = userService.create(new User("David Wiedmer", "david.wiedmer@gmail.com", "test1234"));
-            User userZwei = userService.create(new User("Wiedmer", "dave@sidefyn.ch", "test1234"));
+            User userDave = userService.create(new User("Dave Wiedmer", "david.wiedmer@gmail.com", "test1234"));
+            User userMichael = userService.create(new User("Michael Räss", "raess.michael@gmail.com", "Aa123456"));
+            User userTobias = userService.create(new User("Tobias Schmoker", "tobischmoker@gmail.com", "zebra1234"));
 
-            appService.create(new App("Meine erste App", userDavidWiedmer, new Date(), new Date(), new HashSet<>()));
-            appService.create(new App("Meine zweite App", userDavidWiedmer, new Date(), new Date(), new HashSet<>()));
-            appService.create(new App("Meine eigene App", userZwei, new Date(), new Date(), new HashSet<>()));
+            appService.create(new App("App Dave", userDave, new Date(), new Date(), new HashSet<>()));
+            appService.create(new App("App Michael", userMichael, new Date(), new Date(), new HashSet<>()));
+            appService.create(new App("App Tobias", userTobias, new Date(), new Date(), new HashSet<>()));
 
 
             userService.findAll().forEach(user -> log.info(user.toString()));
