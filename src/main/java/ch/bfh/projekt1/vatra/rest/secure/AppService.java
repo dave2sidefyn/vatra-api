@@ -2,8 +2,11 @@ package ch.bfh.projekt1.vatra.rest.secure;
 
 
 import ch.bfh.projekt1.vatra.model.App;
+import ch.bfh.projekt1.vatra.model.User;
 import ch.bfh.projekt1.vatra.rest.Greetings;
 import ch.bfh.projekt1.vatra.service.AppRepository;
+import ch.bfh.projekt1.vatra.service.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,16 +27,16 @@ public class AppService {
 
     @Autowired
     private AppRepository appRepository;
+    
+    @Autowired
+    private UserRepository userRepository;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Iterable<App>> getApps() {
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        String name = authentication.getName();
-
-
-        Iterable<App> all = appRepository.findAll();
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email);
+        Iterable<App> all = appRepository.findAllByUser(user);
         return new ResponseEntity<>(all, HttpStatus.OK);
     }
 
