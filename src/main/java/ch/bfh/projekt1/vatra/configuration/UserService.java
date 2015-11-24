@@ -11,17 +11,4 @@ public interface UserService {
      * @return
      */
     User findByEmail(String email);
-
-
-    /**
-     * @return
-     */
-    Iterable<User> findAll();
-
-
-    /**
-     * @param user
-     * @return
-     */
-    User create(User user);
 }

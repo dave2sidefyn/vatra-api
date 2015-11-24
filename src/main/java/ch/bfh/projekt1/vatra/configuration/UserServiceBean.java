@@ -18,14 +18,4 @@ public class UserServiceBean implements UserService {
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
-
-    @Override
-    public Iterable<User> findAll() {
-        return userRepository.findAll();
-    }
-
-    @Override
-    public User create(User user) {
-        return userRepository.save(user);
-    }
 }
