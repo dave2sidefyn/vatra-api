@@ -1,4 +1,4 @@
-package ch.bfh.projekt1.vatra.service;
+package ch.bfh.projekt1.vatra.configuration;
 
 import ch.bfh.projekt1.vatra.model.User;
 

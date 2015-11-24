@@ -1,7 +1,6 @@
 package ch.bfh.projekt1.vatra.configuration;
 
 import ch.bfh.projekt1.vatra.model.User;
-import ch.bfh.projekt1.vatra.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
