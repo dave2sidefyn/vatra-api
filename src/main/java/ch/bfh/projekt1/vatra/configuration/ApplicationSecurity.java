@@ -1,13 +1,20 @@
 package ch.bfh.projekt1.vatra.configuration;
 
-
 import ch.bfh.projekt1.vatra.configuration.cors.CORSFilter;
 import ch.bfh.projekt1.vatra.configuration.csrf.CsrfTokenResponseCookieBindingFilter;
+import ch.bfh.projekt1.vatra.model.User;
+import ch.bfh.projekt1.vatra.service.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -19,6 +26,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 
 import javax.annotation.Resource;
+
 
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
@@ -33,6 +41,29 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
     private CORSFilter corsFilter;
     @Resource
     private LogoutSuccessHandler logoutSuccessHandler;
+
+    @Autowired
+    private UserRepository userService;
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder builder) throws Exception {
+        builder.userDetailsService(userDetailsService());
+    }
+
+    @Bean
+    protected UserDetailsService userDetailsService() {
+        return email -> {
+            User user = userService.findByEmail(email);
+            if (user != null) {
+                return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPasswort(), true, true, true, true,
+                        AuthorityUtils.createAuthorityList("USER"));
+            } else {
+                throw new UsernameNotFoundException("could not find the user '"
+                        + email + "'");
+            }
+        };
+    }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

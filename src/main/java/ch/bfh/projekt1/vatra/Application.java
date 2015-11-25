@@ -11,6 +11,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -20,6 +21,7 @@ import java.util.HashSet;
 /**
  * Created by dave on 23.10.15.
  */
+@ComponentScan
 @Configuration
 @SpringBootApplication
 public class Application {
@@ -33,7 +35,8 @@ public class Application {
 
 
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(Application.class, args);
+        SpringApplication application = new SpringApplication(Application.class);
+        application.run(args);
     }
 
     @Bean
