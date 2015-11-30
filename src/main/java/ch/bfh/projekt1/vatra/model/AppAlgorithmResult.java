@@ -20,16 +20,13 @@ public class AppAlgorithmResult {
     @ManyToOne
     private Algorithm algorithm;
 
-    private boolean enabled;
-
     public AppAlgorithmResult() {
     }
 
-    public AppAlgorithmResult(String id, App app, Algorithm algorithm, boolean enabled) {
+    public AppAlgorithmResult(String id, App app, Algorithm algorithm) {
         this.id = id;
         this.app = app;
         this.algorithm = algorithm;
-        this.enabled = enabled;
     }
 
     public String getId() {
@@ -56,21 +53,12 @@ public class AppAlgorithmResult {
         this.algorithm = algorithm;
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
     @Override
     public String toString() {
         return "AppAlgorithmResult{" +
                 "id='" + id + '\'' +
                 ", secure=" + app +
                 ", algorithm=" + algorithm +
-                ", enabled=" + enabled +
                 '}';
     }
 }

@@ -19,7 +19,7 @@ public class OpenWebService {
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<App> getApp() {
-        App greetings = new App("Hello, open REST!", null, new Date(), new Date(), new HashSet<>());
+        App greetings = new App("Hello, open REST!", "", null, new Date(), new Date(), new HashSet<>());
         return new ResponseEntity<>(greetings, HttpStatus.OK);
     }
 

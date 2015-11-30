@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+
 import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
@@ -18,7 +20,9 @@ public class App {
     @Id
     private String id = UUID.randomUUID().toString();
 
+    @NotNull
     private String name;
+    private String scheme;
 
     @ManyToOne
     private User user;
@@ -31,8 +35,9 @@ public class App {
     public App() {
     }
 
-    public App(String name, User user, Date validFrom, Date validTo, Set<AppAlgorithmResult> algorithmResults) {
+    public App(String name, String scheme, User user, Date validFrom, Date validTo, Set<AppAlgorithmResult> algorithmResults) {
         this.name = name;
+        this.scheme = scheme;
         this.user = user;
         this.validFrom = validFrom;
         this.validTo = validTo;
@@ -53,6 +58,14 @@ public class App {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    public String getScheme() {
+        return scheme;
+    }
+
+    public void setScheme(String scheme) {
+        this.scheme = scheme;
     }
 
     public User getUser() {
@@ -79,11 +92,11 @@ public class App {
         this.validTo = validTo;
     }
 
-    public Set<AppAlgorithmResult> getAlgorithms() {
+    public Set<AppAlgorithmResult> getAlgorithmResults() {
         return algorithmResults;
     }
 
-    public void setAlgorithms(Set<AppAlgorithmResult> algorithms) {
+    public void setAlgorithmResults(Set<AppAlgorithmResult> algorithmResults) {
         this.algorithmResults = algorithmResults;
     }
 
@@ -92,6 +105,7 @@ public class App {
         return "App{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
+                ", scheme='" + scheme + '\'' +
                 ", user=" + user +
                 ", validFrom=" + validFrom +
                 ", validTo=" + validTo +
