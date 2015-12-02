@@ -36,17 +36,17 @@ public class AppWebService {
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<App> create(@RequestBody App app) {
-    	if (app.getName() == null || app.getName().isEmpty()) {
-    		return new ResponseEntity<App>(HttpStatus.INTERNAL_SERVER_ERROR);
-    	}
-    	
+        if (app.getName() == null || app.getName().isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
         User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         app.setUser(user);
         Date now = new Date();
         app.setValidFrom(now);
         app.setValidTo(new Date(now.getTime() + (1000 * 60 * 60 * 24 * 3)));
         appRepository.save(app);
-        
-        return new ResponseEntity<App>(HttpStatus.OK);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
