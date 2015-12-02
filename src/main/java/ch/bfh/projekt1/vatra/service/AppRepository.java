@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param;
 /**
  * Created by dave on 23.10.15.
  */
-public interface AppRepository extends CrudRepository<App, Long> {
+public interface AppRepository extends CrudRepository<App, String> {
     Iterable<App> findAllByUser(@Param("user") User user);
 }

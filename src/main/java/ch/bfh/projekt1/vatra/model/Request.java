@@ -3,6 +3,7 @@ package ch.bfh.projekt1.vatra.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -19,16 +20,22 @@ public class Request {
     @ManyToOne
     private App app;
 
+    private boolean valid;
+
     private String clientInformation;
+
+    private Date createdDate;
 
     public Request() {
     }
 
-    public Request(String id, String identify, App app, String clientInformation) {
+    public Request(String id, String identify, App app, String clientInformation, boolean valid, Date createdDate) {
         this.id = id;
         this.identify = identify;
         this.app = app;
         this.clientInformation = clientInformation;
+        this.valid = valid;
+        this.createdDate = createdDate;
     }
 
     public String getId() {
@@ -63,6 +70,27 @@ public class Request {
         this.clientInformation = clientInformation;
     }
 
+    public boolean isValid() {
+        return valid;
+    }
+
+    public boolean isInValid() {
+        return !valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
+
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
     @Override
     public String toString() {
         return "Request{" +
@@ -70,6 +98,7 @@ public class Request {
                 ", identify='" + identify + '\'' +
                 ", secure=" + app +
                 ", clientInformation='" + clientInformation + '\'' +
+                ", valid='" + valid + '\'' +
                 '}';
     }
 }

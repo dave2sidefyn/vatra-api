@@ -2,10 +2,9 @@ package ch.bfh.projekt1.vatra.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
-
 import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
@@ -29,19 +28,19 @@ public class App {
     private Date validFrom;
     private Date validTo;
 
-    @OneToMany
-    private Set<AppAlgorithmResult> algorithmResults;
+    @ManyToMany
+    private Set<Algorithm> algorithms;
 
     public App() {
     }
 
-    public App(String name, String scheme, User user, Date validFrom, Date validTo, Set<AppAlgorithmResult> algorithmResults) {
+    public App(String name, String scheme, User user, Date validFrom, Date validTo, Set<Algorithm> algorithms) {
         this.name = name;
         this.scheme = scheme;
         this.user = user;
         this.validFrom = validFrom;
         this.validTo = validTo;
-        this.algorithmResults = algorithmResults;
+        this.algorithms = algorithms;
     }
 
     public String getId() {
@@ -59,7 +58,7 @@ public class App {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public String getScheme() {
         return scheme;
     }
@@ -92,12 +91,12 @@ public class App {
         this.validTo = validTo;
     }
 
-    public Set<AppAlgorithmResult> getAlgorithmResults() {
-        return algorithmResults;
+    public Set<Algorithm> getAlgorithmResults() {
+        return algorithms;
     }
 
-    public void setAlgorithmResults(Set<AppAlgorithmResult> algorithmResults) {
-        this.algorithmResults = algorithmResults;
+    public void setAlgorithms(Set<Algorithm> algorithms) {
+        this.algorithms = algorithms;
     }
 
     @Override
@@ -109,7 +108,7 @@ public class App {
                 ", user=" + user +
                 ", validFrom=" + validFrom +
                 ", validTo=" + validTo +
-                ", algorithmResults=" + algorithmResults +
+                ", algorithms=" + algorithms +
                 '}';
     }
 }

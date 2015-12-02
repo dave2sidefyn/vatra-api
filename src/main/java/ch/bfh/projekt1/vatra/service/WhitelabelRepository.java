@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 /**
  * Created by dave on 23.10.15.
  */
-public interface WhitelabelRepository extends CrudRepository<Whitelabel, Long> {
+public interface WhitelabelRepository extends CrudRepository<Whitelabel, String> {
 
     Iterable<Whitelabel> findAllByApp(@Param("app") App app);
 }

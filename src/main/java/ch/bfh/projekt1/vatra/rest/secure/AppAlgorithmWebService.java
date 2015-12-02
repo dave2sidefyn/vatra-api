@@ -33,7 +33,7 @@ public class AppAlgorithmWebService {
     private UserRepository userRepository;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Iterable<AlgorithmDTO>> getAlgorithms(@PathVariable("id") long id) {
+    public ResponseEntity<Iterable<AlgorithmDTO>> getAlgorithms(@PathVariable("id") String id) {
         User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         App app = appRepository.findOne(id);
         if (!app.getUser().equals(user)) {
@@ -43,9 +43,9 @@ public class AppAlgorithmWebService {
         Set<AlgorithmDTO> algorithms = new HashSet<>();
         app.getAlgorithmResults().forEach(algorithmResult -> {
             AlgorithmDTO algorithmDTO = new AlgorithmDTO(
-                    algorithmResult.getAlgorithm().getId(),
                     algorithmResult.getId(),
-                    algorithmResult.getAlgorithm().getName(),
+                    algorithmResult.getId(),
+                    algorithmResult.getName(),
                     true
             );
             algorithms.add(algorithmDTO);

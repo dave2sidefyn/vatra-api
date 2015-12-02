@@ -31,7 +31,7 @@ public class WhitelabelWebService {
     private UserRepository userRepository;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Iterable<Whitelabel>> getWhitelabels(@PathVariable("id") long id) {
+    public ResponseEntity<Iterable<Whitelabel>> getWhitelabels(@PathVariable("id") String id) {
         User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         App app = appRepository.findOne(id);
         if (!app.getUser().equals(user)) {
@@ -41,9 +41,9 @@ public class WhitelabelWebService {
         Set<AlgorithmDTO> algorithms = new HashSet<>();
         app.getAlgorithmResults().forEach(algorithmResult -> {
             AlgorithmDTO algorithmDTO = new AlgorithmDTO(
-                    algorithmResult.getAlgorithm().getId(),
                     algorithmResult.getId(),
-                    algorithmResult.getAlgorithm().getName(),
+                    algorithmResult.getId(),
+                    algorithmResult.getName(),
                     true
             );
             algorithms.add(algorithmDTO);
@@ -59,9 +59,6 @@ public class WhitelabelWebService {
         }
 
         //TODO
-
-        User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-        String appId = whitelabel.getApp().getId();
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

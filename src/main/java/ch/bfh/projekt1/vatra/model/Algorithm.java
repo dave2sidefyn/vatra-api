@@ -18,7 +18,7 @@ public class Algorithm {
     private String name;
 
     @OneToMany
-    private Set<AppAlgorithmResult> appAlgorithmResults;
+    private Set<App> apps;
 
     @OneToMany
     private Set<AlgorithmRequestResult> algorithmRequestResults;
@@ -26,10 +26,10 @@ public class Algorithm {
     public Algorithm() {
     }
 
-    public Algorithm(String id, String name, Set<AppAlgorithmResult> appAlgorithmResults, Set<AlgorithmRequestResult> algorithmRequestResults) {
+    public Algorithm(String id, String name, Set<App> apps, Set<AlgorithmRequestResult> algorithmRequestResults) {
         this.id = id;
         this.name = name;
-        this.appAlgorithmResults = appAlgorithmResults;
+        this.apps = apps;
         this.algorithmRequestResults = algorithmRequestResults;
     }
 
@@ -49,12 +49,12 @@ public class Algorithm {
         this.name = name;
     }
 
-    public Set<AppAlgorithmResult> getApps() {
-        return appAlgorithmResults;
+    public Set<App> getApps() {
+        return apps;
     }
 
-    public void setApps(Set<AppAlgorithmResult> appAlgorithmResults) {
-        this.appAlgorithmResults = appAlgorithmResults;
+    public void setApps(Set<App> apps) {
+        this.apps = apps;
     }
 
     public Set<AlgorithmRequestResult> getRequests() {
@@ -70,7 +70,7 @@ public class Algorithm {
         return "Algorithm{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", appAlgorithmResults=" + appAlgorithmResults +
+                ", apps=" + apps +
                 ", algorithmRequestResults=" + algorithmRequestResults +
                 '}';
     }

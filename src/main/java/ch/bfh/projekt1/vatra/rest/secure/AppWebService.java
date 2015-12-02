@@ -2,8 +2,11 @@ package ch.bfh.projekt1.vatra.rest.secure;
 
 
 import ch.bfh.projekt1.vatra.model.App;
+import ch.bfh.projekt1.vatra.model.AppDTO;
+import ch.bfh.projekt1.vatra.model.Request;
 import ch.bfh.projekt1.vatra.model.User;
 import ch.bfh.projekt1.vatra.service.AppRepository;
+import ch.bfh.projekt1.vatra.service.RequestRepository;
 import ch.bfh.projekt1.vatra.service.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @RequestMapping("/rest/secure/app")
 @RestController
@@ -27,11 +33,33 @@ public class AppWebService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private RequestRepository requestRepository;
+
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Iterable<App>> getApps() {
+    public ResponseEntity<List<AppDTO>> getApps() {
         User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         Iterable<App> all = appRepository.findAllByUser(user);
-        return new ResponseEntity<>(all, HttpStatus.OK);
+
+        List<AppDTO> appDTOList = new ArrayList<>();
+        all.forEach(app -> {
+            AppDTO appDTO = new AppDTO();
+            appDTO.setId(app.getId());
+            appDTO.setName(app.getName());
+
+            List<Request> requestByApp = requestRepository.findAllByApp(app);
+            appDTO.setRequest((long) requestByApp.size());
+            appDTO.setValid(requestByApp.stream().filter(Request::isValid).count());
+            appDTO.setInvalid(requestByApp.stream().filter(Request::isInValid).count());
+            Optional<Request> request = requestByApp.stream().sorted().findFirst();
+            if (request.isPresent()) {
+                appDTO.setLastRequest(request.get().getCreatedDate());
+            }
+            appDTOList.add(appDTO);
+        });
+
+
+        return new ResponseEntity<>(appDTOList, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
