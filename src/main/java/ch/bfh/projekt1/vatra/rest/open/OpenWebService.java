@@ -1,6 +1,8 @@
 package ch.bfh.projekt1.vatra.rest.open;
 
 
+import ch.bfh.projekt1.vatra.algorithm.Algorithm;
+import ch.bfh.projekt1.vatra.algorithm.AlgorithmEnum;
 import ch.bfh.projekt1.vatra.model.AlgorithmRequestResult;
 import ch.bfh.projekt1.vatra.model.App;
 import ch.bfh.projekt1.vatra.model.Request;
@@ -36,6 +38,7 @@ public class OpenWebService {
     @Autowired
     private AlgorithmRequestResultRepository algorithmRequestResultRepository;
 
+    @Autowired
     private RequestRepository requestRepository;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -53,22 +56,37 @@ public class OpenWebService {
             App app = appRepository.findOne((String) json.get("appId"));
             request.setApp(app);
 
+            final Request savedRequest = requestRepository.save(request);
 
-            Request savedRequest = requestRepository.save(request);
+            final int[] i = {0};
 
             algorithmRepository.findAllByApps(app).forEach(algorithm -> {
-
+                int value = 0;
+                try {
+                    Algorithm algorithmInterface = (Algorithm) AlgorithmEnum.GEO_ALGORITHM.getAlgorithm().newInstance();
+                    value = algorithmInterface.check(json);
+                } catch (InstantiationException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
 
                 AlgorithmRequestResult algorithmRequestResult = new AlgorithmRequestResult();
                 algorithmRequestResult.setAlgorithm(algorithm);
                 algorithmRequestResult.setRequest(savedRequest);
-                algorithmRequestResult.setResult(true);
+                algorithmRequestResult.setResult(value < 10);    //TODO WEDA
+                i[0] = i[0] + value;
                 algorithmRequestResultRepository.save(algorithmRequestResult);
             });
 
 
+            if (i[0] < 10) {
+                savedRequest.setValid(true);
+                requestRepository.save(savedRequest);
+            }
+
+
         } catch (ParseException e) {
             e.printStackTrace();
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         System.out.println("Greetings have been OPENLY posted. They say: ");
         return new ResponseEntity(HttpStatus.OK);
