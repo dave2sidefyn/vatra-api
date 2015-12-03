@@ -47,9 +47,9 @@ public class Application {
             User userMichael = userRepository.save(new User("Michael Räss", "raess.michael@gmail.com", "Aa123456"));
             User userTobias = userRepository.save(new User("Tobias Schmoker", "tobischmoker@gmail.com", "zebra1234"));
 
-            appRepository.save(new App("App Dave", "", userDave, new Date(), new Date(), new HashSet<>()));
-            appRepository.save(new App("App Michael", "", userMichael, new Date(), new Date(), new HashSet<>()));
-            appRepository.save(new App("App Tobias", "", userTobias, new Date(), new Date(), new HashSet<>()));
+            appRepository.save(new App("App Dave", "", 10, userDave, new Date(), new Date(), new HashSet<>()));
+            appRepository.save(new App("App Michael", "", 10, userMichael, new Date(), new Date(), new HashSet<>()));
+            appRepository.save(new App("App Tobias", "", 10, userTobias, new Date(), new Date(), new HashSet<>()));
 
 
             userRepository.findAll().forEach(user -> log.info(user.toString()));

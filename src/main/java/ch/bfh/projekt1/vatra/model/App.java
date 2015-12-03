@@ -22,6 +22,8 @@ public class App {
     @NotNull
     private String name;
     private String scheme;
+    @NotNull
+    private Integer toleranz;
 
     @ManyToOne
     private User user;
@@ -34,9 +36,10 @@ public class App {
     public App() {
     }
 
-    public App(String name, String scheme, User user, Date validFrom, Date validTo, Set<Algorithm> algorithms) {
+    public App(String name, String scheme, Integer toleranz, User user, Date validFrom, Date validTo, Set<Algorithm> algorithms) {
         this.name = name;
         this.scheme = scheme;
+        this.toleranz = toleranz;
         this.user = user;
         this.validFrom = validFrom;
         this.validTo = validTo;
@@ -65,6 +68,14 @@ public class App {
 
     public void setScheme(String scheme) {
         this.scheme = scheme;
+    }
+
+    public Integer getToleranz() {
+        return toleranz;
+    }
+
+    public void setToleranz(Integer toleranz) {
+        this.toleranz = toleranz;
     }
 
     public User getUser() {

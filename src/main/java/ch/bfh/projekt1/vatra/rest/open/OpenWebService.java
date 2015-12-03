@@ -22,9 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
-import java.util.HashSet;
-
 @RequestMapping("/rest/open")
 @RestController
 public class OpenWebService {
@@ -40,12 +37,6 @@ public class OpenWebService {
 
     @Autowired
     private RequestRepository requestRepository;
-
-    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<App> getApp() {
-        App greetings = new App("Hello, open REST!", "", null, new Date(), new Date(), new HashSet<>());
-        return new ResponseEntity<>(greetings, HttpStatus.OK);
-    }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity createRequest(@RequestBody String string) {
