@@ -22,7 +22,6 @@ public class App {
     @NotNull
     private String name;
     private String scheme;
-    @NotNull
     private Integer toleranz;
 
     @ManyToOne

@@ -73,6 +73,7 @@ public class AppWebService {
         Date now = new Date();
         app.setValidFrom(now);
         app.setValidTo(new Date(now.getTime() + (1000 * 60 * 60 * 24 * 3)));
+        app.setToleranz(10);
         appRepository.save(app);
 
         return new ResponseEntity<>(HttpStatus.OK);

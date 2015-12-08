@@ -4,6 +4,7 @@ import ch.bfh.projekt1.vatra.model.App;
 import ch.bfh.projekt1.vatra.model.User;
 import ch.bfh.projekt1.vatra.service.AppRepository;
 import ch.bfh.projekt1.vatra.service.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,31 +23,32 @@ public class ToleranzWebService {
     private UserRepository userRepository;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Integer> getToleranz(@PathVariable("id") String id) {
+    public ResponseEntity<int[]> getToleranz(@PathVariable("id") String id) {
         User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         App app = appRepository.findOne(id);
         if (!app.getUser().equals(user)) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+        int[] toleranz = {app.getToleranz()};
 
-        return new ResponseEntity<>(app.getToleranz(), HttpStatus.OK);
+        return new ResponseEntity<>(toleranz, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<App> updateToleranz(@PathVariable("id") String id, @RequestBody Integer toleranz) {
-        if (toleranz == null) {
+    public ResponseEntity<App> updateToleranz(@PathVariable("id") String id, @RequestBody App app) {
+        if (app.getToleranz() == null) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-        App app = appRepository.findOne(id);
-        if (!app.getUser().equals(user)) {
+        App currentApp = appRepository.findOne(id);
+        if (!currentApp.getUser().equals(user)) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        app.setToleranz(toleranz);
+        currentApp.setToleranz(app.getToleranz());
 
-        App savedApp = appRepository.save(app);
+        App savedApp = appRepository.save(currentApp);
 
         return new ResponseEntity<>(savedApp, HttpStatus.OK);
     }

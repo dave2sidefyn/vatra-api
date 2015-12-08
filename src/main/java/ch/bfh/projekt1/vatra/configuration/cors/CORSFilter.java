@@ -36,7 +36,7 @@ public class CORSFilter implements Filter {
 			response.setHeader("Access-Control-Allow-Credentials", "true");
 
 			// Access-Control-Allow-Methods
-			response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+			response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
 
 			// Access-Control-Allow-Headers
 			response.setHeader("Access-Control-Allow-Headers",
