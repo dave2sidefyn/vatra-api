@@ -23,8 +23,7 @@ public class AppAlgorithmResult {
     public AppAlgorithmResult() {
     }
 
-    public AppAlgorithmResult(String id, App app, Algorithm algorithm) {
-        this.id = id;
+    public AppAlgorithmResult(App app, Algorithm algorithm) {
         this.app = app;
         this.algorithm = algorithm;
     }

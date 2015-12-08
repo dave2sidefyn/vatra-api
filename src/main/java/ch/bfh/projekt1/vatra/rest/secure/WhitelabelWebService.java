@@ -1,6 +1,5 @@
 package ch.bfh.projekt1.vatra.rest.secure;
 
-import ch.bfh.projekt1.vatra.model.AlgorithmDTO;
 import ch.bfh.projekt1.vatra.model.App;
 import ch.bfh.projekt1.vatra.model.User;
 import ch.bfh.projekt1.vatra.model.Whitelabel;
@@ -13,9 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @RequestMapping("/rest/secure/app/{id}/whitelabel")
 @RestController
@@ -37,17 +33,6 @@ public class WhitelabelWebService {
         if (!app.getUser().equals(user)) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-
-        Set<AlgorithmDTO> algorithms = new HashSet<>();
-        app.getAlgorithmResults().forEach(algorithmResult -> {
-            AlgorithmDTO algorithmDTO = new AlgorithmDTO(
-                    algorithmResult.getId(),
-                    algorithmResult.getId(),
-                    algorithmResult.getName(),
-                    true
-            );
-            algorithms.add(algorithmDTO);
-        });
 
         return new ResponseEntity<>(whitelabelRepository.findAllByApp(app), HttpStatus.OK);
     }

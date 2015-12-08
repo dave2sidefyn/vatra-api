@@ -6,16 +6,13 @@ package ch.bfh.projekt1.vatra.model;
 public class AlgorithmDTO {
 
 	private String algorithmId;
-	
-    private String appAlgorithmResultId;
 
     private String name;
     
     private boolean enabled;
 
-    public AlgorithmDTO(String algorithmId, String appAlgorithmResultId, String name, boolean enabled) {
+    public AlgorithmDTO(String algorithmId, String name, boolean enabled) {
         this.algorithmId = algorithmId;
-        this.appAlgorithmResultId = appAlgorithmResultId;
         this.name = name;
         this.enabled = enabled;
     }
@@ -26,14 +23,6 @@ public class AlgorithmDTO {
 
 	public void setAlgorithmId(String algorithmId) {
 		this.algorithmId = algorithmId;
-	}
-
-	public String getAppAlgorithmResultId() {
-		return appAlgorithmResultId;
-	}
-
-	public void setAppAlgorithmResultId(String appAlgorithmResultId) {
-		this.appAlgorithmResultId = appAlgorithmResultId;
 	}
 
 	public String getName() {
@@ -54,7 +43,7 @@ public class AlgorithmDTO {
 
 	@Override
 	public String toString() {
-		return "AlgorithmDTO [algorithmId=" + algorithmId + ", appAlgorithmResultId=" + appAlgorithmResultId + ", name="
+		return "AlgorithmDTO [algorithmId=" + algorithmId + ", name="
 				+ name + ", enabled=" + enabled + "]";
 	}
 }

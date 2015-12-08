@@ -25,9 +25,12 @@ public class Algorithm {
 
     public Algorithm() {
     }
+    
+    public Algorithm(String name) {
+    	this.name = name;
+    }
 
-    public Algorithm(String id, String name, Set<App> apps, Set<AlgorithmRequestResult> algorithmRequestResults) {
-        this.id = id;
+    public Algorithm(String name, Set<App> apps, Set<AlgorithmRequestResult> algorithmRequestResults) {
         this.name = name;
         this.apps = apps;
         this.algorithmRequestResults = algorithmRequestResults;

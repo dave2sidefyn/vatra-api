@@ -101,7 +101,7 @@ public class App {
         this.validTo = validTo;
     }
 
-    public Set<Algorithm> getAlgorithmResults() {
+    public Set<Algorithm> getAlgorithms() {
         return algorithms;
     }
 
