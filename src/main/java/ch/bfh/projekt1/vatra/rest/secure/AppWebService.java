@@ -45,6 +45,7 @@ public class AppWebService {
             AppDTO appDTO = new AppDTO();
             appDTO.setId(app.getId());
             appDTO.setName(app.getName());
+            appDTO.setApiKey(app.getApiKey());
 
             List<Request> requestByApp = requestRepository.findAllByApp(app);
             appDTO.setRequest((long) requestByApp.size());

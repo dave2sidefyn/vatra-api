@@ -5,6 +5,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
@@ -28,8 +31,17 @@ public class App {
     private User user;
     private Date validFrom;
     private Date validTo;
+    private String apiKey;
 
-    @ManyToMany
+    public String getApiKey() {
+		return apiKey;
+	}
+
+	public void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
+	}
+
+	@ManyToMany
     private Set<Algorithm> algorithms;
 
     public App() {
@@ -42,6 +54,7 @@ public class App {
         this.user = user;
         this.validFrom = validFrom;
         this.validTo = validTo;
+        this.apiKey = new BigInteger(130, new SecureRandom()).toString(32);
         this.algorithms = algorithms;
     }
 
@@ -110,15 +123,9 @@ public class App {
     }
 
     @Override
-    public String toString() {
-        return "App{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", scheme='" + scheme + '\'' +
-                ", user=" + user +
-                ", validFrom=" + validFrom +
-                ", validTo=" + validTo +
-                ", algorithms=" + algorithms +
-                '}';
-    }
+	public String toString() {
+		return "App [id=" + id + ", name=" + name + ", scheme=" + scheme + ", toleranz=" + toleranz + ", user=" + user
+				+ ", validFrom=" + validFrom + ", validTo=" + validTo + ", apiKey=" + apiKey + ", algorithms="
+				+ algorithms + "]";
+	}
 }

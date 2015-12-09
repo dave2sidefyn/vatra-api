@@ -12,9 +12,18 @@ public class AppDTO {
     Long request;
     Long valid;
     Long invalid;
+    String apiKey;
     Date lastRequest;
 
-    public AppDTO() {
+    public String getApiKey() {
+		return apiKey;
+	}
+
+	public void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
+	}
+
+	public AppDTO() {
     }
 
     public String getId() {
