@@ -51,8 +51,10 @@ public class AppWebService {
             appDTO.setRequest((long) requestByApp.size());
             appDTO.setValid(requestByApp.stream().filter(Request::isValid).count());
             appDTO.setInvalid(requestByApp.stream().filter(Request::isInValid).count());
-            Request request = requestByApp.iterator().next();
-            appDTO.setLastRequest(request.getCreatedDate());
+            if (!requestByApp.isEmpty()) {
+            	Request request = requestByApp.get(0);
+	            appDTO.setLastRequest(request.getCreatedDate());
+            }
             appDTOList.add(appDTO);
         });
 
