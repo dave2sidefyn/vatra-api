@@ -15,7 +15,7 @@ public enum AlgorithmEnum {
 
     }
 
-    public Class<?> getAlgorithm() {
+    public Class<?> getAlgorithmClass() {
         return algorithm;
     }
 }

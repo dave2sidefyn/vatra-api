@@ -1,5 +1,6 @@
 package ch.bfh.projekt1.vatra.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -31,6 +32,7 @@ public class App {
     private User user;
     private Date validFrom;
     private Date validTo;
+    @Column(unique=true)
     private String apiKey;
 
     public String getApiKey() {
@@ -47,14 +49,14 @@ public class App {
     public App() {
     }
 
-    public App(String name, String scheme, Integer toleranz, User user, Date validFrom, Date validTo, Set<Algorithm> algorithms) {
+    public App(String name, String scheme, Integer toleranz, User user, Date validFrom, Date validTo, String apiKey, Set<Algorithm> algorithms) {
         this.name = name;
         this.scheme = scheme;
         this.toleranz = toleranz;
         this.user = user;
         this.validFrom = validFrom;
         this.validTo = validTo;
-        this.apiKey = new BigInteger(130, new SecureRandom()).toString(32);
+        this.apiKey = apiKey.isEmpty() ? new BigInteger(130, new SecureRandom()).toString(32) : apiKey;
         this.algorithms = algorithms;
     }
 

@@ -1,5 +1,6 @@
 package ch.bfh.projekt1.vatra;
 
+import ch.bfh.projekt1.vatra.algorithm.AlgorithmEnum;
 import ch.bfh.projekt1.vatra.configuration.ApplicationSecurity;
 import ch.bfh.projekt1.vatra.model.Algorithm;
 import ch.bfh.projekt1.vatra.model.App;
@@ -61,19 +62,19 @@ public class Application {
             User userMichael = userRepository.save(new User("Michael Räss", "raess.michael@gmail.com", "Aa123456"));
             User userTobias = userRepository.save(new User("Tobias Schmoker", "tobischmoker@gmail.com", "zebra1234"));
 
-            Algorithm algo1 = new Algorithm("Schnelle aufeinanderfolgende Zahlungen");
-            Algorithm algo2 = new Algorithm("Zahlungen aus dem Ausland");
-            Algorithm algo3 = new Algorithm("Verdächtige Zahlung");
+            Algorithm algo1 = new Algorithm("Schnelle aufeinanderfolgende Zahlungen", AlgorithmEnum.GEO_ALGORITHM);
+            Algorithm algo2 = new Algorithm("Zahlungen aus dem Ausland", AlgorithmEnum.GEO_ALGORITHM);
+            Algorithm algo3 = new Algorithm("Verdächtige Zahlung", AlgorithmEnum.GEO_ALGORITHM);
             algorithmRepository.save(algo1);
             algorithmRepository.save(algo2);
-            algorithmRepository.save(algo3); // Not assigned to app
+            algorithmRepository.save(algo3);
             Set<Algorithm> algorithms = new HashSet<>();
             algorithms.add(algo1);
             algorithms.add(algo2);
             
-            appRepository.save(new App("App Dave", "", 10, userDave, new Date(), new Date(), algorithms));
-            appRepository.save(new App("App Michael", "", 10, userMichael, new Date(), new Date(), algorithms));
-            appRepository.save(new App("App Tobias", "", 10, userTobias, new Date(), new Date(), algorithms));
+            appRepository.save(new App("App Dave", "", 10, userDave, new Date(), new Date(), "d33i7sn7gj62t4mdptsfe1pclt", algorithms));
+            appRepository.save(new App("App Michael", "", 10, userMichael, new Date(), new Date(), "e33i7sn7gj62t4mdptsfe1pclt", algorithms));
+            appRepository.save(new App("App Tobias", "", 10, userTobias, new Date(), new Date(), "f33i7sn7gj62t4mdptsfe1pclt", algorithms));
             
             appRepository.findAll().forEach(app -> {
             	Whitelabel whitelabel = new Whitelabel("127.0.0.1:9000", app);

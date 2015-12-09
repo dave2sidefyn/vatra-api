@@ -10,4 +10,5 @@ import org.springframework.data.repository.query.Param;
  */
 public interface AppRepository extends CrudRepository<App, String> {
     Iterable<App> findAllByUser(@Param("user") User user);
+    App findOneByApiKey(@Param("apiKey") String apiKey);
 }

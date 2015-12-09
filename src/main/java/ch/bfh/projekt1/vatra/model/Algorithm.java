@@ -1,8 +1,16 @@
 package ch.bfh.projekt1.vatra.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+import ch.bfh.projekt1.vatra.algorithm.AlgorithmEnum;
+
 import java.util.Set;
 import java.util.UUID;
 
@@ -15,7 +23,12 @@ public class Algorithm {
     @Id
     private String id = UUID.randomUUID().toString();
 
+    @NotNull
+    @NotEmpty
     private String name;
+    
+    @Enumerated(EnumType.STRING)
+    private AlgorithmEnum type;
 
     @OneToMany
     private Set<App> apps;
@@ -26,8 +39,9 @@ public class Algorithm {
     public Algorithm() {
     }
     
-    public Algorithm(String name) {
+    public Algorithm(String name, AlgorithmEnum type) {
     	this.name = name;
+    	this.type = type;
     }
 
     public Algorithm(String name, Set<App> apps, Set<AlgorithmRequestResult> algorithmRequestResults) {
