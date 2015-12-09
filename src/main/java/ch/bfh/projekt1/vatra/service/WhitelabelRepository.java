@@ -2,6 +2,9 @@ package ch.bfh.projekt1.vatra.service;
 
 import ch.bfh.projekt1.vatra.model.App;
 import ch.bfh.projekt1.vatra.model.Whitelabel;
+
+import java.util.Set;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
@@ -10,5 +13,7 @@ import org.springframework.data.repository.query.Param;
  */
 public interface WhitelabelRepository extends CrudRepository<Whitelabel, String> {
 
-    Iterable<Whitelabel> findAllByApp(@Param("app") App app);
+    Set<Whitelabel> findAllByApp(@Param("app") App app);
+    
+    Whitelabel findByName(@Param("name") String name);
 }

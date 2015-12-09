@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -75,15 +76,28 @@ public class AlgorithmWebService {
         return new ResponseEntity<>(algorithms, HttpStatus.OK);
     }
     
-    @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<App> updateAlgorithm(@PathVariable("id") String id, @RequestBody App app) {
+    @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<App> updateAppAlgorithms(@PathVariable("id") String id, @RequestBody Iterable<Algorithm> algorithms) {
         User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         App currentApp = appRepository.findOne(id);
         if (!currentApp.getUser().equals(user)) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         
-        appRepository.save(app);
+        currentApp.setAlgorithms(new HashSet<>());
+        appRepository.save(currentApp);
+        
+        Set<Algorithm> newAppAlgorithms = new HashSet<>();
+        algorithms.forEach(algorithm -> {
+        	if (algorithm.getId() != "") {
+	    		Algorithm appAlgorithm = algorithmRepository.findOne(algorithm.getId());
+	    		if (appAlgorithm != null) {
+	    			newAppAlgorithms.add(appAlgorithm);
+	    		}
+        	}
+    	});
+        currentApp.setAlgorithms(newAppAlgorithms);
+        appRepository.save(currentApp);
 
         return new ResponseEntity<>(currentApp, HttpStatus.OK);
     }

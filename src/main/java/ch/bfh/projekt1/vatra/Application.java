@@ -3,11 +3,16 @@ package ch.bfh.projekt1.vatra;
 import ch.bfh.projekt1.vatra.configuration.ApplicationSecurity;
 import ch.bfh.projekt1.vatra.model.Algorithm;
 import ch.bfh.projekt1.vatra.model.App;
+import ch.bfh.projekt1.vatra.model.Request;
 import ch.bfh.projekt1.vatra.model.User;
+import ch.bfh.projekt1.vatra.model.Whitelabel;
 import ch.bfh.projekt1.vatra.service.AlgorithmRepository;
 import ch.bfh.projekt1.vatra.service.AppAlgorithmResultRepository;
 import ch.bfh.projekt1.vatra.service.AppRepository;
+import ch.bfh.projekt1.vatra.service.RequestRepository;
 import ch.bfh.projekt1.vatra.service.UserRepository;
+import ch.bfh.projekt1.vatra.service.WhitelabelRepository;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -47,7 +52,9 @@ public class Application {
     public CommandLineRunner demo(UserRepository userRepository,
     		AppRepository appRepository,
     		AlgorithmRepository algorithmRepository,
-    		AppAlgorithmResultRepository appAlgorithmResultRepository) {
+    		AppAlgorithmResultRepository appAlgorithmResultRepository,
+    		WhitelabelRepository whitelabelRepository,
+    		RequestRepository requestRepository) {
         return (args) -> {
 
             User userDave = userRepository.save(new User("Dave Wiedmer", "david.wiedmer@gmail.com", "test1234"));
@@ -67,6 +74,20 @@ public class Application {
             appRepository.save(new App("App Dave", "", 10, userDave, new Date(), new Date(), algorithms));
             appRepository.save(new App("App Michael", "", 10, userMichael, new Date(), new Date(), algorithms));
             appRepository.save(new App("App Tobias", "", 10, userTobias, new Date(), new Date(), algorithms));
+            
+            appRepository.findAll().forEach(app -> {
+            	Whitelabel whitelabel = new Whitelabel("127.0.0.1:9000", app);
+            	whitelabelRepository.save(whitelabel);
+            	
+            	Request r1 = new Request("127.0.0.1:9000", app, "", true, new Date());
+            	Request r2 = new Request("127.0.0.1:9000", app, "", false, new Date());
+            	Request r3 = new Request("127.0.0.1:9000", app, "", false, new Date());
+            	Request r4 = new Request("127.0.0.1:9000", app, "", false, new Date());
+            	requestRepository.save(r1);
+            	requestRepository.save(r2);
+            	requestRepository.save(r3);
+            	requestRepository.save(r4);
+            });
             
             userRepository.findAll().forEach(user -> log.info(user.toString()));
         };

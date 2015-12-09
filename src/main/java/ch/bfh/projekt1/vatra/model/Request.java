@@ -29,8 +29,7 @@ public class Request {
     public Request() {
     }
 
-    public Request(String id, String identify, App app, String clientInformation, boolean valid, Date createdDate) {
-        this.id = id;
+    public Request(String identify, App app, String clientInformation, boolean valid, Date createdDate) {
         this.identify = identify;
         this.app = app;
         this.clientInformation = clientInformation;

@@ -22,8 +22,7 @@ public class Whitelabel {
     public Whitelabel() {
     }
 
-    public Whitelabel(String id, String name, App app) {
-        this.id = id;
+    public Whitelabel(String name, App app) {
         this.name = name;
         this.app = app;
     }

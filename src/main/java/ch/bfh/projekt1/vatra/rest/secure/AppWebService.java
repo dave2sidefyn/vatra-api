@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @RequestMapping("/rest/secure/app")
 @RestController
@@ -51,10 +50,8 @@ public class AppWebService {
             appDTO.setRequest((long) requestByApp.size());
             appDTO.setValid(requestByApp.stream().filter(Request::isValid).count());
             appDTO.setInvalid(requestByApp.stream().filter(Request::isInValid).count());
-            Optional<Request> request = requestByApp.stream().sorted().findFirst();
-            if (request.isPresent()) {
-                appDTO.setLastRequest(request.get().getCreatedDate());
-            }
+            Request request = requestByApp.iterator().next();
+            appDTO.setLastRequest(request.getCreatedDate());
             appDTOList.add(appDTO);
         });
 
