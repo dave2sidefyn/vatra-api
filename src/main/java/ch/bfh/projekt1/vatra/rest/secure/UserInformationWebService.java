@@ -5,6 +5,10 @@ import ch.bfh.projekt1.vatra.model.User;
 import ch.bfh.projekt1.vatra.model.UserInformationDTO;
 import ch.bfh.projekt1.vatra.service.AppRepository;
 import ch.bfh.projekt1.vatra.service.UserRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,7 +29,7 @@ public class UserInformationWebService {
     private UserRepository userRepository;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserInformationDTO> getUserInformation() {
+    public ResponseEntity<List<UserInformationDTO>> getUserInformation() {
         User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         Iterable<App> apps = appRepository.findAllByUser(user);
 
@@ -34,7 +38,9 @@ public class UserInformationWebService {
         apps.forEach(app ->
                 userInformationDTO.addAppInformation(app.getId(), app.getName())
         );
+        List<UserInformationDTO> list = new ArrayList<>();
+        list.add(userInformationDTO);
 
-        return new ResponseEntity<>(userInformationDTO, HttpStatus.OK);
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }
