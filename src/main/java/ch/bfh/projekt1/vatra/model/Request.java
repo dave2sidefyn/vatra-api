@@ -1,9 +1,13 @@
 package ch.bfh.projekt1.vatra.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.annotation.Nonnull;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -12,24 +16,57 @@ import java.util.UUID;
 @Entity
 public class Request {
 
+    public static final String DEFAULT_IDENTIFY = "";
+    public static final String DEFAULT_CLIENTINFORMATION = "";
+
     @Id
     private String id = UUID.randomUUID().toString();
 
-    private String identify;
+    @Nonnull
+    @NotEmpty
+    @NotNull
+    private String identify = DEFAULT_IDENTIFY;
 
     @ManyToOne
+    @Nonnull
+    @NotNull
     private App app;
 
     private boolean valid;
 
-    private String clientInformation;
+    @Nonnull
+    @NotEmpty
+    @NotNull
+    private String clientInformation = DEFAULT_CLIENTINFORMATION;
 
-    private Date createdDate;
 
+    @Nonnull
+    @ElementCollection(targetClass = String.class)
+    @MapKeyEnumerated(EnumType.STRING)
+    Map<VaTraKey, String> vatraFields = new HashMap<>();
+
+    @Nonnull
+    @ElementCollection(targetClass = String.class)
+    Map<String, String> manualFields = new HashMap<>();
+
+    @NotNull
+    @Nonnull
+    private Date createdDate = new Date();
+
+
+    //For SpringBoot Entity Initialize
     public Request() {
+        this.app = new App();
     }
 
-    public Request(String identify, App app, String clientInformation, boolean valid, Date createdDate) {
+    public Request(@Nonnull String identify, @Nonnull App app, @Nonnull String clientInformation) {
+        this.identify = identify;
+        this.app = app;
+        this.clientInformation = clientInformation;
+    }
+
+
+    public Request(@Nonnull String identify, @Nonnull App app, @Nonnull String clientInformation, boolean valid, @Nonnull Date createdDate) {
         this.identify = identify;
         this.app = app;
         this.clientInformation = clientInformation;
@@ -37,35 +74,39 @@ public class Request {
         this.createdDate = createdDate;
     }
 
+    @Nonnull
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@Nonnull String id) {
         this.id = id;
     }
 
+    @Nonnull
     public String getIdentify() {
         return identify;
     }
 
-    public void setIdentify(String identify) {
+    public void setIdentify(@Nonnull String identify) {
         this.identify = identify;
     }
 
+    @Nonnull
     public App getApp() {
         return app;
     }
 
-    public void setApp(App app) {
+    public void setApp(@Nonnull App app) {
         this.app = app;
     }
 
+    @Nonnull
     public String getClientInformation() {
         return clientInformation;
     }
 
-    public void setClientInformation(String clientInformation) {
+    public void setClientInformation(@Nonnull String clientInformation) {
         this.clientInformation = clientInformation;
     }
 
@@ -81,12 +122,30 @@ public class Request {
         this.valid = valid;
     }
 
+    @Nonnull
+    public Map<VaTraKey, String> getVatraFields() {
+        return vatraFields;
+    }
 
+    public void setVatraFields(@Nonnull Map<VaTraKey, String> vatraFields) {
+        this.vatraFields = vatraFields;
+    }
+
+    @Nonnull
+    public Map<String, String> getManualFields() {
+        return manualFields;
+    }
+
+    public void setManualFields(@Nonnull Map<String, String> manualFields) {
+        this.manualFields = manualFields;
+    }
+
+    @Nonnull
     public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
+    public void setCreatedDate(@Nonnull Date createdDate) {
         this.createdDate = createdDate;
     }
 

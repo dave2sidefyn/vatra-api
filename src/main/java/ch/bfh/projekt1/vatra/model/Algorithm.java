@@ -1,16 +1,12 @@
 package ch.bfh.projekt1.vatra.model;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
-
+import ch.bfh.projekt1.vatra.algorithm.AlgorithmEnum;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import ch.bfh.projekt1.vatra.algorithm.AlgorithmEnum;
-
+import javax.annotation.Nonnull;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -21,64 +17,77 @@ import java.util.UUID;
 public class Algorithm {
 
     @Id
+    @Nonnull
     private String id = UUID.randomUUID().toString();
 
     @NotNull
     @NotEmpty
-    private String name;
-    
+    @Nonnull
+    private String name = "DEFAULT";
+
+    @Nonnull
+    @NotNull
     @Enumerated(EnumType.STRING)
-    private AlgorithmEnum type;
+    private AlgorithmEnum type = AlgorithmEnum.DEFAULT_ALGORITHM;
 
     @OneToMany
-    private Set<App> apps;
+    @Nonnull
+    private Set<App> apps = new HashSet<>();
 
     @OneToMany
-    private Set<AlgorithmRequestResult> algorithmRequestResults;
+    @Nonnull
+    private Set<AlgorithmRequestResult> algorithmRequestResults = new HashSet<>();
 
     public Algorithm() {
     }
-    
-    public Algorithm(String name, AlgorithmEnum type) {
-    	this.name = name;
-    	this.type = type;
-    }
 
-    public Algorithm(String name, Set<App> apps, Set<AlgorithmRequestResult> algorithmRequestResults) {
+    public Algorithm(@Nonnull String name, @Nonnull AlgorithmEnum type) {
         this.name = name;
-        this.apps = apps;
-        this.algorithmRequestResults = algorithmRequestResults;
+        this.type = type;
     }
 
+    @Nonnull
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@Nonnull String id) {
         this.id = id;
     }
 
+    @Nonnull
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@Nonnull String name) {
         this.name = name;
     }
 
+    @Nonnull
+    public AlgorithmEnum getType() {
+        return type;
+    }
+
+    public void setType(@Nonnull AlgorithmEnum type) {
+        this.type = type;
+    }
+
+    @Nonnull
     public Set<App> getApps() {
         return apps;
     }
 
-    public void setApps(Set<App> apps) {
+    public void setApps(@Nonnull Set<App> apps) {
         this.apps = apps;
     }
 
+    @Nonnull
     public Set<AlgorithmRequestResult> getRequests() {
         return algorithmRequestResults;
     }
 
-    public void setRequests(Set<AlgorithmRequestResult> algorithmRequestResults) {
+    public void setRequests(@Nonnull Set<AlgorithmRequestResult> algorithmRequestResults) {
         this.algorithmRequestResults = algorithmRequestResults;
     }
 

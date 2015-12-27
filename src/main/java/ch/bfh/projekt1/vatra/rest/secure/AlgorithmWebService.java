@@ -12,11 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -32,7 +28,7 @@ public class AlgorithmWebService {
 
     @Autowired
     private AlgorithmRepository algorithmRepository;
-    
+
     @Autowired
     private UserRepository userRepository;
 
@@ -45,37 +41,44 @@ public class AlgorithmWebService {
         }
 
         List<AlgorithmDTO> algorithms = new ArrayList<>();
-        
+
         Set<Algorithm> appAlgorithms = app.getAlgorithms();
-        appAlgorithms.forEach(algo -> {
-        	algorithms.add(new AlgorithmDTO(
-    			algo.getId(),
-    			algo.getName(),
-    			true
-        	));
-        });
-        
+        appAlgorithms.forEach(algo ->
+                algorithms.add(getAlgorithmDTO(algo, true))
+        );
+
         Iterable<Algorithm> allAlgorithms = algorithmRepository.findAll();
         allAlgorithms.forEach(algo -> {
-        	List<String> contain = new ArrayList<>();
-        	algorithms.forEach(innerAlgo -> {
-        		if (innerAlgo.getAlgorithmId() == algo.getId()) {
-        			contain.add(algo.getId());
-        		}
-        	});
-        	
-        	if (!contain.contains(algo.getId())) {
-	        	algorithms.add(new AlgorithmDTO(
-	    			algo.getId(),
-	    			algo.getName(),
-	    			false
-	        	));
-        	}
+            List<String> contain = new ArrayList<>();
+            algorithms.forEach(innerAlgo -> {
+                if (innerAlgo.getAlgorithmId().equals(algo.getId())) {
+                    contain.add(algo.getId());
+                }
+            });
+
+            if (!contain.contains(algo.getId())) {
+                algorithms.add(getAlgorithmDTO(algo, false));
+            }
         });
 
         return new ResponseEntity<>(algorithms, HttpStatus.OK);
     }
-    
+
+    private AlgorithmDTO getAlgorithmDTO(Algorithm algo, boolean enabled) {
+        AlgorithmDTO algorithmDTO = null;
+        try {
+            algorithmDTO = new AlgorithmDTO(
+                    algo.getId(),
+                    algo.getName(),
+                    ((ch.bfh.projekt1.vatra.algorithm.Algorithm) algo.getType().getAlgorithmClass().newInstance()).neededKeys(),
+                    enabled
+            );
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return algorithmDTO;
+    }
+
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<App> updateAppAlgorithms(@PathVariable("id") String id, @RequestBody Iterable<Algorithm> algorithms) {
         User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -83,19 +86,19 @@ public class AlgorithmWebService {
         if (!currentApp.getUser().equals(user)) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        
+
         currentApp.setAlgorithms(new HashSet<>());
         appRepository.save(currentApp);
-        
+
         Set<Algorithm> newAppAlgorithms = new HashSet<>();
         algorithms.forEach(algorithm -> {
-        	if (algorithm.getId() != "") {
-	    		Algorithm appAlgorithm = algorithmRepository.findOne(algorithm.getId());
-	    		if (appAlgorithm != null) {
-	    			newAppAlgorithms.add(appAlgorithm);
-	    		}
-        	}
-    	});
+            if (algorithm.getId().isEmpty()) {
+                Algorithm appAlgorithm = algorithmRepository.findOne(algorithm.getId());
+                if (appAlgorithm != null) {
+                    newAppAlgorithms.add(appAlgorithm);
+                }
+            }
+        });
         currentApp.setAlgorithms(newAppAlgorithms);
         appRepository.save(currentApp);
 

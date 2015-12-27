@@ -2,18 +2,8 @@ package ch.bfh.projekt1.vatra;
 
 import ch.bfh.projekt1.vatra.algorithm.AlgorithmEnum;
 import ch.bfh.projekt1.vatra.configuration.ApplicationSecurity;
-import ch.bfh.projekt1.vatra.model.Algorithm;
-import ch.bfh.projekt1.vatra.model.App;
-import ch.bfh.projekt1.vatra.model.Request;
-import ch.bfh.projekt1.vatra.model.User;
-import ch.bfh.projekt1.vatra.model.Whitelabel;
-import ch.bfh.projekt1.vatra.service.AlgorithmRepository;
-import ch.bfh.projekt1.vatra.service.AppAlgorithmResultRepository;
-import ch.bfh.projekt1.vatra.service.AppRepository;
-import ch.bfh.projekt1.vatra.service.RequestRepository;
-import ch.bfh.projekt1.vatra.service.UserRepository;
-import ch.bfh.projekt1.vatra.service.WhitelabelRepository;
-
+import ch.bfh.projekt1.vatra.model.*;
+import ch.bfh.projekt1.vatra.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -51,11 +41,10 @@ public class Application {
 
     @Bean
     public CommandLineRunner demo(UserRepository userRepository,
-    		AppRepository appRepository,
-    		AlgorithmRepository algorithmRepository,
-    		AppAlgorithmResultRepository appAlgorithmResultRepository,
-    		WhitelabelRepository whitelabelRepository,
-    		RequestRepository requestRepository) {
+                                  AppRepository appRepository,
+                                  AlgorithmRepository algorithmRepository,
+                                  WhitelabelRepository whitelabelRepository,
+                                  RequestRepository requestRepository) {
         return (args) -> {
 
             User userDave = userRepository.save(new User("Dave Wiedmer", "david.wiedmer@gmail.com", "test1234"));
@@ -65,31 +54,34 @@ public class Application {
             Algorithm algo1 = new Algorithm("Schnelle aufeinanderfolgende Zahlungen", AlgorithmEnum.GEO_ALGORITHM);
             Algorithm algo2 = new Algorithm("Zahlungen aus dem Ausland", AlgorithmEnum.GEO_ALGORITHM);
             Algorithm algo3 = new Algorithm("Verdächtige Zahlung", AlgorithmEnum.GEO_ALGORITHM);
+            Algorithm algo4 = new Algorithm("Zahlungsüberwachen nach Ortsangaben", AlgorithmEnum.GEO_ALGORITHM);
             algorithmRepository.save(algo1);
             algorithmRepository.save(algo2);
             algorithmRepository.save(algo3);
             Set<Algorithm> algorithms = new HashSet<>();
             algorithms.add(algo1);
             algorithms.add(algo2);
-            
-            appRepository.save(new App("App Dave", "", 10, userDave, new Date(), new Date(), "d33i7sn7gj62t4mdptsfe1pclt", algorithms));
-            appRepository.save(new App("App Michael", "", 10, userMichael, new Date(), new Date(), "e33i7sn7gj62t4mdptsfe1pclt", algorithms));
-            appRepository.save(new App("App Tobias", "", 10, userTobias, new Date(), new Date(), "f33i7sn7gj62t4mdptsfe1pclt", algorithms));
-            
+
+
+            appRepository.save(new App("App Dave", 10, userDave, new Date(), new Date(), algorithms));
+            appRepository.save(new App("App Michael", 10, userMichael, new Date(), new Date(), algorithms));
+            appRepository.save(new App("App Tobias", 10, userTobias, new Date(), new Date(), algorithms));
+
             appRepository.findAll().forEach(app -> {
-            	Whitelabel whitelabel = new Whitelabel("127.0.0.1:9000", app);
-            	whitelabelRepository.save(whitelabel);
-            	
-            	Request r1 = new Request("127.0.0.1:9000", app, "", true, new Date());
-            	Request r2 = new Request("127.0.0.1:9000", app, "", false, new Date());
-            	Request r3 = new Request("127.0.0.1:9000", app, "", false, new Date());
-            	Request r4 = new Request("127.0.0.1:9000", app, "", false, new Date());
-            	requestRepository.save(r1);
-            	requestRepository.save(r2);
-            	requestRepository.save(r3);
-            	requestRepository.save(r4);
+                Whitelabel whitelabel = new Whitelabel("127.0.0.1:9000", app);
+                whitelabelRepository.save(whitelabel);
+
+                Request r1 = new Request("127.0.0.1:9000", app, "TODO: ClientInformation", true, new Date());
+                Request r2 = new Request("127.0.0.1:9000", app, "TODO: ClientInformation", false, new Date());
+                Request r3 = new Request("127.0.0.1:9000", app, "TODO: ClientInformation", false, new Date());
+                Request r4 = new Request("127.0.0.1:9000", app, "TODO: ClientInformation", false, new Date());
+
+                requestRepository.save(r1);
+                requestRepository.save(r2);
+                requestRepository.save(r3);
+                requestRepository.save(r4);
             });
-            
+
             userRepository.findAll().forEach(user -> log.info(user.toString()));
         };
     }

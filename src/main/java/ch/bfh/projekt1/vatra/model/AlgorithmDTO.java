@@ -1,49 +1,69 @@
 package ch.bfh.projekt1.vatra.model;
 
+import javax.annotation.Nonnull;
+import java.util.List;
+
 /**
  * Created by raess on 30.11.2015.
  */
 public class AlgorithmDTO {
 
-	private String algorithmId;
+    @Nonnull
+    private String algorithmId;
 
+    @Nonnull
     private String name;
-    
+
+    @Nonnull
+    private List<VaTraKey> neededKeys;
+
     private boolean enabled;
 
-    public AlgorithmDTO(String algorithmId, String name, boolean enabled) {
+    public AlgorithmDTO(@Nonnull String algorithmId, @Nonnull String name, @Nonnull List<VaTraKey> neededKeys, boolean enabled) {
         this.algorithmId = algorithmId;
         this.name = name;
+        this.neededKeys = neededKeys;
         this.enabled = enabled;
     }
 
+    @Nonnull
     public String getAlgorithmId() {
-		return algorithmId;
-	}
+        return algorithmId;
+    }
 
-	public void setAlgorithmId(String algorithmId) {
-		this.algorithmId = algorithmId;
-	}
+    public void setAlgorithmId(@Nonnull String algorithmId) {
+        this.algorithmId = algorithmId;
+    }
 
-	public String getName() {
-		return name;
-	}
+    @Nonnull
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(@Nonnull String name) {
+        this.name = name;
+    }
 
-	public boolean isEnabled() {
-		return enabled;
-	}
+    @Nonnull
+    public List<VaTraKey> getNeededKeys() {
+        return neededKeys;
+    }
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+    public void setNeededKeys(@Nonnull List<VaTraKey> neededKeys) {
+        this.neededKeys = neededKeys;
+    }
 
-	@Override
-	public String toString() {
-		return "AlgorithmDTO [algorithmId=" + algorithmId + ", name="
-				+ name + ", enabled=" + enabled + "]";
-	}
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    @Override
+    public String toString() {
+        return "AlgorithmDTO [algorithmId=" + algorithmId + ", name="
+                + name + ", enabled=" + enabled + "]";
+    }
 }

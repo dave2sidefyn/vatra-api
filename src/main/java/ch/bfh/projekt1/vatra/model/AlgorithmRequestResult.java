@@ -1,5 +1,6 @@
 package ch.bfh.projekt1.vatra.model;
 
+import javax.annotation.Nonnull;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -12,13 +13,16 @@ import java.util.UUID;
 public class AlgorithmRequestResult {
 
     @Id
+    @Nonnull
     private String id = UUID.randomUUID().toString();
 
     @ManyToOne
-    private Request request;
+    @Nonnull
+    private Request request = new Request();
 
     @ManyToOne
-    private Algorithm algorithm;
+    @Nonnull
+    private Algorithm algorithm = new Algorithm();
 
     private boolean result;
 
@@ -26,34 +30,36 @@ public class AlgorithmRequestResult {
     public AlgorithmRequestResult() {
     }
 
-    public AlgorithmRequestResult(String id, Request request, Algorithm algorithm, boolean result) {
-        this.id = id;
+    public AlgorithmRequestResult(@Nonnull Request request, @Nonnull Algorithm algorithm, boolean result) {
         this.request = request;
         this.algorithm = algorithm;
         this.result = result;
     }
 
+    @Nonnull
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@Nonnull String id) {
         this.id = id;
     }
 
+    @Nonnull
     public Request getRequest() {
         return request;
     }
 
-    public void setRequest(Request request) {
+    public void setRequest(@Nonnull Request request) {
         this.request = request;
     }
 
+    @Nonnull
     public Algorithm getAlgorithm() {
         return algorithm;
     }
 
-    public void setAlgorithm(Algorithm algorithm) {
+    public void setAlgorithm(@Nonnull Algorithm algorithm) {
         this.algorithm = algorithm;
     }
 

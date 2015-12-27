@@ -1,5 +1,6 @@
 package ch.bfh.projekt1.vatra.model;
 
+import javax.annotation.Nonnull;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -10,44 +11,51 @@ import java.util.UUID;
  */
 @Entity
 public class Whitelabel {
+
+    @Nonnull
     @Id
     private String id = UUID.randomUUID().toString();
 
+    @Nonnull
     private String name;
 
     @ManyToOne
+    @Nonnull
     private App app;
 
 
     public Whitelabel() {
     }
 
-    public Whitelabel(String name, App app) {
+    public Whitelabel(@Nonnull String name, @Nonnull App app) {
         this.name = name;
         this.app = app;
     }
 
+    @Nonnull
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@Nonnull String id) {
         this.id = id;
     }
 
+    @Nonnull
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@Nonnull String name) {
         this.name = name;
     }
 
+    @Nonnull
     public App getApp() {
         return app;
     }
 
-    public void setApp(App app) {
+    public void setApp(@Nonnull App app) {
         this.app = app;
     }
 
@@ -56,7 +64,7 @@ public class Whitelabel {
         return "Whitelabel{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", secure=" + app +
+                ", app=" + app +
                 '}';
     }
 }

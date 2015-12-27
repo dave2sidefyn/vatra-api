@@ -1,15 +1,10 @@
 package ch.bfh.projekt1.vatra.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.annotation.Nonnull;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -19,115 +14,141 @@ import java.util.UUID;
 @Entity
 public class App {
 
+    public static final int DEFAULT_TOLERANZ = 5;
+    public static final String DEFAULT_APP = "DEFAULT_APP";
+    public static final String DEFAULT_SCHEME = "";
 
     @Id
+    @Nonnull
     private String id = UUID.randomUUID().toString();
 
     @NotNull
-    private String name;
-    private String scheme;
-    private Integer toleranz;
+    @Nonnull
+    private String name = DEFAULT_APP;
+
+    @Nonnull
+    @NotNull
+    private String scheme = DEFAULT_SCHEME;
+
+    @Nonnull
+    private Integer toleranz = DEFAULT_TOLERANZ;
 
     @ManyToOne
+    @Nonnull
     private User user;
-    private Date validFrom;
-    private Date validTo;
-    @Column(unique=true)
-    private String apiKey;
 
-    public String getApiKey() {
-		return apiKey;
-	}
+    @Nonnull
+    private Date validFrom = new Date();
 
-	public void setApiKey(String apiKey) {
-		this.apiKey = apiKey;
-	}
+    @Nonnull
+    private Date validTo = new Date();
 
-	@ManyToMany
-    private Set<Algorithm> algorithms;
+    @Column(unique = true)
+    @Nonnull
+    private String apiKey = UUID.randomUUID().toString();
+
+    @ManyToMany
+    @Nonnull
+    private Set<Algorithm> algorithms = new HashSet<>();
 
     public App() {
+        user = new User();
     }
 
-    public App(String name, String scheme, Integer toleranz, User user, Date validFrom, Date validTo, String apiKey, Set<Algorithm> algorithms) {
+    public App(@Nonnull String name, @Nonnull Integer toleranz, @Nonnull User user, @Nonnull Date validFrom, @Nonnull Date validTo, @Nonnull Set<Algorithm> algorithms) {
         this.name = name;
-        this.scheme = scheme;
         this.toleranz = toleranz;
         this.user = user;
         this.validFrom = validFrom;
         this.validTo = validTo;
-        this.apiKey = apiKey.isEmpty() ? new BigInteger(130, new SecureRandom()).toString(32) : apiKey;
         this.algorithms = algorithms;
     }
 
+    @Nonnull
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@Nonnull String id) {
         this.id = id;
     }
 
+    @Nonnull
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@Nonnull String name) {
         this.name = name;
     }
 
+    @Nonnull
     public String getScheme() {
         return scheme;
     }
 
-    public void setScheme(String scheme) {
+    public void setScheme(@Nonnull String scheme) {
         this.scheme = scheme;
     }
 
+    @Nonnull
     public Integer getToleranz() {
         return toleranz;
     }
 
-    public void setToleranz(Integer toleranz) {
+    public void setToleranz(@Nonnull Integer toleranz) {
         this.toleranz = toleranz;
     }
 
+    @Nonnull
     public User getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(@Nonnull User user) {
         this.user = user;
     }
 
+    @Nonnull
     public Date getValidFrom() {
         return validFrom;
     }
 
-    public void setValidFrom(Date validFrom) {
+    public void setValidFrom(@Nonnull Date validFrom) {
         this.validFrom = validFrom;
     }
 
+    @Nonnull
     public Date getValidTo() {
         return validTo;
     }
 
-    public void setValidTo(Date validTo) {
+    public void setValidTo(@Nonnull Date validTo) {
         this.validTo = validTo;
     }
 
+    @Nonnull
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(@Nonnull String apiKey) {
+        this.apiKey = apiKey;
+    }
+
+    @Nonnull
     public Set<Algorithm> getAlgorithms() {
         return algorithms;
     }
 
-    public void setAlgorithms(Set<Algorithm> algorithms) {
+    public void setAlgorithms(@Nonnull Set<Algorithm> algorithms) {
         this.algorithms = algorithms;
     }
 
     @Override
-	public String toString() {
-		return "App [id=" + id + ", name=" + name + ", scheme=" + scheme + ", toleranz=" + toleranz + ", user=" + user
-				+ ", validFrom=" + validFrom + ", validTo=" + validTo + ", apiKey=" + apiKey + ", algorithms="
-				+ algorithms + "]";
-	}
+    public String toString() {
+        return "App [id=" + id + ", name=" + name + ", scheme=" + scheme + ", toleranz=" + toleranz + ", user=" + user
+                + ", validFrom=" + validFrom + ", validTo=" + validTo + ", apiKey=" + apiKey + ", algorithms="
+                + algorithms + "]";
+    }
 }
