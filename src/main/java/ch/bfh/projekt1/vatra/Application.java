@@ -64,7 +64,7 @@ public class Application {
 
 
             appRepository.save(new App("App Dave", 10, userDave, new Date(), new Date(), algorithms));
-            appRepository.save(new App("App Michael", 10, userMichael, new Date(), new Date(), algorithms));
+            appRepository.save(new App("App Michael", 10, userMichael, new Date(), new Date(), algorithms, "d33i7sn7gj62t4mdptsfe1pclt"));
             appRepository.save(new App("App Tobias", 10, userTobias, new Date(), new Date(), algorithms));
 
             appRepository.findAll().forEach(app -> {

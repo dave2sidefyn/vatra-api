@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -40,11 +44,20 @@ public class OpenWebService {
         try {
             JSONObject json = (JSONObject) new JSONParser().parse(jsonParams);
 
-            App app = appRepository.findOneByApiKey((String) json.get(VaTraKey.VATRA_API_KEY));
+            App app = appRepository.findOneByApiKey((String) json.get(VaTraKey.VATRA_API_KEY.getId()));
             if (app == null) {
                 return new ResponseEntity<>(false, HttpStatus.OK);
             }
-            Request request = new Request(requestInfos.getRemoteAddr(), app, requestInfos.getRemoteUser());
+
+            Map<String, String> header = new HashMap<String, String>();
+        	Enumeration<String> headerNames = requestInfos.getHeaderNames();
+        	while (headerNames.hasMoreElements()) {
+        		String key = (String) headerNames.nextElement();
+        		String value = requestInfos.getHeader(key);
+        		header.put(key, value);
+        	}
+            System.out.println(header.toString());
+            Request request = new Request(requestInfos.getRemoteAddr(), app, header.toString());
             fillVatraRequestObject(json, request);
             final Request savedRequest = requestRepository.save(request);
 
@@ -87,12 +100,15 @@ public class OpenWebService {
         return false;
     }
 
-    private void fillVatraRequestObject(JSONObject json, Request request) {
+    @SuppressWarnings("unchecked")
+	private void fillVatraRequestObject(JSONObject json, Request request) {
+    	Map<VaTraKey, String> vatraFields = new HashMap<>();
         json.keySet().forEach(key -> {
             VaTraKey vaTraKey = VaTraKey.getWithId((String) key);
             if (!Objects.isNull(vaTraKey)) {
-                request.getVatraFields().put(vaTraKey, (String) json.get(key));
+            	vatraFields.put(vaTraKey, (String) json.get(key));
             }
         });
+        request.setVatraFields(vatraFields);
     }
 }

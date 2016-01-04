@@ -63,6 +63,16 @@ public class App {
         this.validTo = validTo;
         this.algorithms = algorithms;
     }
+    
+    public App(@Nonnull String name, @Nonnull Integer toleranz, @Nonnull User user, @Nonnull Date validFrom, @Nonnull Date validTo, @Nonnull Set<Algorithm> algorithms, String apiKey) {
+        this.name = name;
+        this.toleranz = toleranz;
+        this.user = user;
+        this.validFrom = validFrom;
+        this.validTo = validTo;
+        this.algorithms = algorithms;
+        this.apiKey = apiKey;
+    }
 
     @Nonnull
     public String getId() {

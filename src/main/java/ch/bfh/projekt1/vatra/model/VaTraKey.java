@@ -9,25 +9,27 @@ import javax.annotation.Nullable;
 public enum VaTraKey {
 
 
-    VATRA_API_KEY("vatra.apikey", String.class),
+    VATRA_API_KEY("apiKey", String.class),
 
-    VATRA_IDENTIFICATION_NUMBER("vatra.identification.number", String.class),
+    VATRA_IDENTIFICATION_NUMBER("identification", String.class),
 
-    VATRA_PAYMENT_RECEIVER_IBAN("vatra.payment.receiver.iban", String.class),
+    VATRA_PAYMENT_AMOUNT("amount", String.class),
+    
+    VATRA_PAYMENT_CURRENCY("currency", String.class),
+    
+    VATRA_PAYMENT_CREDIT_CARD_NUMBER("creditCardNumber", String.class),
+    
+    VATRA_PAYMENT_CREDIT_CARD_HOLDER("creditCardHolder", String.class),
+    
+    VATRA_PAYMENT_CREDIT_CARD_EXPIRATION_MONTH("creditCardExpMonth", String.class),
+    
+    VATRA_PAYMENT_CREDIT_CARD_EXPIRATION_YEAR("creditCardExpYear", String.class),
+    
+    VATRA_PAYMENT_CREDIT_CARD_CVC("creditCardCvc", String.class),
 
-    VATRA_PAYMENT_RECEIVER_FIRSTNAME("vatra.payment.receiver.firstname", String.class),
+    VATRA_GEOLOCATION_LONGITUDE("longitude", Double.class),
 
-    VATRA_PAYMENT_RECEIVER_LASTNAME("vatra.payment.receiver.lastname", String.class),
-
-    VATRA_PAYMENT_SENDER_IBAN("vatra.payment.sender.iban", String.class),
-
-    VATRA_PAYMENT_SENDER_FIRSTNAME("vatra.payment.sender.firstname", String.class),
-
-    VATRA_PAYMENT_SENDER_LASTNAME("vatra.payment.sender.lastname", String.class),
-
-    VATRA_GEOLOCATION_LONGITUDE("vatra.geolocation.longitude", Double.class),
-
-    VATRA_GEOLOCATION_LATTITUDE("vatra.geolocation.lattitude", Double.class);
+    VATRA_GEOLOCATION_LATTITUDE("latitude", Double.class);
 
     @Nonnull
     private String id;
