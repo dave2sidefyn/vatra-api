@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 public enum AlgorithmEnum {
 
     GEO_ALGORITHM(GeoAlgorithm.class),
+    ROBOTIC_ALGORITHM(RoboticAlgorithm.class),
 
     DEFAULT_ALGORITHM(DefaultAlgorithm.class);
 

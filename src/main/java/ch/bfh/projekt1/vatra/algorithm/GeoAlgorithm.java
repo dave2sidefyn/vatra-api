@@ -30,11 +30,11 @@ import java.util.Optional;
  * VATRA_GEOLOCATION_LONGITUDE
  * VATRA_GEOLOCATION_LATTITUDE
  */
-public class GeoAlgorithm implements Algorithm {
+class GeoAlgorithm implements Algorithm {
 
 
-    public static final int FIVE_MIN_IN_SECONDS = 300;
-    public static final String GOOGLE_API_KEY = "AIzaSyCmUq4uasZW_bjGU1nIlt-2BRqOntWt9Ho";
+    private static final int FIVE_MIN_IN_SECONDS = 300;
+    private static final String GOOGLE_API_KEY = "AIzaSyCmUq4uasZW_bjGU1nIlt-2BRqOntWt9Ho";
 
     @Override
     public List<VaTraKey> neededKeys() {

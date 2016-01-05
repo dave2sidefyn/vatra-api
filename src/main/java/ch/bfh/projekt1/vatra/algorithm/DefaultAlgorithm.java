@@ -13,7 +13,7 @@ import java.util.List;
  * DEFAULT ALGORITHM to provide NullPointerExceptions
  * Created by dave on 02.12.15.
  */
-public class DefaultAlgorithm implements Algorithm {
+class DefaultAlgorithm implements Algorithm {
 
 
     @Override

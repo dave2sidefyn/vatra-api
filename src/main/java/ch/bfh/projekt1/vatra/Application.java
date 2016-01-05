@@ -51,9 +51,9 @@ public class Application {
             User userMichael = userRepository.save(new User("Michael Räss", "raess.michael@gmail.com", "Aa123456"));
             User userTobias = userRepository.save(new User("Tobias Schmoker", "tobischmoker@gmail.com", "zebra1234"));
 
-            Algorithm algo1 = new Algorithm("Schnelle aufeinanderfolgende Zahlungen", AlgorithmEnum.GEO_ALGORITHM);
-            Algorithm algo2 = new Algorithm("Zahlungen aus dem Ausland", AlgorithmEnum.GEO_ALGORITHM);
-            Algorithm algo3 = new Algorithm("Verdächtige Zahlung", AlgorithmEnum.GEO_ALGORITHM);
+            Algorithm algo1 = new Algorithm("Schnelle aufeinanderfolgende Zahlungen", AlgorithmEnum.ROBOTIC_ALGORITHM);
+            Algorithm algo2 = new Algorithm("Zahlungen aus dem Ausland", AlgorithmEnum.DEFAULT_ALGORITHM);
+            Algorithm algo3 = new Algorithm("Verdächtige Zahlung", AlgorithmEnum.DEFAULT_ALGORITHM);
             Algorithm algo4 = new Algorithm("Zahlungsüberwachen nach Ortsangaben", AlgorithmEnum.GEO_ALGORITHM);
             algorithmRepository.save(algo1);
             algorithmRepository.save(algo2);
