@@ -25,6 +25,8 @@ public class Whitelabel {
 
 
     public Whitelabel() {
+        this.name = "";
+        this.app = new App();
     }
 
     public Whitelabel(@Nonnull String name, @Nonnull App app) {

@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class UserInformationDTO {
 
-    public class UserAppInformation {
+    private class UserAppInformation {
 
         @Nonnull
         private String id;
@@ -17,7 +17,7 @@ public class UserInformationDTO {
         @Nonnull
         private String name;
 
-        public UserAppInformation(@Nonnull String id, @Nonnull String name) {
+        UserAppInformation(@Nonnull String id, @Nonnull String name) {
             this.id = id;
             this.name = name;
         }
@@ -42,7 +42,7 @@ public class UserInformationDTO {
     }
 
     @Nonnull
-    private String email;
+    private String email = "";
 
     @Nonnull
     private List<UserAppInformation> apps = new ArrayList<>();

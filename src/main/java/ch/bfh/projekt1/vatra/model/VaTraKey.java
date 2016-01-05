@@ -9,46 +9,38 @@ import javax.annotation.Nullable;
 public enum VaTraKey {
 
 
-    VATRA_API_KEY("apiKey", String.class),
+    VATRA_API_KEY("apiKey"),
 
-    VATRA_IDENTIFICATION_NUMBER("identification", String.class),
+    VATRA_IDENTIFICATION_NUMBER("identification"),
 
-    VATRA_PAYMENT_AMOUNT("amount", String.class),
-    
-    VATRA_PAYMENT_CURRENCY("currency", String.class),
-    
-    VATRA_PAYMENT_CREDIT_CARD_NUMBER("creditCardNumber", String.class),
-    
-    VATRA_PAYMENT_CREDIT_CARD_HOLDER("creditCardHolder", String.class),
-    
-    VATRA_PAYMENT_CREDIT_CARD_EXPIRATION_MONTH("creditCardExpMonth", String.class),
-    
-    VATRA_PAYMENT_CREDIT_CARD_EXPIRATION_YEAR("creditCardExpYear", String.class),
-    
-    VATRA_PAYMENT_CREDIT_CARD_CVC("creditCardCvc", String.class),
+    VATRA_PAYMENT_AMOUNT("amount"),
 
-    VATRA_GEOLOCATION_LONGITUDE("longitude", Double.class),
+    VATRA_PAYMENT_CURRENCY("currency"),
 
-    VATRA_GEOLOCATION_LATTITUDE("latitude", Double.class);
+    VATRA_PAYMENT_CREDIT_CARD_NUMBER("creditCardNumber"),
+
+    VATRA_PAYMENT_CREDIT_CARD_HOLDER("creditCardHolder"),
+
+    VATRA_PAYMENT_CREDIT_CARD_EXPIRATION_MONTH("creditCardExpMonth"),
+
+    VATRA_PAYMENT_CREDIT_CARD_EXPIRATION_YEAR("creditCardExpYear"),
+
+    VATRA_PAYMENT_CREDIT_CARD_CVC("creditCardCvc"),
+
+    VATRA_GEOLOCATION_LONGITUDE("longitude"),
+
+    VATRA_GEOLOCATION_LATTITUDE("latitude");
 
     @Nonnull
     private String id;
-    @Nonnull
-    private Class type;
 
-    VaTraKey(@Nonnull String id, @Nonnull Class type) {
+    VaTraKey(@Nonnull String id) {
         this.id = id;
-        this.type = type;
     }
 
     @Nonnull
     public String getId() {
         return id;
-    }
-
-    @Nonnull
-    public Class getType() {
-        return type;
     }
 
     @Nullable

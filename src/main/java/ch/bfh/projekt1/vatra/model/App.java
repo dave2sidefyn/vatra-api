@@ -14,9 +14,9 @@ import java.util.UUID;
 @Entity
 public class App {
 
-    public static final int DEFAULT_TOLERANZ = 5;
-    public static final String DEFAULT_APP = "DEFAULT_APP";
-    public static final String DEFAULT_SCHEME = "";
+    private static final int DEFAULT_TOLERANZ = 5;
+    private static final String DEFAULT_APP = "DEFAULT_APP";
+    private static final String DEFAULT_SCHEME = "";
 
     @Id
     @Nonnull

@@ -6,15 +6,14 @@ import ch.bfh.projekt1.vatra.model.Whitelabel;
 import ch.bfh.projekt1.vatra.service.AppRepository;
 import ch.bfh.projekt1.vatra.service.UserRepository;
 import ch.bfh.projekt1.vatra.service.WhitelabelRepository;
-
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RequestMapping("/rest/secure/app/{id}/whitelabel")
 @RestController
@@ -54,8 +53,8 @@ public class WhitelabelWebService {
     	});
         
         whitelabels.forEach(whitelabel -> {
-        	if (whitelabel.getName() != "") {
-	    		Whitelabel newWhitelabel = new Whitelabel(whitelabel.getName(), currentApp);
+            if (!whitelabel.getName().isEmpty()) {
+                Whitelabel newWhitelabel = new Whitelabel(whitelabel.getName(), currentApp);
 	    		whitelabelRepository.save(newWhitelabel);
         	}
     	});

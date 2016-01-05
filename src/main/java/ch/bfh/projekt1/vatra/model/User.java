@@ -14,9 +14,9 @@ import java.util.UUID;
 @Entity
 public class User {
 
-    public static final String DEFAULT_NAME = "";
-    public static final String DEFAULT_EMAIL = "default@vatra.ch";
-    public static final String DEFAULT_PASSWORD = "defaultPassword";
+    private static final String DEFAULT_NAME = "";
+    private static final String DEFAULT_EMAIL = "default@vatra.ch";
+    private static final String DEFAULT_PASSWORD = "defaultPassword";
     @Id
     @Nonnull
     private String id = UUID.randomUUID().toString();

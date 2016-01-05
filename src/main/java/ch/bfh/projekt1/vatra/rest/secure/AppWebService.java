@@ -64,7 +64,7 @@ public class AppWebService {
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<App> create(@RequestBody App app) {
-        if (app.getName() == null || app.getName().isEmpty()) {
+        if (app.getName().isEmpty()) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 

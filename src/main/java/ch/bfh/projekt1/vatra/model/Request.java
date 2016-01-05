@@ -16,8 +16,8 @@ import java.util.UUID;
 @Entity
 public class Request {
 
-    public static final String DEFAULT_IDENTIFY = "";
-    public static final String DEFAULT_CLIENTINFORMATION = "";
+    private static final String DEFAULT_IDENTIFY = "";
+    private static final String DEFAULT_CLIENTINFORMATION = "";
 
     @Id
     private String id = UUID.randomUUID().toString();
@@ -43,11 +43,11 @@ public class Request {
     @Nonnull
     @ElementCollection(targetClass = String.class)
     @MapKeyEnumerated(EnumType.STRING)
-    Map<VaTraKey, String> vatraFields = new HashMap<>();
+    private Map<VaTraKey, String> vatraFields = new HashMap<>();
 
     @Nonnull
     @ElementCollection(targetClass = String.class)
-    Map<String, String> manualFields = new HashMap<>();
+    private Map<String, String> manualFields = new HashMap<>();
 
     @NotNull
     @Nonnull

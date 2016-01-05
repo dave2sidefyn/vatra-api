@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +38,7 @@ public class OpenWebService {
     private RequestRepository requestRepository;
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> createRequest(@RequestParam(value = "jsonParams", required = true) String jsonParams,
+    public ResponseEntity<Boolean> createRequest(@RequestParam(value = "jsonParams") String jsonParams,
                                                  HttpServletRequest requestInfos) {
         try {
             JSONObject json = (JSONObject) new JSONParser().parse(jsonParams);
@@ -49,11 +48,11 @@ public class OpenWebService {
                 return new ResponseEntity<>(false, HttpStatus.OK);
             }
 
-            Map<String, String> header = new HashMap<String, String>();
-        	Enumeration<String> headerNames = requestInfos.getHeaderNames();
+            Map<String, String> header = new HashMap<>();
+            Enumeration<String> headerNames = requestInfos.getHeaderNames();
         	while (headerNames.hasMoreElements()) {
-        		String key = (String) headerNames.nextElement();
-        		String value = requestInfos.getHeader(key);
+                String key = headerNames.nextElement();
+                String value = requestInfos.getHeader(key);
         		header.put(key, value);
         	}
             System.out.println(header.toString());

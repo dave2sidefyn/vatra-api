@@ -14,26 +14,23 @@ public class AlgorithmRequestResult {
 
     @Id
     @Nonnull
-    private String id = UUID.randomUUID().toString();
+    private String id;
 
     @ManyToOne
     @Nonnull
-    private Request request = new Request();
+    private Request request;
 
     @ManyToOne
     @Nonnull
-    private Algorithm algorithm = new Algorithm();
+    private Algorithm algorithm;
 
     private boolean result;
 
 
     public AlgorithmRequestResult() {
-    }
-
-    public AlgorithmRequestResult(@Nonnull Request request, @Nonnull Algorithm algorithm, boolean result) {
-        this.request = request;
-        this.algorithm = algorithm;
-        this.result = result;
+        this.id = UUID.randomUUID().toString();
+        this.request = new Request();
+        this.algorithm = new Algorithm();
     }
 
     @Nonnull

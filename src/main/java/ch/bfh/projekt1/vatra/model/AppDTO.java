@@ -9,25 +9,25 @@ import java.util.Date;
 public class AppDTO {
 
     @Nonnull
-    String id;
+    private String id = "";
 
     @Nonnull
-    String name;
+    private String name = "";
 
     @Nonnull
-    Long request;
+    private Long request = 0L;
 
     @Nonnull
-    Long valid;
+    private Long valid = 0L;
 
     @Nonnull
-    Long invalid;
+    private Long invalid = 0L;
 
     @Nonnull
-    String apiKey;
+    private String apiKey = "";
 
     @Nonnull
-    Date lastRequest;
+    private Date lastRequest = new Date();
 
     @Nonnull
     public String getId() {
