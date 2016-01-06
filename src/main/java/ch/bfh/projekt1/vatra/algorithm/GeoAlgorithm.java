@@ -30,7 +30,7 @@ import java.util.Optional;
  * VATRA_GEOLOCATION_LONGITUDE
  * VATRA_GEOLOCATION_LATTITUDE
  */
-class GeoAlgorithm implements Algorithm {
+public class GeoAlgorithm implements Algorithm {
 
 
     private static final int FIVE_MIN_IN_SECONDS = 300;

@@ -6,19 +6,19 @@ import ch.bfh.projekt1.vatra.model.VaTraKey;
 import org.springframework.data.repository.CrudRepository;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * DEFAULT ALGORITHM to provide NullPointerExceptions
  * Created by dave on 02.12.15.
  */
-class DefaultAlgorithm implements Algorithm {
+public class DefaultAlgorithm implements Algorithm {
 
 
     @Override
     public List<VaTraKey> neededKeys() {
-        return new ArrayList<>();
+        return Collections.singletonList(VaTraKey.VATRA_API_KEY);
     }
 
     @Override
