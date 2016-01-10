@@ -20,6 +20,7 @@ public interface Algorithm {
      *
      * @return List<VaTraKey>
      */
+    @Nonnull
     List<VaTraKey> neededKeys();
 
     /**

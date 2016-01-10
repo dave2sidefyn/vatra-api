@@ -26,6 +26,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 
 import javax.annotation.Resource;
+import java.util.Objects;
 
 
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
@@ -54,7 +55,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
     protected UserDetailsService userDetailsService() {
         return email -> {
             User user = userService.findByEmail(email);
-            if (user != null) {
+            if (!Objects.isNull(user)) {
                 return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPasswort(), true, true, true, true,
                         AuthorityUtils.createAuthorityList("USER"));
             } else {

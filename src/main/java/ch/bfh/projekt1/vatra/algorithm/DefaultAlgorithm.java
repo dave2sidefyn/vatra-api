@@ -17,6 +17,7 @@ public class DefaultAlgorithm implements Algorithm {
 
 
     @Override
+    @Nonnull
     public List<VaTraKey> neededKeys() {
         return Collections.singletonList(VaTraKey.VATRA_API_KEY);
     }

@@ -14,6 +14,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import javax.annotation.Nonnull;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -40,11 +41,11 @@ public class Application {
     }
 
     @Bean
-    public CommandLineRunner demo(UserRepository userRepository,
-                                  AppRepository appRepository,
-                                  AlgorithmRepository algorithmRepository,
-                                  WhitelabelRepository whitelabelRepository,
-                                  RequestRepository requestRepository) {
+    public CommandLineRunner demo(@Nonnull UserRepository userRepository,
+                                  @Nonnull AppRepository appRepository,
+                                  @Nonnull AlgorithmRepository algorithmRepository,
+                                  @Nonnull WhitelabelRepository whitelabelRepository,
+                                  @Nonnull RequestRepository requestRepository) {
         return (args) -> {
 
             User userDave = userRepository.save(new User("Dave Wiedmer", "david.wiedmer@gmail.com", "test1234"));

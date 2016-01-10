@@ -3,10 +3,12 @@ package ch.bfh.projekt1.vatra.algorithm;
 import ch.bfh.projekt1.vatra.model.App;
 import ch.bfh.projekt1.vatra.model.Request;
 import ch.bfh.projekt1.vatra.model.VaTraKey;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.repository.CrudRepository;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -19,9 +21,12 @@ import java.util.List;
  */
 public class CreditcardAlgorithm implements Algorithm {
 
+    private static final Logger log = LoggerFactory.getLogger(CreditcardAlgorithm.class);
+
     @Override
+    @Nonnull
     public List<VaTraKey> neededKeys() {
-        return Arrays.asList(VaTraKey.VATRA_PAYMENT_CREDIT_CARD_NUMBER);
+        return Collections.singletonList(VaTraKey.VATRA_PAYMENT_CREDIT_CARD_NUMBER);
     }
 
     @Override
@@ -29,15 +34,15 @@ public class CreditcardAlgorithm implements Algorithm {
         String number = request.getVatraFields().get(VaTraKey.VATRA_PAYMENT_CREDIT_CARD_NUMBER);
 
         if (isValidCardNumber(number)) {
-        	System.out.println("CreditcardAlgorithm weight: 0");
+            log.info("CreditcardAlgorithm weight: 0");
             return MIN_WEIGHT;
         }
 
-        System.out.println("CreditcardAlgorithm weight: 10");
+        log.info("CreditcardAlgorithm weight: 10");
         return MAX_WEIGHT;
     }
 
-    private boolean isValidCardNumber(String ccNumber) {
+    private boolean isValidCardNumber(@Nonnull String ccNumber) {
 
         ccNumber = ccNumber.replaceAll("\\D", "");
         char[] ccNumberArry = ccNumber.toCharArray();

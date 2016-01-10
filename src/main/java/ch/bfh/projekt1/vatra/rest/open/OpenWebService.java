@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -44,17 +45,17 @@ public class OpenWebService {
             JSONObject json = (JSONObject) new JSONParser().parse(jsonParams);
 
             App app = appRepository.findOneByApiKey((String) json.get(VaTraKey.VATRA_API_KEY.getId()));
-            if (app == null) {
+            if (Objects.isNull(app)) {
                 return new ResponseEntity<>(false, HttpStatus.OK);
             }
 
             Map<String, String> header = new HashMap<>();
             Enumeration<String> headerNames = requestInfos.getHeaderNames();
-        	while (headerNames.hasMoreElements()) {
+            while (headerNames.hasMoreElements()) {
                 String key = headerNames.nextElement();
                 String value = requestInfos.getHeader(key);
-        		header.put(key, value);
-        	}
+                header.put(key, value);
+            }
             System.out.println(header.toString());
             Request request = new Request((String) json.get(VaTraKey.VATRA_IDENTIFICATION_NUMBER.getId()), app, header.toString());
             fillVatraRequestObject(json, request);
@@ -63,9 +64,9 @@ public class OpenWebService {
             AtomicBoolean valid = new AtomicBoolean(true);
 
             app.getAlgorithms().forEach(algorithm -> {
-            	if (valid.get()) {
-            		valid.set(checkWithAlgorithm(app, savedRequest, algorithm));
-            	}
+                if (valid.get()) {
+                    valid.set(checkWithAlgorithm(app, savedRequest, algorithm));
+                }
             });
 
             if (valid.get()) {
@@ -80,7 +81,7 @@ public class OpenWebService {
         }
     }
 
-    private boolean checkWithAlgorithm(App app, Request savedRequest, Algorithm algorithm) {
+    private boolean checkWithAlgorithm(@Nonnull App app, @Nonnull Request savedRequest, @Nonnull Algorithm algorithm) {
         int value = 0;
         try {
             value = ((ch.bfh.projekt1.vatra.algorithm.Algorithm) algorithm.getType().getAlgorithmClass().newInstance()).check(app, savedRequest, requestRepository);
@@ -91,7 +92,7 @@ public class OpenWebService {
         return createAlgorithmRequestResult(app, savedRequest, algorithm, value);
     }
 
-    private boolean createAlgorithmRequestResult(App app, Request savedRequest, Algorithm algorithm, int value) {
+    private boolean createAlgorithmRequestResult(@Nonnull App app, @Nonnull Request savedRequest, @Nonnull Algorithm algorithm, int value) {
         AlgorithmRequestResult algorithmRequestResult = new AlgorithmRequestResult();
         algorithmRequestResult.setAlgorithm(algorithm);
         algorithmRequestResult.setRequest(savedRequest);
@@ -104,12 +105,12 @@ public class OpenWebService {
     }
 
     @SuppressWarnings("unchecked")
-	private void fillVatraRequestObject(JSONObject json, Request request) {
-    	Map<VaTraKey, String> vatraFields = new HashMap<>();
+    private void fillVatraRequestObject(@Nonnull JSONObject json, @Nonnull Request request) {
+        Map<VaTraKey, String> vatraFields = new HashMap<>();
         json.keySet().forEach(key -> {
             VaTraKey vaTraKey = VaTraKey.getWithId((String) key);
             if (!Objects.isNull(vaTraKey)) {
-            	vatraFields.put(vaTraKey, (String) json.get(key));
+                vatraFields.put(vaTraKey, (String) json.get(key));
             }
         });
         request.setVatraFields(vatraFields);

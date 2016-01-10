@@ -1,12 +1,12 @@
 package ch.bfh.projekt1.vatra.model;
 
+import ch.bfh.projekt1.vatra.service.RequestRepository;
+import org.springframework.data.repository.CrudRepository;
+
 import javax.annotation.Nonnull;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by dave on 23.10.15.
@@ -63,7 +63,7 @@ public class App {
         this.validTo = validTo;
         this.algorithms = algorithms;
     }
-    
+
     public App(@Nonnull String name, @Nonnull Integer toleranz, @Nonnull User user, @Nonnull Date validFrom, @Nonnull Date validTo, @Nonnull Set<Algorithm> algorithms, String apiKey) {
         this.name = name;
         this.toleranz = toleranz;
@@ -153,6 +153,17 @@ public class App {
 
     public void setAlgorithms(@Nonnull Set<Algorithm> algorithms) {
         this.algorithms = algorithms;
+    }
+
+    @Nonnull
+    public Optional<Request> findLastValidRequest(@Nonnull String identify, @Nonnull CrudRepository[] crudRepositories) {
+        for (CrudRepository crudRepository : crudRepositories) {
+            if (crudRepository instanceof RequestRepository) {
+                List<Request> allByApp = ((RequestRepository) crudRepository).findAllByAppAndIdentify(this, identify);
+                allByApp.stream().filter(Request::isValid).sorted((o1, o2) -> -o1.getCreatedDate().compareTo(o2.getCreatedDate())).findFirst();
+            }
+        }
+        return Optional.empty();
     }
 
     @Override

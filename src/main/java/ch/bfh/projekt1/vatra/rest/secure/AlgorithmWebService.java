@@ -14,10 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.*;
 
 @RequestMapping("/rest/secure/app/{id}/algorithm")
 @RestController
@@ -43,8 +42,12 @@ public class AlgorithmWebService {
         List<AlgorithmDTO> algorithms = new ArrayList<>();
 
         Set<Algorithm> appAlgorithms = app.getAlgorithms();
-        appAlgorithms.forEach(algo ->
-                algorithms.add(getAlgorithmDTO(algo, true))
+        appAlgorithms.forEach(algo -> {
+                    AlgorithmDTO algorithmDTO = getAlgorithmDTO(algo, true);
+                    if (!Objects.isNull(algorithmDTO)) {
+                        algorithms.add(algorithmDTO);
+                    }
+                }
         );
 
         Iterable<Algorithm> allAlgorithms = algorithmRepository.findAll();
@@ -57,14 +60,18 @@ public class AlgorithmWebService {
             });
 
             if (!contain.contains(algo.getId())) {
-                algorithms.add(getAlgorithmDTO(algo, false));
+                AlgorithmDTO algorithmDTO = getAlgorithmDTO(algo, false);
+                if (!Objects.isNull(algorithmDTO)) {
+                    algorithms.add(algorithmDTO);
+                }
             }
         });
 
         return new ResponseEntity<>(algorithms, HttpStatus.OK);
     }
 
-    private AlgorithmDTO getAlgorithmDTO(Algorithm algo, boolean enabled) {
+    @Nullable
+    private AlgorithmDTO getAlgorithmDTO(@Nonnull Algorithm algo, boolean enabled) {
         AlgorithmDTO algorithmDTO = null;
         try {
             algorithmDTO = new AlgorithmDTO(

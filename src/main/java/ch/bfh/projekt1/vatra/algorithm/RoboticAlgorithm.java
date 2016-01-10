@@ -3,7 +3,8 @@ package ch.bfh.projekt1.vatra.algorithm;
 import ch.bfh.projekt1.vatra.model.App;
 import ch.bfh.projekt1.vatra.model.Request;
 import ch.bfh.projekt1.vatra.model.VaTraKey;
-import ch.bfh.projekt1.vatra.service.RequestRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.repository.CrudRepository;
 
 import javax.annotation.Nonnull;
@@ -22,7 +23,10 @@ import java.util.Optional;
  */
 public class RoboticAlgorithm implements Algorithm {
 
+    private static final Logger log = LoggerFactory.getLogger(RoboticAlgorithm.class);
+
     @Override
+    @Nonnull
     public List<VaTraKey> neededKeys() {
         return Arrays.asList(VaTraKey.VATRA_API_KEY, VaTraKey.VATRA_IDENTIFICATION_NUMBER);
     }
@@ -30,40 +34,27 @@ public class RoboticAlgorithm implements Algorithm {
     @Override
     public int check(@Nonnull App app, @Nonnull Request request, @Nonnull CrudRepository... crudRepositories) {
         String identify = request.getVatraFields().get(VaTraKey.VATRA_IDENTIFICATION_NUMBER);
-    	Request lastRequest = findLastRequest(app, identify, crudRepositories);
+        Optional<Request> lastRequest = app.findLastValidRequest(identify, crudRepositories);
 
-        if (lastRequest != null) {
-            long delta = request.getCreatedDate().getTime() - lastRequest.getCreatedDate().getTime();
+        if (lastRequest.isPresent()) {
+            long delta = request.getCreatedDate().getTime() - lastRequest.get().getCreatedDate().getTime();
 
             if (delta > 0) {
-            	// Difference in seconds
+                // Difference in seconds
                 int diff = (int) delta / 1000;
 
                 // If difference lower than 10 secoonds
                 if (diff < 10) {
-                	System.out.println("RoboticAlgorithm weight: " + (10 - diff));
-                    return (int) 10 - diff;
+                    log.info("RoboticAlgorithm weight: " + (10 - diff));
+                    return 10 - diff;
                 } else {
-                	System.out.println("RoboticAlgorithm weight: 0");
+                    log.info("RoboticAlgorithm weight: 0");
                     return MIN_WEIGHT;
                 }
             }
         }
 
-        System.out.println("RoboticAlgorithm weight: 0");
+        log.info("RoboticAlgorithm weight: 0");
         return MIN_WEIGHT;
-    }
-
-    @Nonnull
-    private Request findLastRequest(@Nonnull App app, @Nonnull String identify, @Nonnull CrudRepository[] crudRepositories) {
-        for (CrudRepository crudRepository : crudRepositories) {
-            if (crudRepository instanceof RequestRepository) {
-                List<Request> allByApp = ((RequestRepository) crudRepository).findAllByAppAndIdentify(app, identify);
-                if (allByApp.size() > 1) {
-                	return allByApp.get(allByApp.size() - 2);
-                }
-            }
-        }
-        return null;
     }
 }
