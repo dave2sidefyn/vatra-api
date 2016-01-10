@@ -52,18 +52,18 @@ public class Application {
             User userTobias = userRepository.save(new User("Tobias Schmoker", "tobischmoker@gmail.com", "zebra1234"));
 
             Algorithm algo1 = new Algorithm("Schnelle aufeinanderfolgende Zahlungen", AlgorithmEnum.ROBOTIC_ALGORITHM);
-            Algorithm algo2 = new Algorithm("Zahlungen aus dem Ausland", AlgorithmEnum.DEFAULT_ALGORITHM);
-            Algorithm algo3 = new Algorithm("Verdächtige Zahlung", AlgorithmEnum.DEFAULT_ALGORITHM);
-            Algorithm algo4 = new Algorithm("Zahlungsüberwachen nach Ortsangaben", AlgorithmEnum.GEO_ALGORITHM);
-            Algorithm algo5 = new Algorithm("KreditkartenValidierung", AlgorithmEnum.CREDITCARD_ALGORITHM);
+            Algorithm algo2 = new Algorithm("Zahlungsüberwachung nach Ortsangaben", AlgorithmEnum.GEO_ALGORITHM);
+            Algorithm algo3 = new Algorithm("Kreditkartenvalidierung", AlgorithmEnum.CREDITCARD_ALGORITHM);
+            Algorithm algo4 = new Algorithm("Honeypot", AlgorithmEnum.HONEYPOT_ALGORITHM);
             algorithmRepository.save(algo1);
             algorithmRepository.save(algo2);
             algorithmRepository.save(algo3);
             algorithmRepository.save(algo4);
-            algorithmRepository.save(algo5);
             Set<Algorithm> algorithms = new HashSet<>();
             algorithms.add(algo1);
             algorithms.add(algo2);
+            algorithms.add(algo3);
+            algorithms.add(algo4);
 
 
             appRepository.save(new App("App Dave", 10, userDave, new Date(), new Date(), algorithms));

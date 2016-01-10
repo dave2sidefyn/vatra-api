@@ -12,5 +12,7 @@ import java.util.List;
  */
 public interface RequestRepository extends CrudRepository<Request, String> {
 
-    List<Request> findAllByApp(@Param("app") App app);
+	List<Request> findAllByApp(@Param("app") App app);
+	
+	List<Request> findAllByAppAndIdentify(@Param("app") App app, @Param("identify") String identify);
 }

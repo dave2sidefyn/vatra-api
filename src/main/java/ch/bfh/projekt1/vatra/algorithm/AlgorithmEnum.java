@@ -10,6 +10,7 @@ public enum AlgorithmEnum {
     GEO_ALGORITHM(GeoAlgorithm.class),
     ROBOTIC_ALGORITHM(RoboticAlgorithm.class),
     CREDITCARD_ALGORITHM(CreditcardAlgorithm.class),
+    HONEYPOT_ALGORITHM(HoneypotAlgorithm.class),
     DEFAULT_ALGORITHM(DefaultAlgorithm.class);
 
     @Nonnull
