@@ -56,13 +56,17 @@ public class OpenWebService {
         		header.put(key, value);
         	}
             System.out.println(header.toString());
-            Request request = new Request(requestInfos.getRemoteAddr(), app, header.toString());
+            Request request = new Request((String) json.get(VaTraKey.VATRA_IDENTIFICATION_NUMBER.getId()), app, header.toString());
             fillVatraRequestObject(json, request);
             final Request savedRequest = requestRepository.save(request);
 
             AtomicBoolean valid = new AtomicBoolean(true);
 
-            app.getAlgorithms().forEach(algorithm -> valid.set(checkWithAlgorithm(app, savedRequest, algorithm)));
+            app.getAlgorithms().forEach(algorithm -> {
+            	if (valid.get()) {
+            		valid.set(checkWithAlgorithm(app, savedRequest, algorithm));
+            	}
+            });
 
             if (valid.get()) {
                 savedRequest.setValid(true);

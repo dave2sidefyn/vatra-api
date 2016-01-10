@@ -10,6 +10,8 @@ public enum VaTraKey {
 
 
     VATRA_API_KEY("apiKey"),
+    
+    VATRA_HONEYPOT("honeypot"),
 
     VATRA_IDENTIFICATION_NUMBER("identification"),
 

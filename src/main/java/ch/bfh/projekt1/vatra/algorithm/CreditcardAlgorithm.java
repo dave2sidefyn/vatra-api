@@ -21,18 +21,19 @@ public class CreditcardAlgorithm implements Algorithm {
 
     @Override
     public List<VaTraKey> neededKeys() {
-        return Arrays.asList(
-                VaTraKey.VATRA_PAYMENT_CREDIT_CARD_NUMBER
-        );
+        return Arrays.asList(VaTraKey.VATRA_PAYMENT_CREDIT_CARD_NUMBER);
     }
 
     @Override
     public int check(@Nonnull App app, @Nonnull Request request, @Nonnull CrudRepository... crudRepositories) {
         String number = request.getVatraFields().get(VaTraKey.VATRA_PAYMENT_CREDIT_CARD_NUMBER);
 
-        if (isValidCardNumber(number))
+        if (isValidCardNumber(number)) {
+        	System.out.println("CreditcardAlgorithm weight: 0");
             return MIN_WEIGHT;
+        }
 
+        System.out.println("CreditcardAlgorithm weight: 10");
         return MAX_WEIGHT;
     }
 

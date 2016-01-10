@@ -7,8 +7,10 @@ import ch.bfh.projekt1.vatra.service.RequestRepository;
 import com.google.maps.DistanceMatrixApi;
 import com.google.maps.DistanceMatrixApiRequest;
 import com.google.maps.GeoApiContext;
+import com.google.maps.errors.ZeroResultsException;
 import com.google.maps.model.DistanceMatrix;
 import com.google.maps.model.DistanceMatrixElement;
+import com.google.maps.model.DistanceMatrixElementStatus;
 import com.google.maps.model.DistanceMatrixRow;
 import com.google.maps.model.LatLng;
 import org.springframework.data.repository.CrudRepository;
@@ -43,24 +45,38 @@ public class GeoAlgorithm implements Algorithm {
 
     @Override
     public int check(@Nonnull App app, @Nonnull Request request, @Nonnull CrudRepository... crudRepositories) {
-        Optional<Request> lastRequest = findLastRequest(app, request, crudRepositories);
-        if (lastRequest.isPresent()) {
+    	String identify = request.getVatraFields().get(VaTraKey.VATRA_IDENTIFICATION_NUMBER);
+    	Request lastRequest = findLastRequest(app, identify, crudRepositories);
+        
+    	if (lastRequest != null) {
             GeoApiContext context = new GeoApiContext().setApiKey(GOOGLE_API_KEY);
 
-            LatLng originLatLng = getLatLngFromRequest(lastRequest.get());
+            LatLng originLatLng = getLatLngFromRequest(lastRequest);
             LatLng destinationLatLng = getLatLngFromRequest(request);
             DistanceMatrixApiRequest req = DistanceMatrixApi.newRequest(context).origins(originLatLng).destinations(destinationLatLng);
 
-            try {
-                Optional<Long> shortestDelta = getShortestDelta(lastRequest, req.await());
-                return calcWeight(shortestDelta);
-            } catch (Exception e) {
-                // Handle error
-            }
-
-            req.awaitIgnoreError(); // No checked exception.
+            DistanceMatrix result;
+			try {
+				result = req.await();
+			} catch (Exception e1) {
+				System.out.println("GeoAlgorithm weight: " + 10);
+				return MAX_WEIGHT;
+			}
+            
+			Optional<Long> shortestDelta;
+			try {
+				shortestDelta = getShortestDelta(lastRequest, result);
+			} catch (Exception e) {
+				System.out.println("GeoAlgorithm weight: " + 10);
+				return MAX_WEIGHT;
+			}
+            int weight = calcWeight(shortestDelta);
+            
+            System.out.println("GeoAlgorithm weight: " + weight);
+            return weight;
         }
 
+        System.out.println("GeoAlgorithm weight: 0");
         return MIN_WEIGHT;
     }
 
@@ -79,26 +95,28 @@ public class GeoAlgorithm implements Algorithm {
     }
 
     @Nonnull
-    private Optional<Request> findLastRequest(@Nonnull App app, @Nonnull Request request, @Nonnull CrudRepository[] crudRepositories) {
+    private Request findLastRequest(@Nonnull App app, @Nonnull String identify, @Nonnull CrudRepository[] crudRepositories) {
         for (CrudRepository crudRepository : crudRepositories) {
             if (crudRepository instanceof RequestRepository) {
-                List<Request> allByApp = ((RequestRepository) crudRepository).findAllByApp(app);
-                return allByApp.stream()
-                        .filter(lastRequest -> request.getVatraFields().get(VaTraKey.VATRA_IDENTIFICATION_NUMBER).equals(lastRequest.getVatraFields().get(VaTraKey.VATRA_IDENTIFICATION_NUMBER)))
-                        .sorted((o1, o2) -> o1.getCreatedDate().compareTo(o2.getCreatedDate()))
-                        .findFirst();
+                List<Request> allByApp = ((RequestRepository) crudRepository).findAllByAppAndIdentify(app, identify);
+                if (allByApp.size() > 1) {
+                	return allByApp.get(allByApp.size() - 2);
+                }
             }
         }
-        return Optional.empty();
+        return null;
     }
 
     @Nonnull
-    private Optional<Long> getShortestDelta(@Nonnull Optional<Request> lastRequest, @Nonnull DistanceMatrix results) {
+    private Optional<Long> getShortestDelta(@Nonnull Request lastRequest, @Nonnull DistanceMatrix results) throws Exception {
         Optional<Long> shortestDelta = Optional.empty();
 
         for (DistanceMatrixRow distanceMatrixRow : results.rows) {
             for (DistanceMatrixElement distanceMatrixElement : distanceMatrixRow.elements) {
-                long delta = lastRequest.get().getCreatedDate().toInstant().getEpochSecond() - (((new Date()).toInstant().getEpochSecond() - distanceMatrixElement.duration.inSeconds));
+            	if (distanceMatrixElement.status == DistanceMatrixElementStatus.ZERO_RESULTS) {
+            		throw new ZeroResultsException("Zero results");
+            	}
+                long delta = lastRequest.getCreatedDate().toInstant().getEpochSecond() - (((new Date()).toInstant().getEpochSecond() - distanceMatrixElement.duration.inSeconds));
                 if (!shortestDelta.isPresent() || delta < shortestDelta.get()) {
                     shortestDelta = Optional.of(delta);
                 }
