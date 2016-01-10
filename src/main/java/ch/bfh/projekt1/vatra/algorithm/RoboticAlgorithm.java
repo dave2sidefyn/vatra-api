@@ -20,7 +20,7 @@ import java.util.Optional;
  * GOOGLE_API_KEY
  * VATRA_IDENTIFICATION_NUMBER
  */
-class RoboticAlgorithm implements Algorithm {
+public class RoboticAlgorithm implements Algorithm {
 
     @Override
     public List<VaTraKey> neededKeys() {

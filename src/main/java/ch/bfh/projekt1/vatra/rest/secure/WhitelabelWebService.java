@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
 import java.util.Set;
 
 @RequestMapping("/rest/secure/app/{id}/whitelabel")
@@ -32,7 +33,7 @@ public class WhitelabelWebService {
     public ResponseEntity<Set<Whitelabel>> getWhitelabels(@PathVariable("id") String id) {
         User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         App app = appRepository.findOne(id);
-        if (!app.getUser().equals(user)) {
+        if (Objects.isNull(app) || !app.getUser().equals(user)) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
@@ -41,23 +42,23 @@ public class WhitelabelWebService {
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<App> create(@PathVariable("id") String id, @RequestBody Iterable<Whitelabel> whitelabels) {
-    	User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         App currentApp = appRepository.findOne(id);
-        if (!currentApp.getUser().equals(user)) {
+        if (Objects.isNull(currentApp) || !currentApp.getUser().equals(user)) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        
+
         Set<Whitelabel> appWhitelabels = whitelabelRepository.findAllByApp(currentApp);
         appWhitelabels.forEach(appWhitelabel -> {
-    		whitelabelRepository.delete(appWhitelabel);
-    	});
-        
+            whitelabelRepository.delete(appWhitelabel);
+        });
+
         whitelabels.forEach(whitelabel -> {
             if (!whitelabel.getName().isEmpty()) {
                 Whitelabel newWhitelabel = new Whitelabel(whitelabel.getName(), currentApp);
-	    		whitelabelRepository.save(newWhitelabel);
-        	}
-    	});
+                whitelabelRepository.save(newWhitelabel);
+            }
+        });
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

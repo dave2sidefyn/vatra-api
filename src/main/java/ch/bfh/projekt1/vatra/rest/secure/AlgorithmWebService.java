@@ -92,7 +92,7 @@ public class AlgorithmWebService {
 
         Set<Algorithm> newAppAlgorithms = new HashSet<>();
         algorithms.forEach(algorithm -> {
-            if (algorithm.getId().isEmpty()) {
+            if (!algorithm.getId().isEmpty()) {
                 Algorithm appAlgorithm = algorithmRepository.findOne(algorithm.getId());
                 if (appAlgorithm != null) {
                     newAppAlgorithms.add(appAlgorithm);
