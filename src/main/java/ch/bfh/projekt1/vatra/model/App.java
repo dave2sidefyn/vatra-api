@@ -16,7 +16,7 @@ public class App {
 
     private static final int DEFAULT_TOLERANZ = 5;
     private static final String DEFAULT_APP = "DEFAULT_APP";
-    private static final String DEFAULT_SCHEME = "";
+    private static final String DEFAULT_SCHEME = "{\"ApiKey\": \"VaTra.ApiKey\",\"IdentificationName\": \"VaTra.Identification\", \"name\":\"string\", \"vorname\":\"string\"}";
 
     @Id
     @Nonnull
@@ -64,7 +64,7 @@ public class App {
         this.algorithms = algorithms;
     }
 
-    public App(@Nonnull String name, @Nonnull Integer toleranz, @Nonnull User user, @Nonnull Date validFrom, @Nonnull Date validTo, @Nonnull Set<Algorithm> algorithms, String apiKey) {
+    public App(@Nonnull String name, @Nonnull Integer toleranz, @Nonnull User user, @Nonnull Date validFrom, @Nonnull Date validTo, @Nonnull Set<Algorithm> algorithms, @Nonnull String apiKey) {
         this.name = name;
         this.toleranz = toleranz;
         this.user = user;

@@ -10,6 +10,7 @@ import org.springframework.data.repository.CrudRepository;
 import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by dave on 02.12.15.
@@ -32,6 +33,12 @@ public class CreditcardAlgorithm implements Algorithm {
     @Override
     public int check(@Nonnull App app, @Nonnull Request request, @Nonnull CrudRepository... crudRepositories) {
         String number = request.getVatraFields().get(VaTraKey.VATRA_PAYMENT_CREDIT_CARD_NUMBER);
+
+        if (Objects.isNull(number)) {
+            log.error("number was null!");
+            return MAX_WEIGHT;
+        }
+
 
         if (isValidCardNumber(number)) {
             log.info("CreditcardAlgorithm weight: 0");

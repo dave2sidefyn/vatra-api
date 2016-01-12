@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -48,14 +49,14 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder builder) throws Exception {
-        builder.userDetailsService(userDetailsService());
+        builder.userDetailsService(userDetailsService()).passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Bean
     protected UserDetailsService userDetailsService() {
         return email -> {
             User user = userService.findByEmail(email);
-            if (!Objects.isNull(user)) {
+            if (Objects.nonNull(user)) {
                 return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPasswort(), true, true, true, true,
                         AuthorityUtils.createAuthorityList("USER"));
             } else {

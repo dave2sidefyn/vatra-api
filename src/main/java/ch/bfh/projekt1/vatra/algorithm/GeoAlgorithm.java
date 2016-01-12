@@ -25,25 +25,26 @@ import java.util.Optional;
  * Benötigte Felder:
  * <p/>
  * GOOGLE_API_KEY
- * VATRA_IDENTIFICATION_NUMBER
+ * VATRA_IDENTIFICATION
  * VATRA_GEOLOCATION_LONGITUDE
  * VATRA_GEOLOCATION_LATTITUDE
  */
 public class GeoAlgorithm implements Algorithm {
 
     private static final Logger log = LoggerFactory.getLogger(GeoAlgorithm.class);
+
     private static final int FIVE_MIN_IN_SECONDS = 300;
     private static final String GOOGLE_API_KEY = "AIzaSyCmUq4uasZW_bjGU1nIlt-2BRqOntWt9Ho";
 
     @Override
     @Nonnull
     public List<VaTraKey> neededKeys() {
-        return Arrays.asList(VaTraKey.VATRA_API_KEY, VaTraKey.VATRA_IDENTIFICATION_NUMBER, VaTraKey.VATRA_GEOLOCATION_LONGITUDE, VaTraKey.VATRA_GEOLOCATION_LATTITUDE);
+        return Arrays.asList(VaTraKey.VATRA_API_KEY, VaTraKey.VATRA_IDENTIFICATION, VaTraKey.VATRA_GEOLOCATION_LONGITUDE, VaTraKey.VATRA_GEOLOCATION_LATTITUDE);
     }
 
     @Override
     public int check(@Nonnull App app, @Nonnull Request request, @Nonnull CrudRepository... crudRepositories) {
-        String identify = request.getVatraFields().get(VaTraKey.VATRA_IDENTIFICATION_NUMBER);
+        String identify = request.getVatraFields().get(VaTraKey.VATRA_IDENTIFICATION);
         Optional<Request> lastRequest = app.findLastValidRequest(identify, crudRepositories);
 
         if (lastRequest.isPresent()) {

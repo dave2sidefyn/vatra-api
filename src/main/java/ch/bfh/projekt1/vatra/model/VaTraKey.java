@@ -9,29 +9,35 @@ import javax.annotation.Nullable;
 public enum VaTraKey {
 
 
-    VATRA_API_KEY("apiKey"),
-    
-    VATRA_HONEYPOT("honeypot"),
+    /**
+     * Obligatorisch!
+     */
+    VATRA_API_KEY("VaTra.ApiKey"),
 
-    VATRA_IDENTIFICATION_NUMBER("identification"),
+    /**
+     * Obligatorisch!
+     */
+    VATRA_IDENTIFICATION("VaTra.Identification"),
 
-    VATRA_PAYMENT_AMOUNT("amount"),
+    VATRA_HONEYPOT("VaTra.Honeypot"),
 
-    VATRA_PAYMENT_CURRENCY("currency"),
+    VATRA_PAYMENT_AMOUNT("VaTra.Payment.Amount"),
 
-    VATRA_PAYMENT_CREDIT_CARD_NUMBER("creditCardNumber"),
+    VATRA_PAYMENT_CURRENCY("VaTra.Payment.Currency"),
 
-    VATRA_PAYMENT_CREDIT_CARD_HOLDER("creditCardHolder"),
+    VATRA_PAYMENT_CREDIT_CARD_NUMBER("VaTra.Payment.CreditCardNumber"),
 
-    VATRA_PAYMENT_CREDIT_CARD_EXPIRATION_MONTH("creditCardExpMonth"),
+    VATRA_PAYMENT_CREDIT_CARD_HOLDER("VaTra.Payment.CreditCardHolder"),
 
-    VATRA_PAYMENT_CREDIT_CARD_EXPIRATION_YEAR("creditCardExpYear"),
+    VATRA_PAYMENT_CREDIT_CARD_EXPIRATION_MONTH("VaTra.Payment.CreditCardExpMonth"),
 
-    VATRA_PAYMENT_CREDIT_CARD_CVC("creditCardCvc"),
+    VATRA_PAYMENT_CREDIT_CARD_EXPIRATION_YEAR("VaTra.Payment.CreditCardExpYear"),
 
-    VATRA_GEOLOCATION_LONGITUDE("longitude"),
+    VATRA_PAYMENT_CREDIT_CARD_CVC("VaTra.Payment.CreditCardCvc"),
 
-    VATRA_GEOLOCATION_LATTITUDE("latitude");
+    VATRA_GEOLOCATION_LONGITUDE("VaTra.Geolocation.longitude"),
+
+    VATRA_GEOLOCATION_LATTITUDE("VaTra.Geolocation.latitude");
 
     @Nonnull
     private String id;

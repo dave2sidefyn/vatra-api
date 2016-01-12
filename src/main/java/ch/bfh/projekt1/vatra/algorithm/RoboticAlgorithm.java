@@ -19,7 +19,7 @@ import java.util.Optional;
  * Benötigte Felder:
  * <p/>
  * GOOGLE_API_KEY
- * VATRA_IDENTIFICATION_NUMBER
+ * VATRA_IDENTIFICATION
  */
 public class RoboticAlgorithm implements Algorithm {
 
@@ -28,12 +28,12 @@ public class RoboticAlgorithm implements Algorithm {
     @Override
     @Nonnull
     public List<VaTraKey> neededKeys() {
-        return Arrays.asList(VaTraKey.VATRA_API_KEY, VaTraKey.VATRA_IDENTIFICATION_NUMBER);
+        return Arrays.asList(VaTraKey.VATRA_API_KEY, VaTraKey.VATRA_IDENTIFICATION);
     }
 
     @Override
     public int check(@Nonnull App app, @Nonnull Request request, @Nonnull CrudRepository... crudRepositories) {
-        String identify = request.getVatraFields().get(VaTraKey.VATRA_IDENTIFICATION_NUMBER);
+        String identify = request.getVatraFields().get(VaTraKey.VATRA_IDENTIFICATION);
         Optional<Request> lastRequest = app.findLastValidRequest(identify, crudRepositories);
 
         if (lastRequest.isPresent()) {

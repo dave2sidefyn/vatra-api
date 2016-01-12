@@ -47,6 +47,11 @@ public class Request {
 
     @Nonnull
     @ElementCollection(targetClass = String.class)
+    @MapKeyEnumerated(EnumType.STRING)
+    private Map<VaTraValidationKey, String> vatraValidationFields = new HashMap<>();
+
+    @Nonnull
+    @ElementCollection(targetClass = String.class)
     private Map<String, String> manualFields = new HashMap<>();
 
     @NotNull
@@ -129,6 +134,15 @@ public class Request {
 
     public void setVatraFields(@Nonnull Map<VaTraKey, String> vatraFields) {
         this.vatraFields = vatraFields;
+    }
+
+    @Nonnull
+    public Map<VaTraValidationKey, String> getVatraValidationFields() {
+        return vatraValidationFields;
+    }
+
+    public void setVatraValidationFields(@Nonnull Map<VaTraValidationKey, String> vatraValidationFields) {
+        this.vatraValidationFields = vatraValidationFields;
     }
 
     @Nonnull
