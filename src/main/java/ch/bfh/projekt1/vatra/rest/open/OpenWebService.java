@@ -135,7 +135,7 @@ public class OpenWebService {
         json.forEach((key, value) -> {
             final String schemaValue = getSchemaValue(applicationSchema, key);
             if (Objects.nonNull(schemaValue)) {
-                VaTraKey vaTraKey = VaTraKey.getWithId(String.valueOf(key));
+                VaTraKey vaTraKey = VaTraKey.getWithId(schemaValue);
                 if (Objects.nonNull(vaTraKey)) {
                     vatraFields.put(vaTraKey, String.valueOf(value));
                 } else {
@@ -171,8 +171,8 @@ public class OpenWebService {
     private String getSchemaValue(@Nonnull JSONObject applicationSchema, @Nonnull Object key) {
         List<String> keysWithShemaValue = new ArrayList<>();
         applicationSchema.forEach((o, o2) -> {
-            if (o2.equals(key)) {
-                keysWithShemaValue.add((String) o);
+            if (o.equals(key)) {
+                keysWithShemaValue.add((String) o2);
             }
         });
         if (keysWithShemaValue.isEmpty()) {
