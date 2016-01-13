@@ -10,6 +10,7 @@ import org.springframework.data.repository.CrudRepository;
 import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Honeypot Algorithm
@@ -27,7 +28,8 @@ public class HoneypotAlgorithm implements Algorithm {
 
     @Override
     public int check(@Nonnull App app, @Nonnull Request request, @Nonnull CrudRepository... crudRepositories) {
-        if (request.getVatraFields().get(VaTraKey.VATRA_HONEYPOT) != null) {
+        if (Objects.nonNull(request.getVatraFields().get(VaTraKey.VATRA_HONEYPOT))
+        		&& request.getVatraFields().get(VaTraKey.VATRA_HONEYPOT).isEmpty()) {
             log.info("HoneypotAlgorithm weight: 0");
             return MIN_WEIGHT;
         } else {
