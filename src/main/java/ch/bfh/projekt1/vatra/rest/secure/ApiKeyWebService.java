@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * Bietet die RestService für den API neuzugenerieren
+ */
 @RequestMapping("/rest/secure/app/{id}/apiKey")
 @RestController
 public class ApiKeyWebService {

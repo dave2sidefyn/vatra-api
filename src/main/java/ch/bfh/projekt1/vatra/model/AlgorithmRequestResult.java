@@ -7,6 +7,8 @@ import javax.persistence.ManyToOne;
 import java.util.UUID;
 
 /**
+ * Die Entität AlgorithmRequestResult ist hier, um das jeweilige Resultat (if isvalid) pro Request und Algorithm.
+ * <p>
  * Created by dave on 23.10.15.
  */
 @Entity
@@ -24,8 +26,7 @@ public class AlgorithmRequestResult {
     @Nonnull
     private Algorithm algorithm;
 
-    private boolean result;
-
+    private boolean valid;
 
     public AlgorithmRequestResult() {
         this.id = UUID.randomUUID().toString();
@@ -60,12 +61,12 @@ public class AlgorithmRequestResult {
         this.algorithm = algorithm;
     }
 
-    public boolean isResult() {
-        return result;
+    public boolean isValid() {
+        return valid;
     }
 
-    public void setResult(boolean result) {
-        this.result = result;
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
 
     @Override
@@ -74,7 +75,7 @@ public class AlgorithmRequestResult {
                 "id='" + id + '\'' +
                 ", request=" + request +
                 ", algorithm=" + algorithm +
-                ", result=" + result +
+                ", valid=" + valid +
                 '}';
     }
 }

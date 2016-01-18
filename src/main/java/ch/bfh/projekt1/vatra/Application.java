@@ -21,6 +21,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * Startklasse, Hier wird das Projekt gestartet
+ * <p>
  * Created by dave on 23.10.15.
  */
 @ComponentScan
@@ -41,6 +43,17 @@ public class Application {
         application.run(args);
     }
 
+
+    /**
+     * Bereitstellung für Demodaten
+     *
+     * @param userRepository       wird benötigt um Users zu erstellen
+     * @param appRepository        wird benötigt um Apps zu erstellen
+     * @param algorithmRepository  wird benötigt um Algorithmen zu erstellen
+     * @param whitelabelRepository wird benötigt um Whitlabels zu erstellen
+     * @param requestRepository    wird benötigt um Request zu erstellen
+     * @return CommandLineRunner
+     */
     @Bean
     public CommandLineRunner demo(@Nonnull UserRepository userRepository,
                                   @Nonnull AppRepository appRepository,

@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Das DTO  UserInformationDTO ist da, um Users mit ihren Apps erfolgreich und nur mit den nötigesten
+ * Informationen an den Client zu liefern.
+ * <p>
  * Created by dave on 03.12.15.
  */
 public class UserInformationDTO {

@@ -4,6 +4,8 @@ import javax.annotation.Nonnull;
 import java.util.Date;
 
 /**
+ * Die Entität AppDTO ist hier, um bei Apps für den Client sinnvolle Informationen zu übertragen.
+ * <p>
  * Created by dave on 02.12.15.
  */
 public class AppDTO {

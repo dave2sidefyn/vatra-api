@@ -10,13 +10,15 @@ import java.io.IOException;
 
 /**
  * An authentication entry point implementation adapted to a REST approach.
+ * <p>
+ * Informationen aus Tutorial: https://github.com/codesandnotes/secure-rest-spring-tut
  */
 public class RESTAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-	@Override
-	public void commence(HttpServletRequest request, HttpServletResponse response,
-						 AuthenticationException authException) throws IOException, ServletException {
+    @Override
+    public void commence(HttpServletRequest request, HttpServletResponse response,
+                         AuthenticationException authException) throws IOException, ServletException {
 
-		response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-	}
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+    }
 }

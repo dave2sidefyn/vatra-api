@@ -20,6 +20,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Hier kann das Schema pro App gelesen und gespeichert werden.
+ * Dieses wird beim Speichern zusätzlich mit einer Validierung überprüft
+ */
 @RequestMapping("/rest/secure/app/{id}/schema")
 @RestController
 public class SchemaWebService {

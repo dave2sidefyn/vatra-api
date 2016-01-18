@@ -9,6 +9,8 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
+ * Repository für Requests
+ * <p>
  * Created by dave on 23.10.15.
  */
 public interface RequestRepository extends CrudRepository<Request, String> {

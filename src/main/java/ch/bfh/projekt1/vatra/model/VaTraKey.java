@@ -4,6 +4,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
+ * Dieser Key hilft uns, Felder mit für VaTra wichtigen Informationen zu finden und zu definieren.
+ * <p>
  * Created by dave on 27.12.15.
  */
 public enum VaTraKey {
@@ -19,24 +21,38 @@ public enum VaTraKey {
      */
     VATRA_IDENTIFICATION("VaTra.Identification"),
 
+    /**
+     * Ist für den Algorithmus Honypot relevant
+     */
     VATRA_HONEYPOT("VaTra.Honeypot"),
 
+    /**
+     * Kann für eine Zahlung verwendet werden
+     */
     VATRA_PAYMENT_AMOUNT("VaTra.Payment.Amount"),
-
     VATRA_PAYMENT_CURRENCY("VaTra.Payment.Currency"),
 
+    /**
+     * Wird auch im Kreditkartenvalidator verwerden!
+     */
     VATRA_PAYMENT_CREDIT_CARD_NUMBER("VaTra.Payment.CreditCardNumber"),
 
+    /**
+     * Weitere Kreditkartenfelder
+     */
     VATRA_PAYMENT_CREDIT_CARD_HOLDER("VaTra.Payment.CreditCardHolder"),
-
     VATRA_PAYMENT_CREDIT_CARD_EXPIRATION_MONTH("VaTra.Payment.CreditCardExpMonth"),
-
     VATRA_PAYMENT_CREDIT_CARD_EXPIRATION_YEAR("VaTra.Payment.CreditCardExpYear"),
-
     VATRA_PAYMENT_CREDIT_CARD_CVC("VaTra.Payment.CreditCardCvc"),
 
+    /**
+     * Longitude wird im GEOLOCATION Algorithmus verwendet!
+     */
     VATRA_GEOLOCATION_LONGITUDE("VaTra.Geolocation.longitude"),
 
+    /**
+     * Longitude wird im GEOLOCATION Algorithmus verwendet!
+     */
     VATRA_GEOLOCATION_LATTITUDE("VaTra.Geolocation.latitude");
 
     @Nonnull

@@ -9,6 +9,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
+ * Repository für Apps
+ * <p>
  * Created by dave on 23.10.15.
  */
 public interface AppRepository extends CrudRepository<App, String> {

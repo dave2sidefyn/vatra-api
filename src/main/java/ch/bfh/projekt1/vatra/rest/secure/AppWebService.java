@@ -23,6 +23,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Bietet die RestService um die App den eingeloggten Benutzers zu lesen und neue zu erstellen
+ */
 @RequestMapping("/rest/secure/app")
 @RestController
 public class AppWebService {

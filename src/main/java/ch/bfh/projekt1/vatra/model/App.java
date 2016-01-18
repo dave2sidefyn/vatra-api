@@ -9,6 +9,8 @@ import javax.validation.constraints.NotNull;
 import java.util.*;
 
 /**
+ * Die Entität App ist hier, für die Apps zu definieren.
+ * <p>
  * Created by dave on 23.10.15.
  */
 @Entity

@@ -9,6 +9,8 @@ import javax.annotation.Nonnull;
 import java.util.Iterator;
 
 /**
+ * Repository für Whitelabels
+ * <p>
  * Created by dave on 23.10.15.
  */
 public interface WhitelabelRepository extends CrudRepository<Whitelabel, String> {

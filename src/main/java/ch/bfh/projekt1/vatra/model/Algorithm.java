@@ -11,6 +11,8 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
+ * Die Entität Algorithm ist hier, um Algorithmen zu definieren.
+ * <p>
  * Created by dave on 23.10.15.
  */
 @Entity

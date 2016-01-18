@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * DEFAULT ALGORITHM to provide NullPointerExceptions
+ * <p>
  * Created by dave on 02.12.15.
  */
 public class DefaultAlgorithm implements Algorithm {

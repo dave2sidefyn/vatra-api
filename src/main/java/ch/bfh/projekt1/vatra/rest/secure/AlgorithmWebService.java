@@ -20,6 +20,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 
+/**
+ * Bietet die RestServices für die Algorithmen pro App zu lesen, einzuschalten oder auszuschalten
+ */
 @RequestMapping("/rest/secure/app/{id}/algorithm")
 @RestController
 public class AlgorithmWebService {

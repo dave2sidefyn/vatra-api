@@ -9,6 +9,8 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
+ * Die Entität User ist hier, für die Users zu definieren.
+ * <p>
  * Created by David on 20.10.2015.
  */
 @Entity

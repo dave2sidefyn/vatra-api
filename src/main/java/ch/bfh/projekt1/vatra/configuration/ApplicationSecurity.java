@@ -30,6 +30,12 @@ import javax.annotation.Resource;
 import java.util.Objects;
 
 
+/**
+ * In dieser Klasse wird die ganze Konfiguration für die Security abgehandelt.
+ * Einzele Zeilen sind aus dem Tutorial: https://github.com/codesandnotes/secure-rest-spring-tut
+ * <p>
+ * Diverses wie zum Beispiel die Codierung mit BCrypt, der Service etc vollständig von uns implementiert.
+ */
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 

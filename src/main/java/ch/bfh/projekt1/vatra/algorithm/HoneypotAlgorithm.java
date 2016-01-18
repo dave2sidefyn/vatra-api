@@ -14,6 +14,7 @@ import java.util.Objects;
 
 /**
  * Honeypot Algorithm
+ * <p>
  * Created by raess on 10.01.16.
  */
 public class HoneypotAlgorithm implements Algorithm {
@@ -29,7 +30,7 @@ public class HoneypotAlgorithm implements Algorithm {
     @Override
     public int check(@Nonnull App app, @Nonnull Request request, @Nonnull CrudRepository... crudRepositories) {
         if (Objects.nonNull(request.getVatraFields().get(VaTraKey.VATRA_HONEYPOT))
-        		&& request.getVatraFields().get(VaTraKey.VATRA_HONEYPOT).isEmpty()) {
+                && request.getVatraFields().get(VaTraKey.VATRA_HONEYPOT).isEmpty()) {
             log.info("HoneypotAlgorithm weight: 0");
             return MIN_WEIGHT;
         } else {

@@ -10,12 +10,14 @@ import java.io.IOException;
 
 /**
  * An authentication logout success handler implementation adapted to a REST approach.
+ * <p>
+ * Informationen aus Tutorial: https://github.com/codesandnotes/secure-rest-spring-tut
  */
 public class RESTLogoutSuccessHandler implements LogoutSuccessHandler {
-	@Override
-	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
-			throws IOException, ServletException {
+    @Override
+    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+            throws IOException, ServletException {
 
-		// Do... absolutely... nothing! If you've reached this, the user session has been removed already!
-	}
+        // Do... absolutely... nothing! If you've reached this, the user session has been removed already!
+    }
 }

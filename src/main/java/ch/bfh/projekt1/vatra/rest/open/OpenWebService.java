@@ -27,6 +27,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Hier sind alle Webservices definiert, welche "von aussen", das heisst: ohne Login und Zugriffsberechtigung erreichbar sind.
+ */
 @RequestMapping("/rest/open")
 @RestController
 public class OpenWebService {
@@ -42,6 +45,13 @@ public class OpenWebService {
 
     private static final Logger log = LoggerFactory.getLogger(OpenWebService.class);
 
+    /**
+     * Verarbeitet einen eingegangenen Request.
+     *
+     * @param jsonParams   dieses json wird vom Formular übermittelt.
+     * @param requestInfos werden durch den ServletRequest automatisch übertragen (SpringBoot)
+     * @return true wenn alles in Ordnung ist, false wenn Error oder Algorithmen den Request als nicht valid einstufen.
+     */
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> createRequest(@RequestParam(value = "jsonParams") String jsonParams,
                                                  HttpServletRequest requestInfos) {
@@ -54,7 +64,12 @@ public class OpenWebService {
             }
 
 
-            Request request = new Request((String) json.get(VaTraKey.VATRA_IDENTIFICATION.getId()), app, getClientInformations(requestInfos).toString());
+            String identify = (String) json.get(VaTraKey.VATRA_IDENTIFICATION.getId());
+            if (Objects.isNull(identify)) {
+                log.error("Keine Identifikation übermittelt!");
+                return new ResponseEntity<>(false, HttpStatus.OK);
+            }
+            Request request = new Request(identify, app, getClientInformations(requestInfos).toString());
 
             AtomicBoolean isValid = validateAndFillVatraRequestObject((JSONObject) new JSONParser().parse(app.getScheme()), json, request);
 
@@ -118,7 +133,7 @@ public class OpenWebService {
         algorithmRequestResult.setAlgorithm(algorithm);
         algorithmRequestResult.setRequest(savedRequest);
         if (value < app.getToleranz()) {
-            algorithmRequestResult.setResult(true);
+            algorithmRequestResult.setValid(true);
             algorithmRequestResultRepository.save(algorithmRequestResult);
             return true;
         }
@@ -148,10 +163,12 @@ public class OpenWebService {
                         } else {
                             vatraValidationFields.put(vaTraValidationKey, String.valueOf(value));
                         }
+                        //wir können bisher 2 Varianten an weiteren Eigabefeldern unterscheiden: Number und String, Wenn also Number gesetzt wird versuchen wird diese Eingabe also validator zuerst noch zu parsen. Dies dient als weitere sicherheits überprüfung
                     } else if (schemaValue.equals("number")) {
                         try {
                             value = Double.parseDouble(String.valueOf(value));
                         } catch (NumberFormatException nfe) {
+                            log.error("number konnte nicht geparst werden:" + value);
                             isValid.set(false);
 
                         }

@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
+ * Die Entität Request ist hier, für die Requests zu definieren.
+ * <p>
  * Created by dave on 23.10.15.
  */
 @Entity

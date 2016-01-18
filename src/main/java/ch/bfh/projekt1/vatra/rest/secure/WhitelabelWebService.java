@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Iterator;
 import java.util.Objects;
 
+/**
+ * Hier können Whitlabels gelesen, und updated werden
+ */
 @RequestMapping("/rest/secure/app/{id}/whitelabel")
 @RestController
 public class WhitelabelWebService {
@@ -41,7 +44,7 @@ public class WhitelabelWebService {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<App> create(@PathVariable("id") String id, @RequestBody Iterable<Whitelabel> whitelabels) {
+    public ResponseEntity<App> update(@PathVariable("id") String id, @RequestBody Iterable<Whitelabel> whitelabels) {
         User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         App currentApp = appRepository.findOne(id);
         if (Objects.isNull(currentApp) || !currentApp.getUser().equals(user)) {

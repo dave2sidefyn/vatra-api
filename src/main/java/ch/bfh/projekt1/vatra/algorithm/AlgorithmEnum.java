@@ -3,6 +3,8 @@ package ch.bfh.projekt1.vatra.algorithm;
 import javax.annotation.Nonnull;
 
 /**
+ * Diese Enum definiert die zuordnung von den EnumTypen zu deren Durchführungsklassen
+ * <p>
  * Created by dave on 02.12.15.
  */
 public enum AlgorithmEnum {
