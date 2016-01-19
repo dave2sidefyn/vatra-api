@@ -58,7 +58,8 @@ public class OpenWebService {
         try {
             JSONObject json = (JSONObject) new JSONParser().parse(jsonParams);
 
-            App app = appRepository.findOneByApiKey((String) json.get(VaTraKey.VATRA_API_KEY.getId()));
+            String apiKey = (String) json.get(VaTraKey.VATRA_API_KEY.getId());
+            App app = appRepository.findOneByApiKey(apiKey);
             if (Objects.isNull(app)) {
                 return new ResponseEntity<>(false, HttpStatus.OK);
             }
