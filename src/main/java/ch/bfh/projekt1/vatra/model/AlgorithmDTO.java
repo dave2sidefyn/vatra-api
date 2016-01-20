@@ -4,6 +4,8 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
+ * Die Entität AlgorithmDTO ist hier, um bei Algorithmen für den Client sinnvolle Informationen zu übertragen.
+ * <p>
  * Created by raess on 30.11.2015.
  */
 public class AlgorithmDTO {

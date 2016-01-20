@@ -4,34 +4,56 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
+ * Dieser Key hilft uns, Felder mit für VaTra wichtigen Informationen zu finden und zu definieren.
+ * <p>
  * Created by dave on 27.12.15.
  */
 public enum VaTraKey {
 
 
-    VATRA_API_KEY("apiKey"),
-    
-    VATRA_HONEYPOT("honeypot"),
+    /**
+     * Obligatorisch!
+     */
+    VATRA_API_KEY("VaTra.ApiKey"),
 
-    VATRA_IDENTIFICATION_NUMBER("identification"),
+    /**
+     * Obligatorisch!
+     */
+    VATRA_IDENTIFICATION("VaTra.Identification"),
 
-    VATRA_PAYMENT_AMOUNT("amount"),
+    /**
+     * Ist für den Algorithmus Honypot relevant
+     */
+    VATRA_HONEYPOT("VaTra.Honeypot"),
 
-    VATRA_PAYMENT_CURRENCY("currency"),
+    /**
+     * Kann für eine Zahlung verwendet werden
+     */
+    VATRA_PAYMENT_AMOUNT("VaTra.Payment.Amount"),
+    VATRA_PAYMENT_CURRENCY("VaTra.Payment.Currency"),
 
-    VATRA_PAYMENT_CREDIT_CARD_NUMBER("creditCardNumber"),
+    /**
+     * Wird auch im Kreditkartenvalidator verwerden!
+     */
+    VATRA_PAYMENT_CREDIT_CARD_NUMBER("VaTra.Payment.CreditCardNumber"),
 
-    VATRA_PAYMENT_CREDIT_CARD_HOLDER("creditCardHolder"),
+    /**
+     * Weitere Kreditkartenfelder
+     */
+    VATRA_PAYMENT_CREDIT_CARD_HOLDER("VaTra.Payment.CreditCardHolder"),
+    VATRA_PAYMENT_CREDIT_CARD_EXPIRATION_MONTH("VaTra.Payment.CreditCardExpMonth"),
+    VATRA_PAYMENT_CREDIT_CARD_EXPIRATION_YEAR("VaTra.Payment.CreditCardExpYear"),
+    VATRA_PAYMENT_CREDIT_CARD_CVC("VaTra.Payment.CreditCardCvc"),
 
-    VATRA_PAYMENT_CREDIT_CARD_EXPIRATION_MONTH("creditCardExpMonth"),
+    /**
+     * Longitude wird im GEOLOCATION Algorithmus verwendet!
+     */
+    VATRA_GEOLOCATION_LONGITUDE("VaTra.Geolocation.longitude"),
 
-    VATRA_PAYMENT_CREDIT_CARD_EXPIRATION_YEAR("creditCardExpYear"),
-
-    VATRA_PAYMENT_CREDIT_CARD_CVC("creditCardCvc"),
-
-    VATRA_GEOLOCATION_LONGITUDE("longitude"),
-
-    VATRA_GEOLOCATION_LATTITUDE("latitude");
+    /**
+     * Longitude wird im GEOLOCATION Algorithmus verwendet!
+     */
+    VATRA_GEOLOCATION_LATTITUDE("VaTra.Geolocation.latitude");
 
     @Nonnull
     private String id;

@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
+ * Definiert wie ein Algorithmus aufgebaut werden muss, damit dieser auch immer gelesen werden kann.
  * Created by dave on 02.12.15.
  */
 public interface Algorithm {
@@ -20,14 +21,15 @@ public interface Algorithm {
      *
      * @return List<VaTraKey>
      */
+    @Nonnull
     List<VaTraKey> neededKeys();
 
     /**
      * Das vatraRequestObject wird mitgegeben und ein Wert zwischen 1-10 muss zurückgegeben werden
      *
-     * @param app
-     * @param request
-     * @param crudRepositories
+     * @param app              App
+     * @param request          Request
+     * @param crudRepositories alle CrudRepositories die es für den Algorithmus braucht.
      * @return int
      */
     int check(@Nonnull App app, @Nonnull Request request, @Nonnull CrudRepository... crudRepositories);

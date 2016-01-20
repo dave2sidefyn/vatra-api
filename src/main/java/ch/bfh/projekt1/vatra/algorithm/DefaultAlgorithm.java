@@ -11,12 +11,14 @@ import java.util.List;
 
 /**
  * DEFAULT ALGORITHM to provide NullPointerExceptions
+ * <p>
  * Created by dave on 02.12.15.
  */
 public class DefaultAlgorithm implements Algorithm {
 
 
     @Override
+    @Nonnull
     public List<VaTraKey> neededKeys() {
         return Collections.singletonList(VaTraKey.VATRA_API_KEY);
     }

@@ -13,9 +13,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Iterator;
 import java.util.Objects;
-import java.util.Set;
 
+/**
+ * Hier können Whitlabels gelesen, und updated werden
+ */
 @RequestMapping("/rest/secure/app/{id}/whitelabel")
 @RestController
 public class WhitelabelWebService {
@@ -30,7 +33,7 @@ public class WhitelabelWebService {
     private UserRepository userRepository;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Set<Whitelabel>> getWhitelabels(@PathVariable("id") String id) {
+    public ResponseEntity<Iterator<Whitelabel>> getWhitelabels(@PathVariable("id") String id) {
         User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         App app = appRepository.findOne(id);
         if (Objects.isNull(app) || !app.getUser().equals(user)) {
@@ -41,17 +44,14 @@ public class WhitelabelWebService {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<App> create(@PathVariable("id") String id, @RequestBody Iterable<Whitelabel> whitelabels) {
+    public ResponseEntity<App> update(@PathVariable("id") String id, @RequestBody Iterable<Whitelabel> whitelabels) {
         User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         App currentApp = appRepository.findOne(id);
         if (Objects.isNull(currentApp) || !currentApp.getUser().equals(user)) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        Set<Whitelabel> appWhitelabels = whitelabelRepository.findAllByApp(currentApp);
-        appWhitelabels.forEach(appWhitelabel -> {
-            whitelabelRepository.delete(appWhitelabel);
-        });
+        whitelabelRepository.deleteAllByApp(currentApp);
 
         whitelabels.forEach(whitelabel -> {
             if (!whitelabel.getName().isEmpty()) {

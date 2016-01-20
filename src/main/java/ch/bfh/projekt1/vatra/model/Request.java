@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
+ * Die Entität Request ist hier, für die Requests zu definieren.
+ * <p>
  * Created by dave on 23.10.15.
  */
 @Entity
@@ -44,6 +46,11 @@ public class Request {
     @ElementCollection(targetClass = String.class)
     @MapKeyEnumerated(EnumType.STRING)
     private Map<VaTraKey, String> vatraFields = new HashMap<>();
+
+    @Nonnull
+    @ElementCollection(targetClass = String.class)
+    @MapKeyEnumerated(EnumType.STRING)
+    private Map<VaTraValidationKey, String> vatraValidationFields = new HashMap<>();
 
     @Nonnull
     @ElementCollection(targetClass = String.class)
@@ -129,6 +136,15 @@ public class Request {
 
     public void setVatraFields(@Nonnull Map<VaTraKey, String> vatraFields) {
         this.vatraFields = vatraFields;
+    }
+
+    @Nonnull
+    public Map<VaTraValidationKey, String> getVatraValidationFields() {
+        return vatraValidationFields;
+    }
+
+    public void setVatraValidationFields(@Nonnull Map<VaTraValidationKey, String> vatraValidationFields) {
+        this.vatraValidationFields = vatraValidationFields;
     }
 
     @Nonnull

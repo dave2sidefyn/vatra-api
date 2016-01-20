@@ -10,6 +10,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
+/**
+ * Standard Security Handler für Spring Boot.
+ * <p>
+ * Informationen aus Tutorial: https://github.com/codesandnotes/secure-rest-spring-tut
+ */
 @Configuration
 public class SecurityConfiguration {
 

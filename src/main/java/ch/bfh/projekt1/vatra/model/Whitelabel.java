@@ -7,6 +7,8 @@ import javax.persistence.ManyToOne;
 import java.util.UUID;
 
 /**
+ * Die Entität Whitelabel ist hier, für die Whitelabels zu definieren.
+ * <p>
  * Created by dave on 23.10.15.
  */
 @Entity

@@ -13,12 +13,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.annotation.Nonnull;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * Startklasse, Hier wird das Projekt gestartet
+ * <p>
  * Created by dave on 23.10.15.
  */
 @ComponentScan
@@ -39,17 +43,29 @@ public class Application {
         application.run(args);
     }
 
+
+    /**
+     * Bereitstellung für Demodaten
+     *
+     * @param userRepository       wird benötigt um Users zu erstellen
+     * @param appRepository        wird benötigt um Apps zu erstellen
+     * @param algorithmRepository  wird benötigt um Algorithmen zu erstellen
+     * @param whitelabelRepository wird benötigt um Whitlabels zu erstellen
+     * @param requestRepository    wird benötigt um Request zu erstellen
+     * @return CommandLineRunner
+     */
     @Bean
-    public CommandLineRunner demo(UserRepository userRepository,
-                                  AppRepository appRepository,
-                                  AlgorithmRepository algorithmRepository,
-                                  WhitelabelRepository whitelabelRepository,
-                                  RequestRepository requestRepository) {
+    public CommandLineRunner demo(@Nonnull UserRepository userRepository,
+                                  @Nonnull AppRepository appRepository,
+                                  @Nonnull AlgorithmRepository algorithmRepository,
+                                  @Nonnull WhitelabelRepository whitelabelRepository,
+                                  @Nonnull RequestRepository requestRepository) {
         return (args) -> {
 
-            User userDave = userRepository.save(new User("Dave Wiedmer", "david.wiedmer@gmail.com", "test1234"));
-            User userMichael = userRepository.save(new User("Michael Räss", "raess.michael@gmail.com", "Aa123456"));
-            User userTobias = userRepository.save(new User("Tobias Schmoker", "tobischmoker@gmail.com", "zebra1234"));
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+            User userDave = userRepository.save(new User("Dave Wiedmer", "david.wiedmer@gmail.com", bCryptPasswordEncoder.encode("test1234")));
+            User userMichael = userRepository.save(new User("Michael Räss", "raess.michael@gmail.com", bCryptPasswordEncoder.encode("Aa123456")));
+            User userTobias = userRepository.save(new User("Tobias Schmoker", "tobischmoker@gmail.com", bCryptPasswordEncoder.encode("zebra1234")));
 
             Algorithm algo1 = new Algorithm("Schnelle aufeinanderfolgende Zahlungen", AlgorithmEnum.ROBOTIC_ALGORITHM);
             Algorithm algo2 = new Algorithm("Zahlungsüberwachung nach Ortsangaben", AlgorithmEnum.GEO_ALGORITHM);

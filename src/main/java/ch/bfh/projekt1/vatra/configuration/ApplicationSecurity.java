@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -26,8 +27,15 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 
 import javax.annotation.Resource;
+import java.util.Objects;
 
 
+/**
+ * In dieser Klasse wird die ganze Konfiguration für die Security abgehandelt.
+ * Einzele Zeilen sind aus dem Tutorial: https://github.com/codesandnotes/secure-rest-spring-tut
+ * <p>
+ * Diverses wie zum Beispiel die Codierung mit BCrypt, der Service etc vollständig von uns implementiert.
+ */
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 
@@ -47,14 +55,14 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder builder) throws Exception {
-        builder.userDetailsService(userDetailsService());
+        builder.userDetailsService(userDetailsService()).passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Bean
     protected UserDetailsService userDetailsService() {
         return email -> {
             User user = userService.findByEmail(email);
-            if (user != null) {
+            if (Objects.nonNull(user)) {
                 return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPasswort(), true, true, true, true,
                         AuthorityUtils.createAuthorityList("USER"));
             } else {

@@ -21,7 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
+/**
+ * Bietet die RestService um die App den eingeloggten Benutzers zu lesen und neue zu erstellen
+ */
 @RequestMapping("/rest/secure/app")
 @RestController
 public class AppWebService {
@@ -52,8 +56,8 @@ public class AppWebService {
             appDTO.setValid(requestByApp.stream().filter(Request::isValid).count());
             appDTO.setInvalid(requestByApp.stream().filter(Request::isInValid).count());
             if (!requestByApp.isEmpty()) {
-            	Request request = requestByApp.get(0);
-	            appDTO.setLastRequest(request.getCreatedDate());
+                Request request = requestByApp.get(0);
+                appDTO.setLastRequest(request.getCreatedDate());
             }
             appDTOList.add(appDTO);
         });
@@ -69,6 +73,10 @@ public class AppWebService {
         }
 
         User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        if (Objects.isNull(user)) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
         app.setUser(user);
         Date now = new Date();
         app.setValidFrom(now);

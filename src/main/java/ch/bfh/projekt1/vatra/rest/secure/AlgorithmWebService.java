@@ -7,6 +7,8 @@ import ch.bfh.projekt1.vatra.model.User;
 import ch.bfh.projekt1.vatra.service.AlgorithmRepository;
 import ch.bfh.projekt1.vatra.service.AppRepository;
 import ch.bfh.projekt1.vatra.service.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,11 +16,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.*;
 
+/**
+ * Bietet die RestServices für die Algorithmen pro App zu lesen, einzuschalten oder auszuschalten
+ */
 @RequestMapping("/rest/secure/app/{id}/algorithm")
 @RestController
 public class AlgorithmWebService {
@@ -32,8 +36,11 @@ public class AlgorithmWebService {
     @Autowired
     private UserRepository userRepository;
 
+    private static final Logger log = LoggerFactory.getLogger(AlgorithmWebService.class);
+
+
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Iterable<AlgorithmDTO>> getAlgorithms(@PathVariable("id") String id) {
+    public ResponseEntity<Iterable<AlgorithmDTO>> getAlgorithms(@PathVariable("id") @Nonnull String id) {
         User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         App app = appRepository.findOne(id);
         if (!app.getUser().equals(user)) {
@@ -43,8 +50,12 @@ public class AlgorithmWebService {
         List<AlgorithmDTO> algorithms = new ArrayList<>();
 
         Set<Algorithm> appAlgorithms = app.getAlgorithms();
-        appAlgorithms.forEach(algo ->
-                algorithms.add(getAlgorithmDTO(algo, true))
+        appAlgorithms.forEach(algo -> {
+                    AlgorithmDTO algorithmDTO = getAlgorithmDTO(algo, true);
+            if (Objects.nonNull(algorithmDTO)) {
+                        algorithms.add(algorithmDTO);
+                    }
+                }
         );
 
         Iterable<Algorithm> allAlgorithms = algorithmRepository.findAll();
@@ -57,14 +68,18 @@ public class AlgorithmWebService {
             });
 
             if (!contain.contains(algo.getId())) {
-                algorithms.add(getAlgorithmDTO(algo, false));
+                AlgorithmDTO algorithmDTO = getAlgorithmDTO(algo, false);
+                if (Objects.nonNull(algorithmDTO)) {
+                    algorithms.add(algorithmDTO);
+                }
             }
         });
 
         return new ResponseEntity<>(algorithms, HttpStatus.OK);
     }
 
-    private AlgorithmDTO getAlgorithmDTO(Algorithm algo, boolean enabled) {
+    @Nullable
+    private AlgorithmDTO getAlgorithmDTO(@Nonnull Algorithm algo, boolean enabled) {
         AlgorithmDTO algorithmDTO = null;
         try {
             algorithmDTO = new AlgorithmDTO(
@@ -74,13 +89,13 @@ public class AlgorithmWebService {
                     enabled
             );
         } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
+            log.error("InstantiationException | IllegalAccessException", e);
         }
         return algorithmDTO;
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<App> updateAppAlgorithms(@PathVariable("id") String id, @RequestBody Iterable<Algorithm> algorithms) {
+    public ResponseEntity<App> updateAppAlgorithms(@PathVariable("id") @Nonnull String id, @RequestBody @Nonnull Iterable<Algorithm> algorithms) {
         User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         App currentApp = appRepository.findOne(id);
         if (!currentApp.getUser().equals(user)) {

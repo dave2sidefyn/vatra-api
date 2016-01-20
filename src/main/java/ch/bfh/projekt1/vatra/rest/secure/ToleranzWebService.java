@@ -11,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Hier wird die Toleranz für jede App gelesen und upgedated
+ */
 @RequestMapping("/rest/secure/app/{id}/toleranz")
 @RestController
 public class ToleranzWebService {

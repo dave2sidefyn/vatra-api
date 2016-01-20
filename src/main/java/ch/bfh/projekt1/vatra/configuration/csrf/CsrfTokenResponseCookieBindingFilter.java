@@ -10,21 +10,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Hier wird der CsrfToken als Cookies gesetzt.
+ * <p>
+ * Informationen aus Tutorial: https://github.com/codesandnotes/secure-rest-spring-tut
+ */
 public class CsrfTokenResponseCookieBindingFilter extends OncePerRequestFilter {
 
-	protected static final String REQUEST_ATTRIBUTE_NAME = "_csrf";
+    protected static final String REQUEST_ATTRIBUTE_NAME = "_csrf";
 
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
 
-		CsrfToken token = (CsrfToken) request.getAttribute(REQUEST_ATTRIBUTE_NAME);
+        CsrfToken token = (CsrfToken) request.getAttribute(REQUEST_ATTRIBUTE_NAME);
 
-		Cookie cookie = new Cookie(CSRF.RESPONSE_COOKIE_NAME, token.getToken());
-		cookie.setPath("/");
+        Cookie cookie = new Cookie(CSRF.RESPONSE_COOKIE_NAME, token.getToken());
+        cookie.setPath("/");
 
-		response.addCookie(cookie);
+        response.addCookie(cookie);
 
-		filterChain.doFilter(request, response);
-	}
+        filterChain.doFilter(request, response);
+    }
 }
