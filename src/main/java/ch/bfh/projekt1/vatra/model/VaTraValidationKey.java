@@ -5,6 +5,8 @@ import javax.annotation.Nullable;
 
 /**
  * Hier sind Reqex festgelegt, die Verwendet werden können wenn VaTra-Validierungsfelder verwerdet werden.
+ * Die Regex wurden nicht selber geschrieben und aus dem Internet kopiert.
+ * Quelle dafür war immer: stackoverflow.com
  * <p>
  * Created by dave on 27.12.15.
  */
