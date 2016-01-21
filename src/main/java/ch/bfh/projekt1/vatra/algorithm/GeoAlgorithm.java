@@ -13,10 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.repository.CrudRepository;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by dave on 02.12.15.
@@ -94,17 +91,22 @@ public class GeoAlgorithm implements Algorithm {
     }
 
     @Nonnull
-    private Optional<Long> getShortestDelta(@Nonnull Request lastRequest, @Nonnull DistanceMatrix results) throws Exception {
+    public Optional<Long> getShortestDelta(@Nonnull Request lastRequest, @Nonnull DistanceMatrix results) throws Exception {
         Optional<Long> shortestDelta = Optional.empty();
 
         for (DistanceMatrixRow distanceMatrixRow : results.rows) {
-            for (DistanceMatrixElement distanceMatrixElement : distanceMatrixRow.elements) {
-                if (distanceMatrixElement.status == DistanceMatrixElementStatus.ZERO_RESULTS) {
-                    throw new ZeroResultsException("Zero results");
-                }
-                long delta = lastRequest.getCreatedDate().toInstant().getEpochSecond() - (((new Date()).toInstant().getEpochSecond() - distanceMatrixElement.duration.inSeconds));
-                if (!shortestDelta.isPresent() || delta < shortestDelta.get()) {
-                    shortestDelta = Optional.of(delta);
+            if (Objects.nonNull(distanceMatrixRow) && Objects.nonNull(distanceMatrixRow.elements)) {
+                for (DistanceMatrixElement distanceMatrixElement : distanceMatrixRow.elements) {
+                    if (Objects.nonNull(distanceMatrixElement)) {
+                        if (distanceMatrixElement.status == DistanceMatrixElementStatus.ZERO_RESULTS) {
+                            throw new ZeroResultsException("Zero results");
+                        }
+
+                        long delta = lastRequest.getCreatedDate().toInstant().getEpochSecond() - (((new Date()).toInstant().getEpochSecond() - distanceMatrixElement.duration.inSeconds));
+                        if (!shortestDelta.isPresent() || delta < shortestDelta.get()) {
+                            shortestDelta = Optional.of(delta);
+                        }
+                    }
                 }
             }
         }

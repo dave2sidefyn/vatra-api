@@ -49,7 +49,7 @@ public class CreditcardAlgorithm implements Algorithm {
         return MAX_WEIGHT;
     }
 
-    private boolean isValidCardNumber(@Nonnull String ccNumber) {
+    public boolean isValidCardNumber(@Nonnull String ccNumber) {
 
         ccNumber = ccNumber.replaceAll("\\D", "");
         char[] ccNumberArry = ccNumber.toCharArray();
