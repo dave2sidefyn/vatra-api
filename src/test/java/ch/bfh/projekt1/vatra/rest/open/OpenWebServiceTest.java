@@ -8,6 +8,9 @@ import ch.bfh.projekt1.vatra.service.AlgorithmRequestResultRepository;
 import ch.bfh.projekt1.vatra.service.AppRepository;
 import ch.bfh.projekt1.vatra.service.RequestRepository;
 import ch.bfh.projekt1.vatra.service.UserRepository;
+import junit.framework.Assert;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +32,7 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Matchers.anyObject;
@@ -138,6 +142,151 @@ public class OpenWebServiceTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(equalTo("false")));
+    }
+
+
+    @Test
+    public void testValidationJustSomeValues() throws Exception {
+
+        OpenWebService openWebService = new OpenWebService();
+        JSONObject jsonObject = new JSONObject();
+
+        JSONObject schema = (JSONObject) new JSONParser().parse(App.DEFAULT_SCHEME);
+        AtomicBoolean atomicBoolean = openWebService.validateAndFillVatraRequestObject(schema, jsonObject, new Request());
+        Assert.assertTrue(atomicBoolean.get());
+
+
+        //Add just some ignorableValues
+        jsonObject.put("test", "test");
+        atomicBoolean = openWebService.validateAndFillVatraRequestObject(schema, jsonObject, new Request());
+        Assert.assertTrue(atomicBoolean.get());
+
+        jsonObject.put("VaTra.ApiKey", "VaTra.ApiKey");
+        atomicBoolean = openWebService.validateAndFillVatraRequestObject(schema, jsonObject, new Request());
+        Assert.assertTrue(atomicBoolean.get());
+
+        jsonObject.put("VaTra.ApiKey", "String");
+        atomicBoolean = openWebService.validateAndFillVatraRequestObject(schema, jsonObject, new Request());
+        Assert.assertTrue(atomicBoolean.get());
+
+        jsonObject.put("VaTra.ApiKey", "01");
+        atomicBoolean = openWebService.validateAndFillVatraRequestObject(schema, jsonObject, new Request());
+        Assert.assertTrue(atomicBoolean.get());
+
+    }
+
+    @Test
+    public void testValidationStringAcceptsEverything() throws Exception {
+
+        OpenWebService openWebService = new OpenWebService();
+        JSONObject jsonObject = new JSONObject();
+
+        JSONObject schema = (JSONObject) new JSONParser().parse(App.DEFAULT_SCHEME);
+        schema.put("name", "String");
+        AtomicBoolean atomicBoolean = openWebService.validateAndFillVatraRequestObject(schema, jsonObject, new Request());
+        Assert.assertTrue(atomicBoolean.get());
+
+        jsonObject.put("name", "asdf");
+        atomicBoolean = openWebService.validateAndFillVatraRequestObject(schema, jsonObject, new Request());
+        Assert.assertTrue(atomicBoolean.get());
+
+        jsonObject.put("name", "");
+        atomicBoolean = openWebService.validateAndFillVatraRequestObject(schema, jsonObject, new Request());
+        Assert.assertTrue(atomicBoolean.get());
+
+        jsonObject.put("name", null);
+        atomicBoolean = openWebService.validateAndFillVatraRequestObject(schema, jsonObject, new Request());
+        Assert.assertTrue(atomicBoolean.get());
+    }
+
+    @Test
+    public void testValidationNumber() throws Exception {
+
+        OpenWebService openWebService = new OpenWebService();
+        JSONObject jsonObject = new JSONObject();
+
+        JSONObject schema = (JSONObject) new JSONParser().parse(App.DEFAULT_SCHEME);
+        schema.put("tel", "number");
+        AtomicBoolean atomicBoolean = openWebService.validateAndFillVatraRequestObject(schema, jsonObject, new Request());
+        Assert.assertTrue(atomicBoolean.get());
+
+        jsonObject.put("tel", "asdf");
+        atomicBoolean = openWebService.validateAndFillVatraRequestObject(schema, jsonObject, new Request());
+        Assert.assertFalse(atomicBoolean.get());
+
+        jsonObject.put("tel", "");
+        atomicBoolean = openWebService.validateAndFillVatraRequestObject(schema, jsonObject, new Request());
+        Assert.assertFalse(atomicBoolean.get());
+
+        jsonObject.put("tel", null);
+        atomicBoolean = openWebService.validateAndFillVatraRequestObject(schema, jsonObject, new Request());
+        Assert.assertFalse(atomicBoolean.get());
+
+        jsonObject.put("tel", "1234019137");
+        atomicBoolean = openWebService.validateAndFillVatraRequestObject(schema, jsonObject, new Request());
+        Assert.assertTrue(atomicBoolean.get());
+    }
+
+    @Test
+    public void testValidationEmailRegex() throws Exception {
+
+        OpenWebService openWebService = new OpenWebService();
+        JSONObject jsonObject = new JSONObject();
+
+        JSONObject schema = (JSONObject) new JSONParser().parse(App.DEFAULT_SCHEME);
+        schema.put("email", "VaTra.Regex.email");
+        AtomicBoolean atomicBoolean = openWebService.validateAndFillVatraRequestObject(schema, jsonObject, new Request());
+        Assert.assertTrue(atomicBoolean.get());
+
+        jsonObject.put("email", "asdf");
+        atomicBoolean = openWebService.validateAndFillVatraRequestObject(schema, jsonObject, new Request());
+        Assert.assertFalse(atomicBoolean.get());
+
+        jsonObject.put("email", "david.wiedmer@gmail.com");
+        atomicBoolean = openWebService.validateAndFillVatraRequestObject(schema, jsonObject, new Request());
+        Assert.assertTrue(atomicBoolean.get());
+    }
+
+    @Test
+    public void testValidationUrlRegex() throws Exception {
+
+        OpenWebService openWebService = new OpenWebService();
+        JSONObject jsonObject = new JSONObject();
+
+        JSONObject schema = (JSONObject) new JSONParser().parse(App.DEFAULT_SCHEME);
+        schema.put("url", "VaTra.Regex.URL");
+        AtomicBoolean atomicBoolean = openWebService.validateAndFillVatraRequestObject(schema, jsonObject, new Request());
+        Assert.assertTrue(atomicBoolean.get());
+
+        jsonObject.put("url", "asdf");
+        atomicBoolean = openWebService.validateAndFillVatraRequestObject(schema, jsonObject, new Request());
+        Assert.assertFalse(atomicBoolean.get());
+
+        jsonObject.put("url", "sidefyn.ch");
+        atomicBoolean = openWebService.validateAndFillVatraRequestObject(schema, jsonObject, new Request());
+        Assert.assertFalse(atomicBoolean.get());
+
+        jsonObject.put("url", "www.sidefyn.ch");
+        atomicBoolean = openWebService.validateAndFillVatraRequestObject(schema, jsonObject, new Request());
+        Assert.assertFalse(atomicBoolean.get());
+
+
+        //Nur diese Typen sind erlaubt:
+        jsonObject.put("url", "http://www.sidefyn.ch");
+        atomicBoolean = openWebService.validateAndFillVatraRequestObject(schema, jsonObject, new Request());
+        Assert.assertTrue(atomicBoolean.get());
+
+        jsonObject.put("url", "http://sidefyn.ch");
+        atomicBoolean = openWebService.validateAndFillVatraRequestObject(schema, jsonObject, new Request());
+        Assert.assertTrue(atomicBoolean.get());
+
+        jsonObject.put("url", "ftp://sidefyn.ch");
+        atomicBoolean = openWebService.validateAndFillVatraRequestObject(schema, jsonObject, new Request());
+        Assert.assertTrue(atomicBoolean.get());
+
+        jsonObject.put("url", "file://sidefyn.ch");
+        atomicBoolean = openWebService.validateAndFillVatraRequestObject(schema, jsonObject, new Request());
+        Assert.assertTrue(atomicBoolean.get());
     }
 
 }

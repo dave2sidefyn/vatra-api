@@ -142,7 +142,7 @@ public class OpenWebService {
     }
 
     @Nonnull
-    private AtomicBoolean validateAndFillVatraRequestObject(@Nonnull JSONObject applicationSchema, @Nonnull JSONObject json, @Nonnull Request request) {
+    public AtomicBoolean validateAndFillVatraRequestObject(@Nonnull JSONObject applicationSchema, @Nonnull JSONObject json, @Nonnull Request request) {
         Map<VaTraKey, String> vatraFields = new HashMap<>();
         Map<VaTraValidationKey, String> vatraValidationFields = new HashMap<>();
         Map<String, String> manualFields = new HashMap<>();

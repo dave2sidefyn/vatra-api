@@ -18,7 +18,7 @@ public class App {
 
     private static final int DEFAULT_TOLERANZ = 5;
     private static final String DEFAULT_APP = "DEFAULT_APP";
-    private static final String DEFAULT_SCHEME = "{\"VaTra.ApiKey\": \"VaTra.ApiKey\",\"VaTra.Identification\": \"VaTra.Identification\", \"creditCardNumber\":\"VaTra.Payment.CreditCardNumber\"}";
+    public static final String DEFAULT_SCHEME = "{\"VaTra.ApiKey\": \"VaTra.ApiKey\",\"VaTra.Identification\": \"VaTra.Identification\", \"creditCardNumber\":\"VaTra.Payment.CreditCardNumber\"}";
 
     @Id
     @Nonnull
