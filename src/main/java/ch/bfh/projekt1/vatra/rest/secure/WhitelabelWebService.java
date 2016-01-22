@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Iterator;
 import java.util.Objects;
 
 /**
@@ -33,7 +32,7 @@ public class WhitelabelWebService {
     private UserRepository userRepository;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Iterator<Whitelabel>> getWhitelabels(@PathVariable("id") String id) {
+    public ResponseEntity<Whitelabel> getWhitelabels(@PathVariable("id") String id) {
         User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         App app = appRepository.findOne(id);
         if (Objects.isNull(app) || !app.getUser().equals(user)) {

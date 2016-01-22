@@ -171,7 +171,6 @@ public class App {
     @Override
     public String toString() {
         return "App [id=" + id + ", name=" + name + ", scheme=" + scheme + ", toleranz=" + toleranz + ", user=" + user
-                + ", validFrom=" + validFrom + ", validTo=" + validTo + ", apiKey=" + apiKey + ", algorithms="
-                + algorithms + "]";
+                + ", validFrom=" + validFrom + ", validTo=" + validTo + ", apiKey=" + apiKey + "]";
     }
 }
