@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.List;
 
 /**
  * Repository für Apps
@@ -16,7 +17,7 @@ import javax.annotation.Nullable;
 public interface AppRepository extends CrudRepository<App, String> {
 
     @Nonnull
-    Iterable<App> findAllByUser(@Param("user") User user);
+    List<App> findAllByUser(@Param("user") User user);
 
     @Nullable
     App findOneByApiKey(@Param("apiKey") String apiKey);

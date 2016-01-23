@@ -53,6 +53,10 @@ public class App {
     @Nonnull
     private Set<Algorithm> algorithms = new HashSet<>();
 
+    @OneToMany
+    @Nonnull
+    private Set<Whitelabel> whitelabels = new HashSet<>();
+
     public App() {
         user = new User();
     }
@@ -155,6 +159,15 @@ public class App {
 
     public void setAlgorithms(@Nonnull Set<Algorithm> algorithms) {
         this.algorithms = algorithms;
+    }
+
+    @Nonnull
+    public Set<Whitelabel> getWhitelabels() {
+        return whitelabels;
+    }
+
+    public void setWhitelabels(@Nonnull Set<Whitelabel> whitelabels) {
+        this.whitelabels = whitelabels;
     }
 
     @Nonnull

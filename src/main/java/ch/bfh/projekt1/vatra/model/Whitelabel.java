@@ -22,9 +22,9 @@ public class Whitelabel {
     @Nonnull
     private String name;
 
-    @ManyToOne
     @Nonnull
     @NotNull
+    @ManyToOne
     private App app;
 
 

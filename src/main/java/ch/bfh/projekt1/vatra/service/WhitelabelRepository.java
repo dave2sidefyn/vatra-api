@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 /**
  * Repository für Whitelabels
@@ -15,7 +16,7 @@ import javax.annotation.Nonnull;
 public interface WhitelabelRepository extends CrudRepository<Whitelabel, String> {
 
     @Nonnull
-    Whitelabel findAllByApp(@Param("app") App app);
+    List<Whitelabel> findAllByApp(@Param("app") App app);
 
     void deleteAllByApp(@Param("app") App app);
 }
