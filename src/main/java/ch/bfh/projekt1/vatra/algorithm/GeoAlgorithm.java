@@ -55,7 +55,7 @@ public class GeoAlgorithm implements Algorithm {
             try {
                 result = req.await();
             } catch (Exception e1) {
-                log.info("GeoAlgorithm weight: " + 10);
+                log.debug("GeoAlgorithm weight: " + 10);
                 return MAX_WEIGHT;
             }
 
@@ -63,16 +63,16 @@ public class GeoAlgorithm implements Algorithm {
             try {
                 shortestDelta = getShortestDelta(lastRequest.get(), result);
             } catch (Exception e) {
-                log.info("GeoAlgorithm weight: " + 10);
+                log.debug("GeoAlgorithm weight: " + 10);
                 return MAX_WEIGHT;
             }
             int weight = calcWeight(shortestDelta);
 
-            log.info("GeoAlgorithm weight: " + weight);
+            log.debug("GeoAlgorithm weight: " + weight);
             return weight;
         }
 
-        log.info("GeoAlgorithm weight: 0");
+        log.debug("GeoAlgorithm weight: 0");
         return MIN_WEIGHT;
     }
 
@@ -99,6 +99,7 @@ public class GeoAlgorithm implements Algorithm {
                 for (DistanceMatrixElement distanceMatrixElement : distanceMatrixRow.elements) {
                     if (Objects.nonNull(distanceMatrixElement)) {
                         if (distanceMatrixElement.status == DistanceMatrixElementStatus.ZERO_RESULTS) {
+                            log.debug("Zero Results in distanceMatrix: " + distanceMatrixElement.toString());
                             throw new ZeroResultsException("Zero results");
                         }
 

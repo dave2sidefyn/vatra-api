@@ -31,10 +31,10 @@ public class HoneypotAlgorithm implements Algorithm {
     public int check(@Nonnull App app, @Nonnull Request request, @Nonnull CrudRepository... crudRepositories) {
         if (Objects.nonNull(request.getVatraFields().get(VaTraKey.VATRA_HONEYPOT))
                 && request.getVatraFields().get(VaTraKey.VATRA_HONEYPOT).isEmpty()) {
-            log.info("HoneypotAlgorithm weight: 0");
+            log.debug("HoneypotAlgorithm weight: 0");
             return MIN_WEIGHT;
         } else {
-            log.info("HoneypotAlgorithm weight: 10");
+            log.debug("HoneypotAlgorithm weight: 10");
             return MAX_WEIGHT;
         }
     }

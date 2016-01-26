@@ -35,17 +35,17 @@ public class CreditcardAlgorithm implements Algorithm {
         String number = request.getVatraFields().get(VaTraKey.VATRA_PAYMENT_CREDIT_CARD_NUMBER);
 
         if (Objects.isNull(number)) {
-            log.error("number was null!");
+            log.debug("number was null!");
             return MAX_WEIGHT;
         }
 
 
         if (isValidCardNumber(number)) {
-            log.info("CreditcardAlgorithm weight: 0");
+            log.debug("CreditcardAlgorithm weight: 0");
             return MIN_WEIGHT;
         }
 
-        log.info("CreditcardAlgorithm weight: 10");
+        log.debug("CreditcardAlgorithm weight: 10");
         return MAX_WEIGHT;
     }
 

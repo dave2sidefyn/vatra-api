@@ -45,16 +45,16 @@ public class RoboticAlgorithm implements Algorithm {
 
                 // If difference lower than 10 secoonds
                 if (diff < 10) {
-                    log.info("RoboticAlgorithm weight: " + (10 - diff));
+                    log.debug("Weight: " + (10 - diff));
                     return 10 - diff;
                 } else {
-                    log.info("RoboticAlgorithm weight: 0");
+                    log.debug("Weight: " + MIN_WEIGHT);
                     return MIN_WEIGHT;
                 }
             }
         }
 
-        log.info("RoboticAlgorithm weight: 0");
+        log.debug("Weight: " + MIN_WEIGHT);
         return MIN_WEIGHT;
     }
 }

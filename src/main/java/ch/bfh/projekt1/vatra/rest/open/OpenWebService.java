@@ -53,41 +53,68 @@ public class OpenWebService {
      * @return true wenn alles in Ordnung ist, false wenn Error oder Algorithmen den Request als nicht valid einstufen.
      */
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> createRequest(@RequestParam(value = "jsonParams") String jsonParams,
-                                                 HttpServletRequest requestInfos) {
+    public ResponseEntity<Boolean> createRequest(@Nonnull @RequestParam(value = "jsonParams") String jsonParams,
+                                                 @Nonnull HttpServletRequest requestInfos) {
         try {
             JSONObject json = (JSONObject) new JSONParser().parse(jsonParams);
 
             String apiKey = (String) json.get(VaTraKey.VATRA_API_KEY.getId());
             App app = appRepository.findOneByApiKey(apiKey);
             if (Objects.isNull(app)) {
+                log.debug("App nicht gefunden!");
                 return new ResponseEntity<>(false, HttpStatus.OK);
             }
 
 
             String identify = (String) json.get(VaTraKey.VATRA_IDENTIFICATION.getId());
             if (Objects.isNull(identify)) {
-                log.error("Keine Identifikation übermittelt!");
+                log.debug("Keine Identifikation übermittelt!");
                 return new ResponseEntity<>(false, HttpStatus.OK);
             }
-            Request request = new Request(identify, app, getClientInformations(requestInfos).toString());
+            Map<String, String> clientInformations = getClientInformations(requestInfos);
+            if (!checkWhitelabels(app, clientInformations)) {
+                log.debug("Whitelabel nicht erfasst");
+                return new ResponseEntity<>(false, HttpStatus.OK);
+            }
+
+            Request request = new Request(identify, app, clientInformations.toString());
 
             AtomicBoolean isValid = validateAndFillVatraRequestObject((JSONObject) new JSONParser().parse(app.getScheme()), json, request);
 
             request = requestRepository.save(request);
             if (!isValid.get()) {
+                log.debug("Request is not valid! Because of FieldValidCheck: " + request.toString());
                 return new ResponseEntity<>(false, HttpStatus.OK);
             }
 
             checkWidthAlgorithms(app, request, isValid);
 
             ifValidUpdateRequest(request, isValid);
-
+            if (!isValid.get()) {
+                log.debug("Request is not valid! Because of an Algorithm: " + request.toString());
+            } else {
+                log.debug("Request is valid! :) " + request.toString());
+            }
             return new ResponseEntity<>(isValid.get(), HttpStatus.OK);
         } catch (ParseException e) {
             log.error("ParseException", e);
             return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    private boolean checkWhitelabels(@Nonnull App app, @Nonnull Map<String, String> clientInformations) {
+
+        AtomicBoolean atomicBoolean = new AtomicBoolean(true);
+        clientInformations.forEach((key, value) -> {
+            String HOST_KEY_FOR_WHITELABEL = "Host";
+            if (key.equals(HOST_KEY_FOR_WHITELABEL)) {
+                if (app.getWhitelabels().stream().filter(whitelabel -> whitelabel.getName().equals(value)).count() == 0) {
+                    atomicBoolean.set(false);
+                }
+            }
+        });
+
+        return atomicBoolean.get();
     }
 
     private void checkWidthAlgorithms(@Nonnull App app, @Nonnull Request request, @Nonnull AtomicBoolean isValid) {
@@ -114,7 +141,7 @@ public class OpenWebService {
             String value = requestInfos.getHeader(key);
             header.put(key, value);
         }
-        log.info("Header: " + header.toString());
+        log.debug("Header: " + header.toString());
         return header;
     }
 
@@ -149,39 +176,46 @@ public class OpenWebService {
 
         final AtomicBoolean isValid = new AtomicBoolean(true);
         json.forEach((key, value) -> {
-            final String schemaValue = getSchemaValue(applicationSchema, key);
-            if (Objects.nonNull(schemaValue)) {
-                VaTraKey vaTraKey = VaTraKey.getWithId(schemaValue);
-                if (Objects.nonNull(vaTraKey)) {
-                    vatraFields.put(vaTraKey, String.valueOf(value));
-                } else {
-                    VaTraValidationKey vaTraValidationKey = VaTraValidationKey.getWithId(schemaValue);
-                    if (Objects.nonNull(vaTraValidationKey)) {
-                        Pattern p = Pattern.compile(vaTraValidationKey.getRegex());
-                        Matcher m = p.matcher(String.valueOf(value));
-                        if (!m.matches()) {
-                            isValid.set(false);
-                        } else {
-                            vatraValidationFields.put(vaTraValidationKey, String.valueOf(value));
-                        }
-                        //wir können bisher 2 Varianten an weiteren Eigabefeldern unterscheiden: Number und String, Wenn also Number gesetzt wird versuchen wird diese Eingabe also validator zuerst noch zu parsen. Dies dient als weitere sicherheits überprüfung
-                    } else if (schemaValue.equals("number")) {
-                        try {
-                            value = Double.parseDouble(String.valueOf(value));
-                        } catch (NumberFormatException nfe) {
-                            log.error("number konnte nicht geparst werden:" + value);
-                            isValid.set(false);
+            if (isValid.get()) {
+                final String schemaValue = getSchemaValue(applicationSchema, key);
+                if (Objects.nonNull(schemaValue)) {
+                    VaTraKey vaTraKey = VaTraKey.getWithId(schemaValue);
+                    if (Objects.nonNull(vaTraKey)) {
+                        vatraFields.put(vaTraKey, String.valueOf(value));
+                    } else {
+                        VaTraValidationKey vaTraValidationKey = VaTraValidationKey.getWithId(schemaValue);
+                        if (Objects.nonNull(vaTraValidationKey)) {
+                            Pattern p = Pattern.compile(vaTraValidationKey.getRegex());
+                            Matcher m = p.matcher(String.valueOf(value));
+                            if (!m.matches()) {
+                                log.debug("isValid turns to FALSE! VatraValidationKey-Regex: " + vaTraValidationKey.getRegex() + " Value: " + value);
+                                isValid.set(false);
+                            } else {
+                                vatraValidationFields.put(vaTraValidationKey, String.valueOf(value));
+                            }
+                            //wir können bisher 2 Varianten an weiteren Eigabefeldern unterscheiden: Number und String, Wenn also Number gesetzt wird versuchen wird diese Eingabe also validator zuerst noch zu parsen. Dies dient als weitere sicherheits überprüfung
+                        } else if (schemaValue.equals("number")) {
+                            try {
+                                value = Double.parseDouble(String.valueOf(value));
+                            } catch (NumberFormatException nfe) {
+                                log.error("isValid turns to FALSE! number konnte nicht geparst werden:" + value);
+                                isValid.set(false);
 
+                            }
+                            manualFields.put(String.valueOf(key), String.valueOf(value));
+                        } else {
+                            manualFields.put(String.valueOf(key), String.valueOf(value));
                         }
-                        manualFields.put(String.valueOf(key), String.valueOf(value));
                     }
                 }
             }
         });
+        log.debug("VatraFields: " + vatraFields.toString());
         request.setVatraFields(vatraFields);
+        log.debug("VatraValidationFields: " + vatraValidationFields.toString());
         request.setVatraValidationFields(vatraValidationFields);
+        log.debug("ManualFields: " + manualFields.toString());
         request.setManualFields(manualFields);
-
         return isValid;
     }
 

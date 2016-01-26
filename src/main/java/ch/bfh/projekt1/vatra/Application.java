@@ -81,19 +81,18 @@ public class Application {
             algorithms.add(algo3);
             algorithms.add(algo4);
 
-
             appRepository.save(new App("App Dave", 10, userDave, new Date(), new Date(), algorithms));
             appRepository.save(new App("App Michael", 10, userMichael, new Date(), new Date(), algorithms, "d33i7sn7gj62t4mdptsfe1pclt"));
             appRepository.save(new App("App Tobias", 10, userTobias, new Date(), new Date(), algorithms));
 
             appRepository.findAll().forEach(app -> {
-                Whitelabel whitelabel = new Whitelabel("127.0.0.1:9000", app);
+                Whitelabel whitelabel = new Whitelabel("localhost:8080", app);
                 whitelabelRepository.save(whitelabel);
 
-                Request r1 = new Request("127.0.0.1:9000", app, "TODO: ClientInformation", true, new Date());
-                Request r2 = new Request("127.0.0.1:9000", app, "TODO: ClientInformation", false, new Date());
-                Request r3 = new Request("127.0.0.1:9000", app, "TODO: ClientInformation", false, new Date());
-                Request r4 = new Request("127.0.0.1:9000", app, "TODO: ClientInformation", false, new Date());
+                Request r1 = new Request("localhost:8080", app, "TODO: ClientInformation", true, new Date());
+                Request r2 = new Request("localhost:8080", app, "TODO: ClientInformation", false, new Date());
+                Request r3 = new Request("localhost:8080", app, "TODO: ClientInformation", false, new Date());
+                Request r4 = new Request("localhost:8080", app, "TODO: ClientInformation", false, new Date());
 
                 requestRepository.save(r1);
                 requestRepository.save(r2);
@@ -101,7 +100,8 @@ public class Application {
                 requestRepository.save(r4);
             });
 
-            userRepository.findAll().forEach(user -> log.info(user.toString()));
+            log.debug("userRepository.findAll() -->");
+            userRepository.findAll().forEach(user -> log.debug(user.toString()));
         };
     }
 }
