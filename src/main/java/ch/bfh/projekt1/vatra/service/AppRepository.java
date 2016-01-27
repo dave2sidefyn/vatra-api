@@ -1,7 +1,7 @@
 package ch.bfh.projekt1.vatra.service;
 
 import ch.bfh.projekt1.vatra.model.App;
-import ch.bfh.projekt1.vatra.model.User;
+import ch.bfh.projekt1.vatra.model.Benutzer;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
@@ -17,7 +17,7 @@ import java.util.List;
 public interface AppRepository extends CrudRepository<App, String> {
 
     @Nonnull
-    List<App> findAllByUser(@Param("user") User user);
+    List<App> findAllByBenutzer(@Param("user") Benutzer benutzer);
 
     @Nullable
     App findOneByApiKey(@Param("apiKey") String apiKey);

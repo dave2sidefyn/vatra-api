@@ -30,7 +30,7 @@ public class ApiKeyWebService {
     public ResponseEntity<App> generateApiKey(@PathVariable("id") String id) {
 
         App app = appRepository.findOne(id);
-        if (Objects.isNull(app) || !app.getUser().getEmail().equals(SecurityContextHolder.getContext().getAuthentication().getName())) {
+        if (Objects.isNull(app) || !app.getBenutzer().getEmail().equals(SecurityContextHolder.getContext().getAuthentication().getName())) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 

@@ -47,7 +47,7 @@ public class Application {
     /**
      * Bereitstellung für Demodaten
      *
-     * @param userRepository       wird benötigt um Users zu erstellen
+     * @param benutzerRepository       wird benötigt um Users zu erstellen
      * @param appRepository        wird benötigt um Apps zu erstellen
      * @param algorithmRepository  wird benötigt um Algorithmen zu erstellen
      * @param whitelabelRepository wird benötigt um Whitlabels zu erstellen
@@ -55,7 +55,7 @@ public class Application {
      * @return CommandLineRunner
      */
     @Bean
-    public CommandLineRunner demo(@Nonnull UserRepository userRepository,
+    public CommandLineRunner demo(@Nonnull BenutzerRepository benutzerRepository,
                                   @Nonnull AppRepository appRepository,
                                   @Nonnull AlgorithmRepository algorithmRepository,
                                   @Nonnull WhitelabelRepository whitelabelRepository,
@@ -63,9 +63,9 @@ public class Application {
         return (args) -> {
 
             BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-            User userDave = userRepository.save(new User("Dave Wiedmer", "david.wiedmer@gmail.com", bCryptPasswordEncoder.encode("test1234")));
-            User userMichael = userRepository.save(new User("Michael Räss", "raess.michael@gmail.com", bCryptPasswordEncoder.encode("Aa123456")));
-            User userTobias = userRepository.save(new User("Tobias Schmoker", "tobischmoker@gmail.com", bCryptPasswordEncoder.encode("zebra1234")));
+            Benutzer benutzerDave = benutzerRepository.save(new Benutzer("Dave Wiedmer", "david.wiedmer@gmail.com", bCryptPasswordEncoder.encode("test1234")));
+            Benutzer benutzerMichael = benutzerRepository.save(new Benutzer("Michael Räss", "raess.michael@gmail.com", bCryptPasswordEncoder.encode("Aa123456")));
+            Benutzer benutzerTobias = benutzerRepository.save(new Benutzer("Tobias Schmoker", "tobischmoker@gmail.com", bCryptPasswordEncoder.encode("zebra1234")));
 
             Algorithm algo1 = new Algorithm("Schnelle aufeinanderfolgende Zahlungen", AlgorithmEnum.ROBOTIC_ALGORITHM);
             Algorithm algo2 = new Algorithm("Zahlungsüberwachung nach Ortsangaben", AlgorithmEnum.GEO_ALGORITHM);
@@ -76,14 +76,10 @@ public class Application {
             algorithmRepository.save(algo3);
             algorithmRepository.save(algo4);
             Set<Algorithm> algorithms = new HashSet<>();
-            algorithms.add(algo1);
-            algorithms.add(algo2);
-            algorithms.add(algo3);
-            algorithms.add(algo4);
 
-            appRepository.save(new App("App Dave", 10, userDave, new Date(), new Date(), algorithms));
-            appRepository.save(new App("App Michael", 10, userMichael, new Date(), new Date(), algorithms, "d33i7sn7gj62t4mdptsfe1pclt"));
-            appRepository.save(new App("App Tobias", 10, userTobias, new Date(), new Date(), algorithms));
+            appRepository.save(new App("App Dave", 10, benutzerDave, new Date(), new Date(), algorithms));
+            appRepository.save(new App("App Michael", 10, benutzerMichael, new Date(), new Date(), algorithms, "d33i7sn7gj62t4mdptsfe1pclt"));
+            appRepository.save(new App("App Tobias", 10, benutzerTobias, new Date(), new Date(), algorithms));
 
             appRepository.findAll().forEach(app -> {
                 Whitelabel whitelabel = new Whitelabel("localhost:8080", app);
@@ -100,8 +96,8 @@ public class Application {
                 requestRepository.save(r4);
             });
 
-            log.debug("userRepository.findAll() -->");
-            userRepository.findAll().forEach(user -> log.debug(user.toString()));
+            log.debug("benutzerRepository.findAll() -->");
+            benutzerRepository.findAll().forEach(benutzer -> log.debug(benutzer.toString()));
         };
     }
 }

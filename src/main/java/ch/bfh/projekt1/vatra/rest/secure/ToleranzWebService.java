@@ -1,9 +1,9 @@
 package ch.bfh.projekt1.vatra.rest.secure;
 
 import ch.bfh.projekt1.vatra.model.App;
-import ch.bfh.projekt1.vatra.model.User;
+import ch.bfh.projekt1.vatra.model.Benutzer;
 import ch.bfh.projekt1.vatra.service.AppRepository;
-import ch.bfh.projekt1.vatra.service.UserRepository;
+import ch.bfh.projekt1.vatra.service.BenutzerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,13 +22,13 @@ public class ToleranzWebService {
     private AppRepository appRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private BenutzerRepository benutzerRepository;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<int[]> getToleranz(@PathVariable("id") String id) {
-        User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        Benutzer benutzer = benutzerRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         App app = appRepository.findOne(id);
-        if (!app.getUser().equals(user)) {
+        if (!app.getBenutzer().equals(benutzer)) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         int[] toleranz = {app.getToleranz()};
@@ -39,9 +39,9 @@ public class ToleranzWebService {
     @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<App> updateToleranz(@PathVariable("id") String id, @RequestBody App app) {
 
-        User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        Benutzer benutzer = benutzerRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         App currentApp = appRepository.findOne(id);
-        if (!currentApp.getUser().equals(user)) {
+        if (!currentApp.getBenutzer().equals(benutzer)) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 

@@ -2,8 +2,8 @@ package ch.bfh.projekt1.vatra.configuration;
 
 import ch.bfh.projekt1.vatra.configuration.cors.CORSFilter;
 import ch.bfh.projekt1.vatra.configuration.csrf.CsrfTokenResponseCookieBindingFilter;
-import ch.bfh.projekt1.vatra.model.User;
-import ch.bfh.projekt1.vatra.service.UserRepository;
+import ch.bfh.projekt1.vatra.model.Benutzer;
+import ch.bfh.projekt1.vatra.service.BenutzerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
@@ -51,7 +51,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
     private LogoutSuccessHandler logoutSuccessHandler;
 
     @Autowired
-    private UserRepository userService;
+    private BenutzerRepository userService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder builder) throws Exception {
@@ -61,9 +61,9 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
     @Bean
     protected UserDetailsService userDetailsService() {
         return email -> {
-            User user = userService.findByEmail(email);
-            if (Objects.nonNull(user)) {
-                return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPasswort(), true, true, true, true,
+            Benutzer benutzer = userService.findByEmail(email);
+            if (Objects.nonNull(benutzer)) {
+                return new org.springframework.security.core.userdetails.User(benutzer.getEmail(), benutzer.getPasswort(), true, true, true, true,
                         AuthorityUtils.createAuthorityList("USER"));
             } else {
                 throw new UsernameNotFoundException("could not find the user '"

@@ -1,11 +1,11 @@
 package ch.bfh.projekt1.vatra.rest.secure;
 
 import ch.bfh.projekt1.vatra.model.App;
+import ch.bfh.projekt1.vatra.model.Benutzer;
 import ch.bfh.projekt1.vatra.model.Request;
-import ch.bfh.projekt1.vatra.model.User;
 import ch.bfh.projekt1.vatra.service.AppRepository;
+import ch.bfh.projekt1.vatra.service.BenutzerRepository;
 import ch.bfh.projekt1.vatra.service.RequestRepository;
-import ch.bfh.projekt1.vatra.service.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,8 +26,8 @@ import java.util.List;
 public class RequestWebService {
 
 	@Autowired
-    private UserRepository userRepository;
-	
+    private BenutzerRepository benutzerRepository;
+
     @Autowired
     private AppRepository appRepository;
 
@@ -36,9 +36,9 @@ public class RequestWebService {
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Request>> getRequests(@PathVariable("id") String id) {
-        User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        Benutzer benutzer = benutzerRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         App app = appRepository.findOne(id);
-        if (!app.getUser().equals(user)) {
+        if (!app.getBenutzer().equals(benutzer)) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 

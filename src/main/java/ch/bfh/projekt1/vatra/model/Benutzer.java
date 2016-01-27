@@ -14,7 +14,7 @@ import java.util.UUID;
  * Created by David on 20.10.2015.
  */
 @Entity
-public class User {
+public class Benutzer {
 
     private static final String DEFAULT_NAME = "";
     private static final String DEFAULT_EMAIL = "default@vatra.ch";
@@ -36,10 +36,10 @@ public class User {
     @Nonnull
     private Set<App> apps = new HashSet<>();
 
-    protected User() {
+    protected Benutzer() {
     }
 
-    public User(@Nonnull String name, @Nonnull String email, @Nonnull String passwort) {
+    public Benutzer(@Nonnull String name, @Nonnull String email, @Nonnull String passwort) {
         this.name = name;
         this.email = email;
         this.passwort = passwort;

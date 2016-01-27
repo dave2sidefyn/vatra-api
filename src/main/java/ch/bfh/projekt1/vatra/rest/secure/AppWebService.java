@@ -3,11 +3,11 @@ package ch.bfh.projekt1.vatra.rest.secure;
 
 import ch.bfh.projekt1.vatra.model.App;
 import ch.bfh.projekt1.vatra.model.AppDTO;
+import ch.bfh.projekt1.vatra.model.Benutzer;
 import ch.bfh.projekt1.vatra.model.Request;
-import ch.bfh.projekt1.vatra.model.User;
 import ch.bfh.projekt1.vatra.service.AppRepository;
+import ch.bfh.projekt1.vatra.service.BenutzerRepository;
 import ch.bfh.projekt1.vatra.service.RequestRepository;
-import ch.bfh.projekt1.vatra.service.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,15 +34,15 @@ public class AppWebService {
     private AppRepository appRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private BenutzerRepository benutzerRepository;
 
     @Autowired
     private RequestRepository requestRepository;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<AppDTO>> getApps() {
-        User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-        Iterable<App> all = appRepository.findAllByUser(user);
+        Benutzer benutzer = benutzerRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        Iterable<App> all = appRepository.findAllByBenutzer(benutzer);
 
         List<AppDTO> appDTOList = new ArrayList<>();
         all.forEach(app -> {
@@ -72,12 +72,12 @@ public class AppWebService {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-        if (Objects.isNull(user)) {
+        Benutzer benutzer = benutzerRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        if (Objects.isNull(benutzer)) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        app.setUser(user);
+        app.setBenutzer(benutzer);
         Date now = new Date();
         app.setValidFrom(now);
         app.setValidTo(new Date(now.getTime() + (1000 * 60 * 60 * 24 * 3)));

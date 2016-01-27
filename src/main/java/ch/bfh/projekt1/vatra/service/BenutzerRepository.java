@@ -1,6 +1,6 @@
 package ch.bfh.projekt1.vatra.service;
 
-import ch.bfh.projekt1.vatra.model.User;
+import ch.bfh.projekt1.vatra.model.Benutzer;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
@@ -11,8 +11,8 @@ import javax.annotation.Nullable;
  * <p>
  * Created by David on 20.10.2015.
  */
-public interface UserRepository extends CrudRepository<User, String> {
+public interface BenutzerRepository extends CrudRepository<Benutzer, String> {
 
     @Nullable
-    User findByEmail(@Param("email") String email);
+    Benutzer findByEmail(@Param("email") String email);
 }

@@ -2,12 +2,12 @@ package ch.bfh.projekt1.vatra.rest.open;
 
 import ch.bfh.projekt1.vatra.model.Algorithm;
 import ch.bfh.projekt1.vatra.model.App;
+import ch.bfh.projekt1.vatra.model.Benutzer;
 import ch.bfh.projekt1.vatra.model.Request;
-import ch.bfh.projekt1.vatra.model.User;
 import ch.bfh.projekt1.vatra.service.AlgorithmRequestResultRepository;
 import ch.bfh.projekt1.vatra.service.AppRepository;
+import ch.bfh.projekt1.vatra.service.BenutzerRepository;
 import ch.bfh.projekt1.vatra.service.RequestRepository;
-import ch.bfh.projekt1.vatra.service.UserRepository;
 import junit.framework.Assert;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -70,7 +70,7 @@ public class OpenWebServiceTest {
     private RequestRepository requestRepository;
 
     @Mock
-    private UserRepository userRepository;
+    private BenutzerRepository benutzerRepository;
 
 
     private MockMvc mockMvc;
@@ -103,9 +103,9 @@ public class OpenWebServiceTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(equalTo("false")));
-        User userDave = new User("Dave Wiedmer", "david.wiedmer@gmail.com", "test1234");
-        when(userRepository.save(userDave)).thenReturn(userDave);
-        App app = new App("App Dave", 10, userDave, new Date(), new Date(), new HashSet<Algorithm>(), "d33i7sn7gj62t4mdptsfe1pclt");
+        Benutzer benutzerDave = new Benutzer("Dave Wiedmer", "david.wiedmer@gmail.com", "test1234");
+        when(benutzerRepository.save(benutzerDave)).thenReturn(benutzerDave);
+        App app = new App("App Dave", 10, benutzerDave, new Date(), new Date(), new HashSet<Algorithm>(), "d33i7sn7gj62t4mdptsfe1pclt");
         when(appRepository.save(app)).thenReturn(app);
 
         Request entity = Mockito.mock(Request.class);

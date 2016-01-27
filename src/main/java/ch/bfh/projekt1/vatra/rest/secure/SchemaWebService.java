@@ -1,10 +1,10 @@
 package ch.bfh.projekt1.vatra.rest.secure;
 
 import ch.bfh.projekt1.vatra.model.App;
-import ch.bfh.projekt1.vatra.model.User;
+import ch.bfh.projekt1.vatra.model.Benutzer;
 import ch.bfh.projekt1.vatra.model.VaTraKey;
 import ch.bfh.projekt1.vatra.service.AppRepository;
-import ch.bfh.projekt1.vatra.service.UserRepository;
+import ch.bfh.projekt1.vatra.service.BenutzerRepository;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -32,15 +32,15 @@ public class SchemaWebService {
     private AppRepository appRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private BenutzerRepository benutzerRepository;
 
     private static final Logger log = LoggerFactory.getLogger(SchemaWebService.class);
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<String>> getScheme(@PathVariable("id") String id) {
-        User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        Benutzer benutzer = benutzerRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         App app = appRepository.findOne(id);
-        if (!app.getUser().equals(user)) {
+        if (!app.getBenutzer().equals(benutzer)) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
@@ -74,9 +74,9 @@ public class SchemaWebService {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        Benutzer benutzer = benutzerRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         App app = appRepository.findOne(id);
-        if (!app.getUser().equals(user)) {
+        if (!app.getBenutzer().equals(benutzer)) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 

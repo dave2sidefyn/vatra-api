@@ -18,7 +18,16 @@ public class App {
 
     private static final int DEFAULT_TOLERANZ = 5;
     private static final String DEFAULT_APP = "DEFAULT_APP";
-    public static final String DEFAULT_SCHEME = "{\"VaTra.ApiKey\": \"VaTra.ApiKey\",\"VaTra.Identification\": \"VaTra.Identification\", \"creditCardNumber\":\"VaTra.Payment.CreditCardNumber\", \"VaTra.Honeypot\":\"VaTra.Honeypot\"}";
+    public static final String DEFAULT_SCHEME = "{\"VaTra.ApiKey\": \"VaTra.ApiKey\"," +
+            "\"VaTra.Identification\": \"VaTra.Identification\", " +
+            "\"VaTra.Honeypot\":\"VaTra.Honeypot\", " +
+            "\"amount\":\"number\", " +
+            "\"currency\":\"string\", " +
+            "\"creditCardHolder\":\"VaTra.Payment.CreditCardHolder\", " +
+            "\"creditCardNumber\":\"VaTra.Payment.CreditCardNumber\", " +
+            "\"creditCardExpMonth\":\"VaTra.Payment.CreditCardNumber\", " +
+            "\"creditCardExpYear\":\"VaTra.Payment.CreditCardNumber\", " +
+            "\"creditCardCvc\":\"VaTra.Payment.CreditCardNumber\"}";
 
     @Id
     @Nonnull
@@ -30,6 +39,7 @@ public class App {
 
     @Nonnull
     @NotNull
+    @Column(length = 2000)
     private String scheme = DEFAULT_SCHEME;
 
     @Nonnull
@@ -37,7 +47,7 @@ public class App {
 
     @ManyToOne
     @Nonnull
-    private User user;
+    private Benutzer benutzer;
 
     @Nonnull
     private Date validFrom = new Date();
@@ -58,22 +68,22 @@ public class App {
     private Set<Whitelabel> whitelabels = new HashSet<>();
 
     public App() {
-        user = new User();
+        benutzer = new Benutzer();
     }
 
-    public App(@Nonnull String name, @Nonnull Integer toleranz, @Nonnull User user, @Nonnull Date validFrom, @Nonnull Date validTo, @Nonnull Set<Algorithm> algorithms) {
+    public App(@Nonnull String name, @Nonnull Integer toleranz, @Nonnull Benutzer benutzer, @Nonnull Date validFrom, @Nonnull Date validTo, @Nonnull Set<Algorithm> algorithms) {
         this.name = name;
         this.toleranz = toleranz;
-        this.user = user;
+        this.benutzer = benutzer;
         this.validFrom = validFrom;
         this.validTo = validTo;
         this.algorithms = algorithms;
     }
 
-    public App(@Nonnull String name, @Nonnull Integer toleranz, @Nonnull User user, @Nonnull Date validFrom, @Nonnull Date validTo, @Nonnull Set<Algorithm> algorithms, @Nonnull String apiKey) {
+    public App(@Nonnull String name, @Nonnull Integer toleranz, @Nonnull Benutzer benutzer, @Nonnull Date validFrom, @Nonnull Date validTo, @Nonnull Set<Algorithm> algorithms, @Nonnull String apiKey) {
         this.name = name;
         this.toleranz = toleranz;
-        this.user = user;
+        this.benutzer = benutzer;
         this.validFrom = validFrom;
         this.validTo = validTo;
         this.algorithms = algorithms;
@@ -117,12 +127,12 @@ public class App {
     }
 
     @Nonnull
-    public User getUser() {
-        return user;
+    public Benutzer getBenutzer() {
+        return benutzer;
     }
 
-    public void setUser(@Nonnull User user) {
-        this.user = user;
+    public void setBenutzer(@Nonnull Benutzer benutzer) {
+        this.benutzer = benutzer;
     }
 
     @Nonnull
@@ -183,7 +193,7 @@ public class App {
 
     @Override
     public String toString() {
-        return "App [id=" + id + ", name=" + name + ", scheme=" + scheme + ", toleranz=" + toleranz + ", user=" + user
+        return "App [id=" + id + ", name=" + name + ", scheme=" + scheme + ", toleranz=" + toleranz + ", user=" + benutzer
                 + ", validFrom=" + validFrom + ", validTo=" + validTo + ", apiKey=" + apiKey + "]";
     }
 }
