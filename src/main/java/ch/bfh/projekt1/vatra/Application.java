@@ -1,24 +1,14 @@
 package ch.bfh.projekt1.vatra;
 
-import ch.bfh.projekt1.vatra.algorithm.AlgorithmEnum;
 import ch.bfh.projekt1.vatra.configuration.ApplicationSecurity;
-import ch.bfh.projekt1.vatra.model.*;
-import ch.bfh.projekt1.vatra.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import javax.annotation.Nonnull;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Startklasse, Hier wird das Projekt gestartet
@@ -44,7 +34,7 @@ public class Application {
     }
 
 
-    /**
+   /* *//**
      * Bereitstellung für Demodaten
      *
      * @param benutzerRepository       wird benötigt um Users zu erstellen
@@ -53,7 +43,7 @@ public class Application {
      * @param whitelabelRepository wird benötigt um Whitlabels zu erstellen
      * @param requestRepository    wird benötigt um Request zu erstellen
      * @return CommandLineRunner
-     */
+     *//*
     @Bean
     public CommandLineRunner demo(@Nonnull BenutzerRepository benutzerRepository,
                                   @Nonnull AppRepository appRepository,
@@ -99,5 +89,5 @@ public class Application {
             log.debug("benutzerRepository.findAll() -->");
             benutzerRepository.findAll().forEach(benutzer -> log.debug(benutzer.toString()));
         };
-    }
+    }*/
 }

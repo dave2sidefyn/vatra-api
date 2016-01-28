@@ -1,5 +1,7 @@
 package ch.bfh.projekt1.vatra.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.annotation.Nonnull;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -25,6 +27,7 @@ public class Whitelabel {
     @Nonnull
     @NotNull
     @ManyToOne
+    @JsonIgnore
     private App app;
 
 
