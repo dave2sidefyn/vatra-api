@@ -17,11 +17,11 @@ public class AlgorithmDTO {
     private String name;
 
     @Nonnull
-    private List<VaTraKey> neededKeys;
+    private List<String> neededKeys;
 
     private boolean enabled;
 
-    public AlgorithmDTO(@Nonnull String algorithmId, @Nonnull String name, @Nonnull List<VaTraKey> neededKeys, boolean enabled) {
+    public AlgorithmDTO(@Nonnull String algorithmId, @Nonnull String name, @Nonnull List<String> neededKeys, boolean enabled) {
         this.algorithmId = algorithmId;
         this.name = name;
         this.neededKeys = neededKeys;
@@ -47,11 +47,11 @@ public class AlgorithmDTO {
     }
 
     @Nonnull
-    public List<VaTraKey> getNeededKeys() {
+    public List<String> getNeededKeys() {
         return neededKeys;
     }
 
-    public void setNeededKeys(@Nonnull List<VaTraKey> neededKeys) {
+    public void setNeededKeys(@Nonnull List<String> neededKeys) {
         this.neededKeys = neededKeys;
     }
 

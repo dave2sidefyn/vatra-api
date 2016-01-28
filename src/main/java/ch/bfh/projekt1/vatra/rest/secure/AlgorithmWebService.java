@@ -1,9 +1,6 @@
 package ch.bfh.projekt1.vatra.rest.secure;
 
-import ch.bfh.projekt1.vatra.model.Algorithm;
-import ch.bfh.projekt1.vatra.model.AlgorithmDTO;
-import ch.bfh.projekt1.vatra.model.App;
-import ch.bfh.projekt1.vatra.model.Benutzer;
+import ch.bfh.projekt1.vatra.model.*;
 import ch.bfh.projekt1.vatra.service.AlgorithmRepository;
 import ch.bfh.projekt1.vatra.service.AppRepository;
 import ch.bfh.projekt1.vatra.service.BenutzerRepository;
@@ -19,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Bietet die RestServices für die Algorithmen pro App zu lesen, einzuschalten oder auszuschalten
@@ -85,7 +83,7 @@ public class AlgorithmWebService {
             algorithmDTO = new AlgorithmDTO(
                     algo.getId(),
                     algo.getName(),
-                    ((ch.bfh.projekt1.vatra.algorithm.Algorithm) algo.getType().getAlgorithmClass().newInstance()).neededKeys(),
+                    ((ch.bfh.projekt1.vatra.algorithm.Algorithm) algo.getType().getAlgorithmClass().newInstance()).neededKeys().stream().map(VaTraKey::getId).collect(Collectors.toList()),
                     enabled
             );
         } catch (InstantiationException | IllegalAccessException e) {
