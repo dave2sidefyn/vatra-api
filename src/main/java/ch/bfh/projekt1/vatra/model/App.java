@@ -25,9 +25,9 @@ public class App {
             "\"currency\":\"string\", " +
             "\"creditCardHolder\":\"VaTra.Payment.CreditCardHolder\", " +
             "\"creditCardNumber\":\"VaTra.Payment.CreditCardNumber\", " +
-            "\"creditCardExpMonth\":\"VaTra.Payment.CreditCardNumber\", " +
-            "\"creditCardExpYear\":\"VaTra.Payment.CreditCardNumber\", " +
-            "\"creditCardCvc\":\"VaTra.Payment.CreditCardNumber\"}";
+            "\"creditCardExpMonth\":\"VaTra.Payment.CreditCardExpMonth\", " +
+            "\"creditCardExpYear\":\"VaTra.Payment.creditCardExpYear\", " +
+            "\"creditCardCvc\":\"VaTra.Payment.creditCardCvc\"}";
 
     @Id
     @Nonnull
