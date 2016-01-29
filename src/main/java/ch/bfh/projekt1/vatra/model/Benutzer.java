@@ -1,5 +1,7 @@
 package ch.bfh.projekt1.vatra.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.annotation.Nonnull;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -32,8 +34,9 @@ public class Benutzer {
     @Nonnull
     private String passwort = DEFAULT_PASSWORD;
 
-    @OneToMany
+    @OneToMany(mappedBy = "benutzer")
     @Nonnull
+    @JsonIgnore
     private Set<App> apps = new HashSet<>();
 
     protected Benutzer() {

@@ -72,7 +72,7 @@ public class OpenWebService {
                 return new ResponseEntity<>(false, HttpStatus.OK);
             }
             Map<String, String> clientInformations = getClientInformations(requestInfos);
-            if (!checkWhitelabels(app, clientInformations)) {
+            if (!checkWhitelist(app, clientInformations)) {
                 log.debug("Whitelabel nicht erfasst");
                 return new ResponseEntity<>(false, HttpStatus.OK);
             }
@@ -102,13 +102,13 @@ public class OpenWebService {
         }
     }
 
-    private boolean checkWhitelabels(@Nonnull App app, @Nonnull Map<String, String> clientInformations) {
+    private boolean checkWhitelist(@Nonnull App app, @Nonnull Map<String, String> clientInformations) {
 
         AtomicBoolean atomicBoolean = new AtomicBoolean(true);
         clientInformations.forEach((key, value) -> {
-            String HOST_KEY_FOR_WHITELABEL = "Host";
-            if (key.equals(HOST_KEY_FOR_WHITELABEL)) {
-                if (app.getWhitelabels().stream().filter(whitelabel -> whitelabel.getName().equals(value)).count() == 0) {
+            String HOST_KEY_FOR_WHITELIST = "Host";
+            if (key.equals(HOST_KEY_FOR_WHITELIST)) {
+                if (app.getWhitelistlabels().stream().filter(whitelist -> whitelist.getName().equals(value)).count() == 0) {
                     atomicBoolean.set(false);
                 }
             }

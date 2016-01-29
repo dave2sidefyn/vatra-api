@@ -48,12 +48,8 @@ public enum VaTraKey {
     /**
      * Longitude wird im GEOLOCATION Algorithmus verwendet!
      */
-    VATRA_GEOLOCATION_LONGITUDE("VaTra.Geolocation.longitude"),
-
-    /**
-     * Longitude wird im GEOLOCATION Algorithmus verwendet!
-     */
-    VATRA_GEOLOCATION_LATTITUDE("VaTra.Geolocation.latitude");
+    VATRA_GEOLOCATION_LONGITUDE("VaTra.Geolocation.Longitude"),
+    VATRA_GEOLOCATION_LATITUDE("VaTra.Geolocation.Latitude");
 
     @Nonnull
     private String id;

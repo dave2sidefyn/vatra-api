@@ -1,6 +1,8 @@
 package ch.bfh.projekt1.vatra.model;
 
 import ch.bfh.projekt1.vatra.service.RequestRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.repository.CrudRepository;
 
 import javax.annotation.Nonnull;
@@ -16,7 +18,9 @@ import java.util.*;
 @Entity
 public class App {
 
-    private static final int DEFAULT_TOLERANZ = 5;
+    private static final Logger log = LoggerFactory.getLogger(App.class);
+
+    private static final int DEFAULT_TOLERANZ = 10;
     private static final String DEFAULT_APP = "DEFAULT_APP";
     public static final String DEFAULT_SCHEME = "{\"VaTra.ApiKey\": \"VaTra.ApiKey\"," +
             "\"VaTra.Identification\": \"VaTra.Identification\", " +
@@ -26,8 +30,10 @@ public class App {
             "\"creditCardHolder\":\"VaTra.Payment.CreditCardHolder\", " +
             "\"creditCardNumber\":\"VaTra.Payment.CreditCardNumber\", " +
             "\"creditCardExpMonth\":\"VaTra.Payment.CreditCardExpMonth\", " +
-            "\"creditCardExpYear\":\"VaTra.Payment.creditCardExpYear\", " +
-            "\"creditCardCvc\":\"VaTra.Payment.creditCardCvc\"}";
+            "\"creditCardExpYear\":\"VaTra.Payment.CreditCardExpYear\", " +
+            "\"creditCardCvc\":\"VaTra.Payment.CreditCardCvc\", " +
+            "\"longitude\":\"VaTra.Geolocation.Longitude\", " +
+            "\"latitude\":\"VaTra.Geolocation.Latitude\"}";
 
     @Id
     @Nonnull
@@ -65,7 +71,7 @@ public class App {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "app")
     @Nonnull
-    private Set<Whitelabel> whitelabels = new HashSet<>();
+    private Set<Whitelistlabel> whitelistlabels = new HashSet<>();
 
     public App() {
         benutzer = new Benutzer();
@@ -172,12 +178,12 @@ public class App {
     }
 
     @Nonnull
-    public Set<Whitelabel> getWhitelabels() {
-        return whitelabels;
+    public Set<Whitelistlabel> getWhitelistlabels() {
+        return whitelistlabels;
     }
 
-    public void setWhitelabels(@Nonnull Set<Whitelabel> whitelabels) {
-        this.whitelabels = whitelabels;
+    public void setWhitelistlabels(@Nonnull Set<Whitelistlabel> whitelistlabels) {
+        this.whitelistlabels = whitelistlabels;
     }
 
     @Nonnull
@@ -185,7 +191,8 @@ public class App {
         for (CrudRepository crudRepository : crudRepositories) {
             if (crudRepository instanceof RequestRepository) {
                 List<Request> allByApp = ((RequestRepository) crudRepository).findAllByAppAndIdentify(this, identify);
-                allByApp.stream().filter(Request::isValid).sorted((o1, o2) -> -o1.getCreatedDate().compareTo(o2.getCreatedDate())).findFirst();
+                log.debug("Found Requests: " + allByApp.size());
+                return allByApp.stream().filter(Request::isValid).sorted((o1, o2) -> -o1.getCreatedDate().compareTo(o2.getCreatedDate())).findFirst();
             }
         }
         return Optional.empty();

@@ -31,19 +31,19 @@ public class GeoAlgorithm implements Algorithm {
     private static final Logger log = LoggerFactory.getLogger(GeoAlgorithm.class);
 
     private static final int FIVE_MIN_IN_SECONDS = 300;
-    private static final String GOOGLE_API_KEY = "AIzaSyCmUq4uasZW_bjGU1nIlt-2BRqOntWt9Ho";
+    private static final String GOOGLE_API_KEY = "AIzaSyAcewGP75p6N0Z3l5NUEYHQDhbYxOe1Nhg";
 
     @Override
     @Nonnull
     public List<VaTraKey> neededKeys() {
-        return Arrays.asList(VaTraKey.VATRA_API_KEY, VaTraKey.VATRA_IDENTIFICATION, VaTraKey.VATRA_GEOLOCATION_LONGITUDE, VaTraKey.VATRA_GEOLOCATION_LATTITUDE);
+        return Arrays.asList(VaTraKey.VATRA_API_KEY, VaTraKey.VATRA_IDENTIFICATION, VaTraKey.VATRA_GEOLOCATION_LONGITUDE, VaTraKey.VATRA_GEOLOCATION_LATITUDE);
     }
 
     @Override
     public int check(@Nonnull App app, @Nonnull Request request, @Nonnull CrudRepository... crudRepositories) {
         String identify = request.getVatraFields().get(VaTraKey.VATRA_IDENTIFICATION);
         Optional<Request> lastRequest = app.findLastValidRequest(identify, crudRepositories);
-
+        log.debug("LastRequest found?" + lastRequest.isPresent());
         if (lastRequest.isPresent()) {
             GeoApiContext context = new GeoApiContext().setApiKey(GOOGLE_API_KEY);
 
@@ -55,7 +55,7 @@ public class GeoAlgorithm implements Algorithm {
             try {
                 result = req.await();
             } catch (Exception e1) {
-                log.debug("GeoAlgorithm weight: " + 10);
+                log.debug("GeoAlgorithm weight: " + MAX_WEIGHT);
                 return MAX_WEIGHT;
             }
 
@@ -63,7 +63,7 @@ public class GeoAlgorithm implements Algorithm {
             try {
                 shortestDelta = getShortestDelta(lastRequest.get(), result);
             } catch (Exception e) {
-                log.debug("GeoAlgorithm weight: " + 10);
+                log.debug("GeoAlgorithm weight: " + MAX_WEIGHT);
                 return MAX_WEIGHT;
             }
             int weight = calcWeight(shortestDelta);
@@ -72,7 +72,7 @@ public class GeoAlgorithm implements Algorithm {
             return weight;
         }
 
-        log.debug("GeoAlgorithm weight: 0");
+        log.debug("GeoAlgorithm weight:" + MIN_WEIGHT);
         return MIN_WEIGHT;
     }
 
@@ -93,9 +93,10 @@ public class GeoAlgorithm implements Algorithm {
     @Nonnull
     public Optional<Long> getShortestDelta(@Nonnull Request lastRequest, @Nonnull DistanceMatrix results) throws Exception {
         Optional<Long> shortestDelta = Optional.empty();
-
+        log.debug("Anzahl Rows: " + results.rows.length);
         for (DistanceMatrixRow distanceMatrixRow : results.rows) {
             if (Objects.nonNull(distanceMatrixRow) && Objects.nonNull(distanceMatrixRow.elements)) {
+                log.debug("Anzahl Elements: " + distanceMatrixRow.elements.length);
                 for (DistanceMatrixElement distanceMatrixElement : distanceMatrixRow.elements) {
                     if (Objects.nonNull(distanceMatrixElement)) {
                         if (distanceMatrixElement.status == DistanceMatrixElementStatus.ZERO_RESULTS) {
@@ -106,6 +107,7 @@ public class GeoAlgorithm implements Algorithm {
                         long delta = lastRequest.getCreatedDate().toInstant().getEpochSecond() - (((new Date()).toInstant().getEpochSecond() - distanceMatrixElement.duration.inSeconds));
                         if (!shortestDelta.isPresent() || delta < shortestDelta.get()) {
                             shortestDelta = Optional.of(delta);
+                            log.debug("setShortestDelta");
                         }
                     }
                 }
@@ -117,7 +119,7 @@ public class GeoAlgorithm implements Algorithm {
     @Nonnull
     private LatLng getLatLngFromRequest(@Nonnull Request request) {
         Double lng = Double.valueOf(request.getVatraFields().get(VaTraKey.VATRA_GEOLOCATION_LONGITUDE));
-        Double lat = Double.valueOf(request.getVatraFields().get(VaTraKey.VATRA_GEOLOCATION_LATTITUDE));
+        Double lat = Double.valueOf(request.getVatraFields().get(VaTraKey.VATRA_GEOLOCATION_LATITUDE));
         return new LatLng(lat, lng);
     }
 }

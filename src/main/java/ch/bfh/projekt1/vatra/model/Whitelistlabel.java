@@ -10,12 +10,12 @@ import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 /**
- * Die Entität Whitelabel ist hier, für die Whitelabels zu definieren.
+ * Die Entität Whitelistlabel ist hier, für die Whitelistlabels zu definieren.
  * <p>
  * Created by dave on 23.10.15.
  */
 @Entity
-public class Whitelabel {
+public class Whitelistlabel {
 
     @Nonnull
     @Id
@@ -31,12 +31,12 @@ public class Whitelabel {
     private App app;
 
 
-    public Whitelabel() {
+    public Whitelistlabel() {
         this.name = "";
         this.app = new App();
     }
 
-    public Whitelabel(@Nonnull String name, @Nonnull App app) {
+    public Whitelistlabel(@Nonnull String name, @Nonnull App app) {
         this.name = name;
         this.app = app;
     }
@@ -70,7 +70,7 @@ public class Whitelabel {
 
     @Override
     public String toString() {
-        return "Whitelabel{" +
+        return "Whitelistlabel{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 '}';
